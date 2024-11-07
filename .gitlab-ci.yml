@@ -1,0 +1,60 @@
+stages:
+  - install
+  - lint
+  - test
+
+cache:
+  key: ${CI_COMMIT_REF_SLUG}
+  paths:
+    - node_modules/
+
+variables:
+  NODE_ENV: test
+
+install_dependencies:
+  stage: install
+  image: node:18
+  script:
+    - echo "Installing dependencies..."
+    - npm install
+  cache:
+    key: ${CI_COMMIT_REF_SLUG}
+  only:
+    - merge_requests
+    - branches
+
+lint:
+  stage: lint
+  image: node:18
+  script:
+    - echo "Running linting..."
+    - npm run lint
+  only:
+    - merge_requests
+    - branches
+  allow_failure: false
+
+test:
+  stage: test
+  image: node:18
+  script:
+    - echo "Running tests..."
+    - npm test 
+  only:
+    - merge_requests
+    - branches
+  allow_failure: false
+
+protected_push:
+  stage: test
+  image: node:18
+  script:
+    - echo "Pushing to main branch is protected and requires passing tests"
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event" && $CI_COMMIT_REF_NAME == "main"'
+      when: manual
+    - if: '$CI_COMMIT_REF_NAME == "main"'
+      when: never
+  dependencies:
+    - test
+  needs: []
