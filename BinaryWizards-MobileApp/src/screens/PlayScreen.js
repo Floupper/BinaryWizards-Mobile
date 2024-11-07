@@ -3,11 +3,14 @@ import { View, Text, StyleSheet, Button } from "react-native";
 import RNPickerSelect from "react-native-picker-select";
 
 import { styleContainer } from "../styles/container";
+import { useNavigation } from "@react-navigation/native";
 
 export default function PlayScreen() {
     const [category, setCategory] = useState(null);
     const [nbQuestions, setNbQuestions] = useState(null);
     const [difficulty, setDifficulty] = useState(null);
+
+    const navigation = useNavigation();
 
     const categoryOptions = [
         { label: "Mythology", value: "mythology" },
