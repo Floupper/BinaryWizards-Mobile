@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { View, Text, StyleSheet, Button } from "react-native";
 import RNPickerSelect from "react-native-picker-select";
 
@@ -9,46 +9,56 @@ import { difficultyOptions } from "../data/difficultOptions";
 import { nbQuestionsOptions } from "../data/nbQuestionsOptions";
 
 export default function PlayScreen() {
-    const [category, setCategory] = useState(null);
+    const [categories, setCategories] = useState([]);
+    const [selectedCategory, setSelectedCategory] = useState(null);
     const [nbQuestions, setNbQuestions] = useState(null);
     const [difficulty, setDifficulty] = useState(null);
+    const [difficulties, setDifficulties] = useState([]);
 
     const navigation = useNavigation();
 
-    const categoryOptions = [
-        { label: "Mythology", value: "mythology" },
-        { label: "Sports", value: "sports" },
-        { label: "Art", value: "art" },
-        { label: "Geography", value: "geography" },
-        { label: "Politics", value: "politics" },
-        { label: "History", value: "history" },
-        { label: "Celebrities", value: "celebrities" },
-        { label: "Animals", value: "animals" },
-        { label: "Vehicles", value: "vehicles" },
-        { label: "Entertainment: Comics", value: "comics" },
-        { label: "Science: Gadgets", value: "gadgets" },
-        { label: "Entertainment: Japanese Anime & Manga", value: "anime_manga" },
-        { label: "Entertainment: Cartoon & Animations", value: "cartoon_animations" },
-        { label: "Science & Nature", value: "science_nature" },
-        { label: "Science: Computer", value: "computer" },
-        { label: "Science: Mathematics", value: "mathematics" },
-        { label: "General Knowledge", value: "general_knowledge" },
-        { label: "Entertainment: Books", value: "books" },
-        { label: "Entertainment: Film", value: "film" },
-        { label: "Entertainment: Music", value: "music" },
-        { label: "Entertainment: Musicals & Theatres", value: "musicals_theatres" },
-        { label: "Entertainment: Television", value: "television" },
-        { label: "Entertainment: Video Games", value: "video_games" },
-        { label: "Entertainment: Board Games", value: "board_games" }
-    ];
+    useEffect(() => {
+        (async () => {
+            try {
+                const response = await fetch('http://192.168.1.61:3000/categories');
+                const data = await response.json();
+
+                const formattedCategories = data.map((category) => ({
+                    key: category.id,
+                    label: category.name,
+                    value: category.id,
+                }));
+
+                setCategories(formattedCategories);
+            } catch (error) {
+                console.error("Error fetching categories", error);
+            }
+        })();
+
+        (async () => {
+            try {
+                const response = await fetch('http://192.168.1.61:3000/difficulties');
+                const data = await response.json();
+
+                const formattedDifficulties = data.map((difficulty) => ({
+                    label: difficulty,
+                    value: difficulty,
+                }));
+
+                setDifficulties(formattedDifficulties);
+            } catch (error) {
+                console.error("Error fetching difficulties", error);
+            }
+        })();
+    }, []);
 
     return (
         <View style={styleContainer.container}>
             <View style={styles.pickerContainer}>
                 <Text style={styles.label}>Catégorie</Text>
                 <RNPickerSelect
-                    onValueChange={(value) => setCategory(value)}
-                    items={categoryOptions}
+                    onValueChange={(value) => setSelectedCategory(value)}
+                    items={categories}
                     style={pickerSelectStyles}
                 />
             </View>
