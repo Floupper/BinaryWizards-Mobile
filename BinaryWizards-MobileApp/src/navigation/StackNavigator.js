@@ -2,7 +2,7 @@ import React from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 import HomeScreen from "../screens/HomeScreen";
-import JoinScreen from "../screens/JoinScreen";
+import JoinOrContinueScreen from "../screens/JoinOrContinueScreen";
 import PlayScreen from "../screens/PlayScreen";
 
 const Stack = createNativeStackNavigator();
@@ -19,7 +19,7 @@ export default function StackNavigator() {
             />
             <Stack.Screen
                 name="Join"
-                component={JoinScreen}
+                component={JoinOrContinueScreen}
                 options={{ headerShown: true, title: "Join" }
                 }
             />

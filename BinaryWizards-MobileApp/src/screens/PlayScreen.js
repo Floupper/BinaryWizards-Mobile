@@ -5,6 +5,9 @@ import RNPickerSelect from "react-native-picker-select";
 import { styleContainer } from "../styles/container";
 import { useNavigation } from "@react-navigation/native";
 
+import { difficultyOptions } from "../data/difficultOptions";
+import { nbQuestionsOptions } from "../data/nbQuestionsOptions";
+
 export default function PlayScreen() {
     const [category, setCategory] = useState(null);
     const [nbQuestions, setNbQuestions] = useState(null);
@@ -37,20 +40,6 @@ export default function PlayScreen() {
         { label: "Entertainment: Television", value: "television" },
         { label: "Entertainment: Video Games", value: "video_games" },
         { label: "Entertainment: Board Games", value: "board_games" }
-    ];
-
-
-    const nbQuestionsOptions = [
-        { label: "5", value: "5" },
-        { label: "10", value: "10" },
-        { label: "15", value: "15" },
-        { label: "20", value: "20" },
-    ];
-
-    const difficultyOptions = [
-        { label: "Easy", value: "easy" },
-        { label: "Medium", value: "medium" },
-        { label: "Hard", value: "hard" },
     ];
 
     return (
