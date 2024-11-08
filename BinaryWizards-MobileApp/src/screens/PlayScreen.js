@@ -5,7 +5,6 @@ import RNPickerSelect from "react-native-picker-select";
 import { styleContainer } from "../styles/container";
 import { useNavigation } from "@react-navigation/native";
 
-import { difficultyOptions } from "../data/difficultOptions";
 import { nbQuestionsOptions } from "../data/nbQuestionsOptions";
 
 export default function PlayScreen() {
