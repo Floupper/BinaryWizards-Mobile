@@ -75,7 +75,7 @@ export default function PlayScreen() {
                 <Text style={styles.label}>Difficulty</Text>
                 <RNPickerSelect
                     onValueChange={(value) => setDifficulty(value)}
-                    items={difficultyOptions}
+                    items={difficulties}
                     style={pickerSelectStyles}
                 />
             </View>
