@@ -1,11 +1,8 @@
-import { View, Text, Pressable, StyleSheet } from "react-native";
 import React, { useEffect, useState } from "react";
+import { View, Text, StyleSheet } from "react-native";
+import SecondaryButton from "./SecondaryButton"; // Chemin à ajuster selon votre projet
 
-export default function QuestionComponent({
-  question,
-  selectedAnswer,
-  correctAnswer,
-}) {
+export default function QuestionComponent({ question, selectedAnswer, correctAnswer }) {
   const [userAnswerIndex, setUserAnswerIndex] = useState(null);
 
   useEffect(() => {
@@ -19,37 +16,18 @@ export default function QuestionComponent({
     }
   };
 
-  const getTextStyle = (index) => {
-    if (index === correctAnswer?.correct) {
-      return styles.correctChoiceText;
-    }
-    if (userAnswerIndex !== null && index === userAnswerIndex && correctAnswer?.correct !== userAnswerIndex) {
-      return styles.wrongChoiceText;
-    }
-    return styles.choice;
-  };
-
   return (
     <View style={styles.questionContainer}>
       <Text style={styles.titleContainer}>{question.question_text}</Text>
       {question.options && Array.isArray(question.options) ? (
         question.options.map((option, index) => (
-          <Pressable
+          <SecondaryButton
             key={index}
-            onPress={() => {
-              sendUserAnswer(index);
-            }}
-            style={[
-              styles.choiceButton,
-              index === correctAnswer?.correct && styles.correctChoiceButton,
-              userAnswerIndex !== null &&
-                index === userAnswerIndex &&
-                correctAnswer?.correct !== userAnswerIndex &&
-                styles.wrongChoiceButton,
-            ]}
-          >
-            <Text style={getTextStyle(index)}>{option}</Text>
-          </Pressable>
+            option={option}
+            onPress={() => sendUserAnswer(index)}
+            isCorrect={index === correctAnswer?.correct}
+            isSelected={userAnswerIndex !== null && index === userAnswerIndex && correctAnswer?.correct !== userAnswerIndex}
+          />
         ))
       ) : (
         <Text>Aucune option disponible</Text>
@@ -67,32 +45,5 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     textAlign: "center",
     margin: 20,
-  },
-  choiceButton: {
-    borderColor: "#c7c7c7",
-    borderWidth: 2,
-    padding: 10,
-    margin: 10,
-    borderRadius: 10,
-  },
-  choice: {
-    color: "black",
-    textAlign: "center",
-  },
-  correctChoiceButton: {
-    borderColor: "#299900",
-    borderWidth: 2,
-  },
-  correctChoiceText: {
-    color: "#299900",
-    textAlign: "center",
-  },
-  wrongChoiceButton: {
-    borderColor: "#b00015",
-    borderWidth: 2,
-  },
-  wrongChoiceText: {
-    color: "#b00015",
-    textAlign: "center",
   },
 });

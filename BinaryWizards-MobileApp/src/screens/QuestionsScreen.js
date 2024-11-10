@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import QuestionComponent from "../components/QuestionComponent";
 import { Text, View, StyleSheet, Pressable } from "react-native";
+import PrimaryButton from "../components/PrimaryButton";
+import { fetchQuestion, sendAnswer } from "../services/requests";
 
 const questionScreenBackgroundColor = "white";
 
@@ -11,36 +13,22 @@ export default function QuestionScreen({ route }) {
 
   const nextQuestion = () => {
     setQuestionAnswer(null);
-    fetchQuestion();
+    fetchAndSetQuestion();
   }
 
-  const fetchQuestion = async () => {
-    return await fetch(`http://172.28.64.1:3000/quiz/${quizId}/question`) //Change ip address to your own
-      .then((response) => response.json())
-      .then((json) => setQuestionJson(json))
-      .catch((error) => console.error("Error:", error));
-  };
-
-  const setQuestionJson = (question_) => {
-    setQuestion(question_);
+  const fetchAndSetQuestion = async () => {
+    const question_result = await fetchQuestion({ quizId: quizId }); // Change IP address to your own
+    setQuestion(question_result);
   };
 
   useEffect(() => {
-    fetchQuestion();
+    fetchAndSetQuestion();
   }, []);
 
-  selectedAnswer = async (answer) => {
+  onSelectedAnswer = async (answer) => {
     try {
-      const response = await fetch(`http://172.28.64.1:3000/quiz/${quizId}/question`, { //Change ip address to your own
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ answer: answer }),
-      });
-  
-      const json = await response.json();
-      setQuestionAnswer(json);
+      const result = await sendAnswer({ quizId: quizId, answer: answer }); // Change IP address to your own
+      setQuestionAnswer(result);
     } catch (error) {
       console.error("Error:", error);
     }
@@ -58,13 +46,9 @@ export default function QuestionScreen({ route }) {
         </Text>
       </View>
       <View style={styles.contentContainer}>
-        <QuestionComponent question={question ? question : ""} selectedAnswer={selectedAnswer} correctAnswer={questionAnswer} />
+        <QuestionComponent question={question ? question : ""} selectedAnswer={onSelectedAnswer} correctAnswer={questionAnswer} />
       </View>
-      <View>
-        <Pressable style={styles.nextQuestionButton} onPress={() => nextQuestion()} disabled={questionAnswer === null}>
-          <Text style={styles.textStyle}>Question suivante</Text>
-        </Pressable>
-      </View>
+      <PrimaryButton onPress={nextQuestion} disabled={questionAnswer === null} />
     </View>
   );
 }
@@ -99,9 +83,4 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     alignItems: "center",
   },
-  textStyle: {
-    color: 'white',
-    fontWeight: 'bold',
-    textAlign: 'center',
-  }
 });
