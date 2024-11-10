@@ -8,9 +8,9 @@ lint:
   stage: lint
   script:
     - npm install
-    - npx eslint src/*/*.js
-    - npx htmlhint src/*/*.html
-    - npx stylelint src/*/*
+    - npx eslint src/*/*.js -f
+    - npx htmlhint src/*/*.html -f
+    - npx stylelint src/*/* -f
   artifacts:
         when: always
         paths:
@@ -35,4 +35,4 @@ build:
   needs:
     - test
   script:
-    - docker build -t web-test .  
+    - docker build -t web-test .
