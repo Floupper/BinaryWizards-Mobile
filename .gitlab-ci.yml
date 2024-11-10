@@ -1,26 +1,13 @@
 image: node:18
 stages:
-  - install
   - lint
   - test
 
-cache:
-  key: ${CI_COMMIT_REF_SLUG}
-  paths:
-    - node_modules/
-
-install_dependencies:
-  stage: install
-  image: node:18
-  script:
-    - echo "Installing dependencies..."
-    - npm install
-  cache:
-    key: ${CI_COMMIT_REF_SLUG}
 
 lint:
   stage: lint
   script:
+    - npm install
     - npx eslint src/*/*.js
     - npx htmlhint src/*/*.html
     - npx stylelint src/*/*
