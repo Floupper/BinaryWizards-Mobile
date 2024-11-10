@@ -8,15 +8,14 @@ lint:
   stage: lint
   script:
     - npm install
-    - npx eslint src/*/*.js -f
-    - npx htmlhint src/*/*.html -f
-    - npx stylelint src/*/* -f
+    - npx eslint "src/**/*.js" -f json -o lint-es.json
+    - npx htmlhint "src/**/*.html" --format json > lint-html.json
+    - npx stylelint "src/**/*.{css,scss}" -f json > lint-style.json
+    - jq -s add lint-es.json lint-html.json lint-style.json > lint.json
   artifacts:
-        when: always
-        paths:
-            - lint.json
-        reports:
-            codequality: lint.json
+    when: always
+    paths:
+      - lint.json
 
 test:
   script:
