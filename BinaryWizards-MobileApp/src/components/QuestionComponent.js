@@ -25,8 +25,8 @@ export default function QuestionComponent({ question, selectedAnswer, correctAns
             key={index}
             option={option}
             onPress={() => sendUserAnswer(index)}
-            isCorrect={index === correctAnswer?.correct}
-            isSelected={userAnswerIndex !== null && index === userAnswerIndex && correctAnswer?.correct !== userAnswerIndex}
+            isCorrect={index === correctAnswer?.correct_option_index}
+            isSelected={userAnswerIndex !== null && index === userAnswerIndex && correctAnswer?.correct_option_index !== userAnswerIndex}
           />
         ))
       ) : (

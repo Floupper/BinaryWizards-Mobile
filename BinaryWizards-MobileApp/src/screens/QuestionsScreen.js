@@ -3,6 +3,7 @@ import QuestionComponent from "../components/QuestionComponent";
 import { Text, View, StyleSheet, Pressable } from "react-native";
 import PrimaryButton from "../components/PrimaryButton";
 import { fetchQuestion, sendAnswer } from "../services/requests";
+import { useNavigation } from "@react-navigation/native";
 
 const questionScreenBackgroundColor = "white";
 
@@ -11,6 +12,8 @@ export default function QuestionScreen({ route }) {
   const [question, setQuestion] = useState("");
   const [questionAnswer, setQuestionAnswer] = useState(null);
 
+  const navigation = useNavigation();
+
   const nextQuestion = () => {
     setQuestionAnswer(null);
     fetchAndSetQuestion();
@@ -18,6 +21,10 @@ export default function QuestionScreen({ route }) {
 
   const fetchAndSetQuestion = async () => {
     const question_result = await fetchQuestion({ quizId: quizId }); // Change IP address to your own
+    if(question_result.quizz_finished) {
+      navigation.navigate("End", { score: question_result.score, quizId: quizId });
+      return;
+    }
     setQuestion(question_result);
   };
 
@@ -25,9 +32,9 @@ export default function QuestionScreen({ route }) {
     fetchAndSetQuestion();
   }, []);
 
-  onSelectedAnswer = async (answer) => {
+  onSelectedAnswer = async (index) => {
     try {
-      const result = await sendAnswer({ quizId: quizId, answer: answer }); // Change IP address to your own
+      const result = await sendAnswer({ quizId: quizId, question_index: question.question_index, option_index: index });
       setQuestionAnswer(result);
     } catch (error) {
       console.error("Error:", error);
@@ -48,7 +55,7 @@ export default function QuestionScreen({ route }) {
       <View style={styles.contentContainer}>
         <QuestionComponent question={question ? question : ""} selectedAnswer={onSelectedAnswer} correctAnswer={questionAnswer} />
       </View>
-      <PrimaryButton onPress={nextQuestion} disabled={questionAnswer === null} />
+      <PrimaryButton onPress={nextQuestion} disabled={questionAnswer === null} text={"Next question"}/>
     </View>
   );
 }
