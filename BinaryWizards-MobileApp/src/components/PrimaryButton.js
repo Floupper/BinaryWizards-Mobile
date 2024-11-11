@@ -1,7 +1,7 @@
 import React from "react";
 import { Text, View, StyleSheet, Pressable } from "react-native";
 
-export default function PrimaryButton({ onPress, disabled }) {
+export default function PrimaryButton({ onPress, disabled, text }) {
   return (
     <View>
       <Pressable
@@ -9,7 +9,7 @@ export default function PrimaryButton({ onPress, disabled }) {
         onPress={() => onPress()}
         disabled={disabled}
       >
-        <Text style={styles.textStyle}>Question suivante</Text>
+        <Text style={styles.textStyle}>{text}</Text>
       </Pressable>
     </View>
   );
