@@ -83,13 +83,13 @@ export default function PlayScreen() {
             </View>
 
             <View style={styles.buttonContainer}>
-                <Button title={"Start Game"} onPress={() => fetchAndSetQuestion(selectedCategory, nbQuestions, difficulty, navigation)} />
+                <Button title={"Start Game"} onPress={() => fetchAndCreateQuestion(selectedCategory, nbQuestions, difficulty, navigation)} />
             </View>
         </View>
     );
 }
 
-async function fetchAndSetQuestion(category, nbQuestions, difficulty, navigation) {
+async function fetchAndCreateQuestion(category, nbQuestions, difficulty, navigation) {
     const quizData = {
         category: Number(category),
         amount: Number(nbQuestions),
