@@ -1,11 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { View, Text, StyleSheet, Button, TextInput } from "react-native";
-import RNPickerSelect from "react-native-picker-select";
 import Toast from "react-native-toast-message"; // Import du toast
 import { SelectList } from "react-native-dropdown-select-list"; // Import de SelectList
 
 import { styleContainer } from "../styles/container";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useFocusEffect } from "@react-navigation/native";
 
 import { fetchAndCreateQuestion, fetchCategories, fetchDifficulties } from "../services/requests";
 
@@ -27,6 +26,14 @@ export default function PlayScreen() {
             setDifficulties(await fetchDifficulties());
         })();
     }, []);
+
+    useFocusEffect(
+        useCallback(() => {
+            setNbQuestions("");
+            setSelectedCategory("");
+            setDifficulty("");
+        }, [])
+    );
 
     const handleNbQuestionsChange = (value) => {
         const numericValue = parseInt(value, 10);
