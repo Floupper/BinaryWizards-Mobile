@@ -1,4 +1,5 @@
 import { REACT_NATIVE_API_IP } from "@env";
+import Toast from "react-native-toast-message";
 
 export const fetchCategories = async () => {
   try {
@@ -16,6 +17,11 @@ export const fetchCategories = async () => {
 
     return formattedCategories;
   } catch (error) {
+    Toast.show({
+      type: 'error',
+      text1: 'Error',
+      text2: 'An error occured while fetching the categories',
+    });
     console.error("Error fetching categories", error);
   }
 };
@@ -34,6 +40,11 @@ export const fetchDifficulties = async () => {
 
     return formattedDifficulties;
   } catch (error) {
+    Toast.show({
+      type: 'error',
+      text1: 'Error',
+      text2: 'An error occured while fetching the difficulties',
+    });
     console.error("Error fetching difficulties", error);
   }
 };
@@ -49,6 +60,11 @@ export const fetchQuestion = async ({ quizId }) => {
     const json = await result.json();
     return json;
   } catch (error) {
+    Toast.show({
+      type: 'error',
+      text1: 'Error',
+      text2: 'An error occured while fetching the question',
+    });
     console.error("Error fetching question:", error);
     return null;
   }
@@ -77,6 +93,11 @@ export const sendAnswer = async ({ quizId, question_index, option_index }) => {
     const json = await response.json();
     return json;
   } catch (error) {
+    Toast.show({
+      type: 'error',
+      text1: 'Error',
+      text2: 'An error occured while sending your answer',
+    });
     console.error("Error:", error);
     return null;
   }
@@ -88,6 +109,7 @@ export async function fetchAndCreateQuiz(
   difficulty,
   navigation
 ) {
+  
   const quizData = {
     amount: null,
   };
@@ -96,19 +118,21 @@ export async function fetchAndCreateQuiz(
     quizData.amount = Number(nbQuestions);
   }
   else{
-    alert("Please select the number of questions");
+    Toast.show({
+      type: 'error',
+      text1: 'Number of questions',
+      text2: 'You must select a number of questions between 1 and 50',
+    });
     return;
   }
 
   if (category) {
-    quizData = { ...quizData, category: Number(category) };
+    quizData.category = Number(category);
   }
 
   if (difficulty) {
-    quizData = { ...quizData, difficulty: String(difficulty) };
+    quizData.difficulty = String(difficulty);
   }
-
-  console.log(quizData);
 
   await fetch(`http://${REACT_NATIVE_API_IP}:33012/quiz`, {
     method: "POST",
@@ -119,6 +143,13 @@ export async function fetchAndCreateQuiz(
   }).then(async (response) => {
     const data = await response.json();
     navigation.navigate("Questions", { quizId: data.quiz_id });
+  }).catch((error) => {
+    Toast.show({
+      type: 'error',
+      text1: 'Error',
+      text2: 'An error occured while creating the quiz',
+    });
+    console.error("Error creating quiz:", error);
   });
 }
 
