@@ -6,8 +6,7 @@ import { styleContainer } from "../styles/container";
 import { useNavigation } from "@react-navigation/native";
 
 import { nbQuestionsOptions } from "../data/nbQuestionsOptions";
-import { fetchAndCreateQuestion, fetchCategories, fetchDifficulties } from "../services/requests";
-import { REACT_NATIVE_API_IP } from "@env";
+import { fetchAndCreateQuiz, fetchCategories, fetchDifficulties } from "../services/requests";
 
 export default function PlayScreen() {
     const [categories, setCategories] = useState([]);
@@ -58,7 +57,7 @@ export default function PlayScreen() {
             </View>
 
             <View style={styles.buttonContainer}>
-                <Button title={"Start Game"} onPress={() => fetchAndCreateQuestion(selectedCategory, nbQuestions, difficulty, navigation)} />
+                <Button title={"Start Game"} onPress={() => fetchAndCreateQuiz(selectedCategory, nbQuestions, difficulty, navigation)} />
             </View>
         </View>
     );
