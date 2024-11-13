@@ -106,7 +106,8 @@ async function fetchAndSetQuestion(category, nbQuestions, difficulty, navigation
         body: JSON.stringify(quizData),
     }).then(async (response) => {
         const data = await response.json();
-        navigation.navigate("Questions", { quizId: data.quizId });
+        console.log("data : ", data);
+        navigation.navigate("Questions", { quizId: data.quiz_id });
     });
 }
 
