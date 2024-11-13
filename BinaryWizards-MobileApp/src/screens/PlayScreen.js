@@ -6,6 +6,7 @@ import { SelectList } from "react-native-dropdown-select-list"; // Import de Sel
 import { styleContainer } from "../styles/container";
 import { useNavigation, useFocusEffect } from "@react-navigation/native";
 
+import { nbQuestionsOptions } from "../data/nbQuestionsOptions";
 import { fetchAndCreateQuiz, fetchCategories, fetchDifficulties } from "../services/requests";
 
 export default function PlayScreen() {

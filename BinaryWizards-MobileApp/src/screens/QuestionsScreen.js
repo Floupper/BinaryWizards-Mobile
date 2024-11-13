@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import QuestionComponent from "../components/QuestionComponent";
-import { Text, View, StyleSheet, Pressable } from "react-native";
+import { Text, View } from "react-native";
 import PrimaryButton from "../components/PrimaryButton";
 import { fetchQuestion, sendAnswer } from "../services/requests";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useFocusEffect  } from "@react-navigation/native";
 import { styleContainer } from "../styles/container";
 import { styleText } from "../styles/text";
 
@@ -21,8 +21,8 @@ export default function QuestionScreen({ route }) {
 
   const fetchAndSetQuestion = async () => {
     const question_result = await fetchQuestion({ quizId: quizId }); // Change IP address to your own
-    if (question_result.quizz_finished) {
-      navigation.navigate("End", { score: question_result.score, quizId: quizId });
+    if (question_result.quiz_finished) {
+      navigation.navigate("End", { score: question_result.score, quizId: quizId, maxScore: question_result.max_score });
       return;
     }
     setQuestion(question_result);
@@ -31,6 +31,12 @@ export default function QuestionScreen({ route }) {
   useEffect(() => {
     fetchAndSetQuestion();
   }, []);
+
+  useFocusEffect(
+    useCallback(() => {
+      fetchAndSetQuestion();
+    }, [])
+  );
 
   onSelectedAnswer = async (index) => {
     try {

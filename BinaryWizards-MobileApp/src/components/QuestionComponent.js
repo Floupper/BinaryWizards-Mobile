@@ -31,7 +31,7 @@ export default function QuestionComponent({ question, selectedAnswer, correctAns
           />
         ))
       ) : (
-        <Text>Aucune option disponible</Text>
+        <Text>No question available</Text>
       )}
     </View>
   );
