@@ -7,7 +7,6 @@ import { useNavigation } from "@react-navigation/native";
 
 import { nbQuestionsOptions } from "../data/nbQuestionsOptions";
 import { fetchAndCreateQuiz, fetchCategories, fetchDifficulties } from "../services/requests";
-import { REACT_NATIVE_API_IP } from "@env";
 
 export default function PlayScreen() {
     const [categories, setCategories] = useState([]);

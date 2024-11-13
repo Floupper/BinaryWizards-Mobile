@@ -2,7 +2,9 @@ import { REACT_NATIVE_API_IP } from "@env";
 
 export const fetchCategories = async () => {
   try {
-    const response = await fetch(`http://${REACT_NATIVE_API_IP}:33012/categories`);
+    const response = await fetch(
+      `http://${REACT_NATIVE_API_IP}:33012/categories`
+    );
 
     const data = await response.json();
 
@@ -16,11 +18,13 @@ export const fetchCategories = async () => {
   } catch (error) {
     console.error("Error fetching categories", error);
   }
-}
+};
 
 export const fetchDifficulties = async () => {
   try {
-    const response = await fetch(`http://${REACT_NATIVE_API_IP}:33012/difficulties`);
+    const response = await fetch(
+      `http://${REACT_NATIVE_API_IP}:33012/difficulties`
+    );
     const data = await response.json();
 
     const formattedDifficulties = data.map((difficulty) => ({
@@ -32,7 +36,7 @@ export const fetchDifficulties = async () => {
   } catch (error) {
     console.error("Error fetching difficulties", error);
   }
-}
+};
 
 export const fetchQuestion = async ({ quizId }) => {
   try {
@@ -52,13 +56,19 @@ export const fetchQuestion = async ({ quizId }) => {
 
 export const sendAnswer = async ({ quizId, question_index, option_index }) => {
   try {
-    const response = await fetch(`http://${REACT_NATIVE_API_IP}:33012/quiz/${quizId}/question`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ question_index: question_index, option_index: option_index }),
-    });
+    const response = await fetch(
+      `http://${REACT_NATIVE_API_IP}:33012/quiz/${quizId}/question`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          question_index: question_index,
+          option_index: option_index,
+        }),
+      }
+    );
 
     if (!response.ok) {
       throw new Error(`HTTP error! Status: ${response.status}`);
@@ -70,14 +80,35 @@ export const sendAnswer = async ({ quizId, question_index, option_index }) => {
     console.error("Error:", error);
     return null;
   }
-}
+};
 
-export async function fetchAndCreateQuiz(category, nbQuestions, difficulty, navigation) {
+export async function fetchAndCreateQuiz(
+  category,
+  nbQuestions,
+  difficulty,
+  navigation
+) {
   const quizData = {
-    category: Number(category),
-    amount: Number(nbQuestions),
-    difficulty: String(difficulty),
+    amount: null,
   };
+
+  if (nbQuestions) {
+    quizData.amount = Number(nbQuestions);
+  }
+  else{
+    alert("Please select the number of questions");
+    return;
+  }
+
+  if (category) {
+    quizData = { ...quizData, category: Number(category) };
+  }
+
+  if (difficulty) {
+    quizData = { ...quizData, difficulty: String(difficulty) };
+  }
+
+  console.log(quizData);
 
   await fetch(`http://${REACT_NATIVE_API_IP}:33012/quiz`, {
     method: "POST",
@@ -91,7 +122,7 @@ export async function fetchAndCreateQuiz(category, nbQuestions, difficulty, navi
   });
 }
 
-export async function resetQuiz(quizId, navigation){
+export async function resetQuiz(quizId, navigation) {
   await fetch(`http://${REACT_NATIVE_API_IP}:33012/quiz/${quizId}`, {
     method: "PUT",
     headers: {
