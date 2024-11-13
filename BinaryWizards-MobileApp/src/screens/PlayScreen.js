@@ -96,8 +96,6 @@ async function fetchAndSetQuestion(category, nbQuestions, difficulty, navigation
         difficulty: String(difficulty),
     };
 
-    console.log("quizData : ", quizData);
-
     await fetch(`http://${REACT_NATIVE_API_IP}:3000/quiz`, {
         method: "POST",
         headers: {
@@ -106,7 +104,6 @@ async function fetchAndSetQuestion(category, nbQuestions, difficulty, navigation
         body: JSON.stringify(quizData),
     }).then(async (response) => {
         const data = await response.json();
-        console.log("data : ", data);
         navigation.navigate("Questions", { quizId: data.quiz_id });
     });
 }
