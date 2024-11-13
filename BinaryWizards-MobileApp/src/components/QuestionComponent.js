@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { View, Text, StyleSheet } from "react-native";
 import SecondaryButton from "./SecondaryButton"; // Chemin à ajuster selon votre projet
+import { styleContainer } from "../styles/container";
 
 export default function QuestionComponent({ question, selectedAnswer, correctAnswer }) {
   const [userAnswerIndex, setUserAnswerIndex] = useState(null);
@@ -17,16 +18,16 @@ export default function QuestionComponent({ question, selectedAnswer, correctAns
   };
 
   return (
-    <View style={styles.questionContainer}>
-      <Text style={styles.titleContainer}>{question.question_text}</Text>
+    <View>
+      <Text style={styleContainer.questionTitleContainer}>{question.question_text}</Text>
       {question.options && Array.isArray(question.options) ? (
         question.options.map((option, index) => (
           <SecondaryButton
             key={index}
             option={option}
             onPress={() => sendUserAnswer(index)}
-            isCorrect={index === correctAnswer?.correct}
-            isSelected={userAnswerIndex !== null && index === userAnswerIndex && correctAnswer?.correct !== userAnswerIndex}
+            isCorrect={index === correctAnswer?.correct_option_index}
+            isSelected={userAnswerIndex !== null && index === userAnswerIndex && correctAnswer?.correct_option_index !== userAnswerIndex}
           />
         ))
       ) : (
@@ -35,15 +36,3 @@ export default function QuestionComponent({ question, selectedAnswer, correctAns
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  questionContainer: {
-    backgroundColor: "transparent",
-  },
-  titleContainer: {
-    fontSize: 20,
-    fontWeight: "bold",
-    textAlign: "center",
-    margin: 20,
-  },
-});

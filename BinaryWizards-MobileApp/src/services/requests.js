@@ -17,14 +17,14 @@ export const fetchQuestion = async ({ quizId }) => {
 };
 
 
-export const sendAnswer = async ({ quizId, answer }) => {
+export const sendAnswer = async ({ quizId, question_index, option_index }) => {
   try {
     const response = await fetch(`http://${REACT_NATIVE_API_IP}:3000/quiz/${quizId}/question`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ answer: answer }),
+      body: JSON.stringify({ question_index: question_index, option_index: option_index }),
     });
 
     if (!response.ok) {
