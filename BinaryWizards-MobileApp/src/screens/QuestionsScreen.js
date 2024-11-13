@@ -29,6 +29,7 @@ export default function QuestionScreen({ route }) {
   };
 
   useEffect(() => {
+    console.log("quizId", quizId);
     fetchAndSetQuestion();
   }, []);
 
@@ -40,7 +41,7 @@ export default function QuestionScreen({ route }) {
       console.error("Error:", error);
     }
   };
-  
+
   return (
     <View style={styleContainer.mainContainer}>
       <View style={styleContainer.quizIdContainer}>
