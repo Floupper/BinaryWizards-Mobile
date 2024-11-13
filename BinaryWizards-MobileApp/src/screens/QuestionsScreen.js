@@ -4,8 +4,8 @@ import { Text, View, StyleSheet, Pressable } from "react-native";
 import PrimaryButton from "../components/PrimaryButton";
 import { fetchQuestion, sendAnswer } from "../services/requests";
 import { useNavigation } from "@react-navigation/native";
-
-const questionScreenBackgroundColor = "white";
+import { styleContainer } from "../styles/container";
+import { styleText } from "../styles/text";
 
 export default function QuestionScreen({ route }) {
   const { quizId } = route.params;
@@ -42,52 +42,20 @@ export default function QuestionScreen({ route }) {
   };
   
   return (
-    <View style={styles.container}>
-      <View style={styles.quizIdContainer}>
-        <Text style={styles.quizIdText}>Quiz id : {quizId}</Text>
+    <View style={styleContainer.mainContainer}>
+      <View style={styleContainer.quizIdContainer}>
+        <Text style={styleText.quizIdText}>Quiz id : {quizId}</Text>
       </View>
-      <View style={styles.infoContainer}>
+      <View style={styleContainer.infoContainer}>
         <Text>Score : {question.score}</Text>
         <Text>
           Question : {question.question_index}/{question.nb_questions_total}
         </Text>
       </View>
-      <View style={styles.contentContainer}>
+      <View style={styleContainer.contentContainer}>
         <QuestionComponent question={question ? question : ""} selectedAnswer={onSelectedAnswer} correctAnswer={questionAnswer} />
       </View>
       <PrimaryButton onPress={nextQuestion} disabled={questionAnswer === null} text={"Next question"}/>
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: questionScreenBackgroundColor,
-  },
-  quizIdContainer: {
-    paddingTop: 10,
-    paddingHorizontal: 10,
-  },
-  quizIdText: {
-    textAlign: "center",
-    color: "lightgray",
-  },
-  contentContainer: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  infoContainer: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    padding: 10,
-  },
-  nextQuestionButton: {
-    backgroundColor: "#3552b0",
-    padding: 10,
-    margin: 10,
-    borderRadius: 10,
-    alignItems: "center",
-  },
-});
