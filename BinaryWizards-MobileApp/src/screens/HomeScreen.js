@@ -3,13 +3,14 @@ import { View, Text, Button, StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
 import { styleContainer } from '../styles/container';
+import { styleText } from '../styles/text';
 
 export default function HomeScreen() {
     const navigation = useNavigation();
 
     return (
         <View style={styleContainer.container}>
-            <Text style={styleContainer.title}>BinaryWizards</Text>
+            <Text style={styleText.title}>BinaryWizards</Text>
             <View style={styles.buttonContainer}>
                 <Button title="Play Quiz" onPress={() => navigation.navigate('Play')} />
             </View>
