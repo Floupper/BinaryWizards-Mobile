@@ -6,55 +6,32 @@ import { styleContainer } from "../styles/container";
 import { useNavigation } from "@react-navigation/native";
 
 import { nbQuestionsOptions } from "../data/nbQuestionsOptions";
+import { fetchAndCreateQuestion, fetchCategories, fetchDifficulties } from "../services/requests";
+import { REACT_NATIVE_API_IP } from "@env";
 
 export default function PlayScreen() {
     const [categories, setCategories] = useState([]);
-    const [selectedCategory, setSelectedCategory] = useState(null);
-    const [nbQuestions, setNbQuestions] = useState(null);
-    const [difficulty, setDifficulty] = useState(null);
+    const [selectedCategory, setSelectedCategory] = useState("");
+    const [nbQuestions, setNbQuestions] = useState("");
+    const [difficulty, setDifficulty] = useState("");
     const [difficulties, setDifficulties] = useState([]);
 
     const navigation = useNavigation();
 
     useEffect(() => {
         (async () => {
-            try {
-                const response = await fetch('http://192.168.1.61:3000/categories');
-                const data = await response.json();
-
-                const formattedCategories = data.map((category) => ({
-                    key: category.id,
-                    label: category.name,
-                    value: category.id,
-                }));
-
-                setCategories(formattedCategories);
-            } catch (error) {
-                console.error("Error fetching categories", error);
-            }
+            setCategories(await fetchCategories());
         })();
 
         (async () => {
-            try {
-                const response = await fetch('http://192.168.1.61:3000/difficulties');
-                const data = await response.json();
-
-                const formattedDifficulties = data.map((difficulty) => ({
-                    label: difficulty,
-                    value: difficulty,
-                }));
-
-                setDifficulties(formattedDifficulties);
-            } catch (error) {
-                console.error("Error fetching difficulties", error);
-            }
+            setDifficulties(await fetchDifficulties());
         })();
     }, []);
 
     return (
         <View style={styleContainer.container}>
             <View style={styles.pickerContainer}>
-                <Text style={styles.label}>Catégorie</Text>
+                <Text style={styles.label}>Category</Text>
                 <RNPickerSelect
                     onValueChange={(value) => setSelectedCategory(value)}
                     items={categories}
@@ -81,7 +58,7 @@ export default function PlayScreen() {
             </View>
 
             <View style={styles.buttonContainer}>
-                <Button title={"Start Game"} onPress={() => navigation.navigate('Home')} />
+                <Button title={"Start Game"} onPress={() => fetchAndCreateQuestion(selectedCategory, nbQuestions, difficulty, navigation)} />
             </View>
         </View>
     );

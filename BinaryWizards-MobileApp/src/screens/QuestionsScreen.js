@@ -21,7 +21,7 @@ export default function QuestionScreen({ route }) {
 
   const fetchAndSetQuestion = async () => {
     const question_result = await fetchQuestion({ quizId: quizId }); // Change IP address to your own
-    if(question_result.quizz_finished) {
+    if (question_result.quizz_finished) {
       navigation.navigate("End", { score: question_result.score, quizId: quizId });
       return;
     }
@@ -40,7 +40,7 @@ export default function QuestionScreen({ route }) {
       console.error("Error:", error);
     }
   };
-  
+
   return (
     <View style={styleContainer.mainContainer}>
       <View style={styleContainer.quizIdContainer}>
@@ -55,7 +55,7 @@ export default function QuestionScreen({ route }) {
       <View style={styleContainer.contentContainer}>
         <QuestionComponent question={question ? question : ""} selectedAnswer={onSelectedAnswer} correctAnswer={questionAnswer} />
       </View>
-      <PrimaryButton onPress={nextQuestion} disabled={questionAnswer === null} text={"Next question"}/>
+      <PrimaryButton onPress={nextQuestion} disabled={questionAnswer === null} text={"Next question"} />
     </View>
   );
 }
