@@ -1,12 +1,11 @@
 import React, { useEffect, useState, useCallback } from "react";
 import { View, Text, StyleSheet, Button, TextInput } from "react-native";
-import Toast from "react-native-toast-message"; // Import du toast
-import { SelectList } from "react-native-dropdown-select-list"; // Import de SelectList
+import Toast from "react-native-toast-message"; // Import toast
+import { SelectList } from "react-native-dropdown-select-list"; // Import SelectList
 
 import { styleContainer } from "../styles/container";
 import { useNavigation, useFocusEffect } from "@react-navigation/native";
 
-import { nbQuestionsOptions } from "../data/nbQuestionsOptions";
 import { fetchAndCreateQuiz, fetchCategories, fetchDifficulties } from "../services/requests";
 
 export default function PlayScreen() {
@@ -47,7 +46,7 @@ export default function PlayScreen() {
                 text2: "Please enter a number between 1 and 50",
                 position: "bottom",
             });
-            setNbQuestions(""); // Réinitialise si la valeur n'est pas valide
+            setNbQuestions(""); // Reset field if value is not valid
         }
     };
 
@@ -72,7 +71,7 @@ export default function PlayScreen() {
                     placeholder="Enter number of questions"
                     value={nbQuestions}
                     onChangeText={handleNbQuestionsChange}
-                    maxLength={2} // Limite l'entrée à deux chiffres
+                    maxLength={2} // Limit input to 2 characters
                 />
             </View>
 
