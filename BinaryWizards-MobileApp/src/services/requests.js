@@ -16,7 +16,6 @@ export const fetchQuestion = async ({ quizId }) => {
   }
 };
 
-
 export const sendAnswer = async ({ quizId, question_index, option_index }) => {
   try {
     const response = await fetch(`http://${REACT_NATIVE_API_IP}:3000/quiz/${quizId}/question`, {
@@ -37,4 +36,23 @@ export const sendAnswer = async ({ quizId, question_index, option_index }) => {
     console.error("Error:", error);
     return null;
   }
+}
+
+export async function fetchAndCreateQuestion(category, nbQuestions, difficulty, navigation) {
+  const quizData = {
+    category: Number(category),
+    amount: Number(nbQuestions),
+    difficulty: String(difficulty),
+  };
+
+  await fetch(`http://${REACT_NATIVE_API_IP}:3000/quiz`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(quizData),
+  }).then(async (response) => {
+    const data = await response.json();
+    navigation.navigate("Questions", { quizId: data.quiz_id });
+  });
 }

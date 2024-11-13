@@ -6,6 +6,7 @@ import { styleContainer } from "../styles/container";
 import { useNavigation } from "@react-navigation/native";
 
 import { nbQuestionsOptions } from "../data/nbQuestionsOptions";
+import { fetchAndCreateQuestion } from "../services/requests";
 import { REACT_NATIVE_API_IP } from "@env";
 
 export default function PlayScreen() {
@@ -87,25 +88,6 @@ export default function PlayScreen() {
             </View>
         </View>
     );
-}
-
-async function fetchAndCreateQuestion(category, nbQuestions, difficulty, navigation) {
-    const quizData = {
-        category: Number(category),
-        amount: Number(nbQuestions),
-        difficulty: String(difficulty),
-    };
-
-    await fetch(`http://${REACT_NATIVE_API_IP}:3000/quiz`, {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify(quizData),
-    }).then(async (response) => {
-        const data = await response.json();
-        navigation.navigate("Questions", { quizId: data.quiz_id });
-    });
 }
 
 const styles = StyleSheet.create({
