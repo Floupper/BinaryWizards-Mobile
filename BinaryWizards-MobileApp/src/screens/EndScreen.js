@@ -1,6 +1,8 @@
 import { Text, View, StyleSheet } from "react-native";
 import PrimaryButton from "../components/PrimaryButton";
 import { useNavigation } from "@react-navigation/native";
+import { styleContainer } from "../styles/container";
+import { styleText } from "../styles/text";
 
 export default function EndScreen({ route }) {
   const { score, quizId } = route.params;
@@ -11,14 +13,14 @@ export default function EndScreen({ route }) {
   };
 
   return (
-    <View style={styles.container}>
-      <View style={styles.quizIdContainer}>
-        <Text style={styles.quizIdText}>Quiz id : {quizId}</Text>
+    <View style={styleContainer.mainContainer}>
+      <View style={styleContainer.quizIdContainer}>
+        <Text style={styleText.quizIdText}>Quiz id : {quizId}</Text>
       </View>
-      <View style={styles.middleSection}>
+      <View style={styleContainer.middleSection}>
         <Text>Score final : {score}</Text>
       </View>
-      <View style={styles.bottomSection}>
+      <View style={styleContainer.bottomSection}>
         <PrimaryButton
           disabled={false}
           text={"Back to Home"}
@@ -28,26 +30,3 @@ export default function EndScreen({ route }) {
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "white",
-  },
-  quizIdContainer: {
-    paddingTop: 10,
-    paddingHorizontal: 10,
-  },
-  quizIdText: {
-    textAlign: "center",
-    color: "lightgray",
-  },
-  middleSection: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  bottomSection: {
-    margin:80
-  },
-});

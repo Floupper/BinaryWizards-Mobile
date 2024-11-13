@@ -1,17 +1,43 @@
-import { StyleSheet } from "react-native"
+import { StyleSheet } from "react-native";
 
 export const styleContainer = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: '#fff',
-        alignItems: 'center',
-        justifyContent: 'center',
-        paddingHorizontal: 10,
-    },
-    title: {
-        fontSize: 32,
-        fontWeight: 'bold',
-        textAlign: 'center',
-        marginBottom: 40,
-    },
-})
+  mainContainer: {
+    flex: 1,
+    backgroundColor: "white",
+  },
+  quizIdContainer: {
+    paddingTop: 10,
+    paddingHorizontal: 10,
+  },
+  container: {
+    flex: 1,
+    backgroundColor: "#fff",
+    alignItems: "center",
+    justifyContent: "center",
+    paddingHorizontal: 10,
+  },
+  contentContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  infoContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    padding: 10,
+  },
+  questionTitleContainer: {
+    fontSize: 20,
+    fontWeight: "bold",
+    textAlign: "center",
+    margin: 20,
+  },
+  middleSection: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  bottomSection: {
+    margin:80
+  },
+});
