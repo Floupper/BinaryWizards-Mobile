@@ -6,7 +6,7 @@ import { styleContainer } from "../styles/container";
 import { useNavigation } from "@react-navigation/native";
 
 import { nbQuestionsOptions } from "../data/nbQuestionsOptions";
-import { fetchAndCreateQuestion } from "../services/requests";
+import { fetchAndCreateQuestion, fetchCategories, fetchDifficulties } from "../services/requests";
 import { REACT_NATIVE_API_IP } from "@env";
 
 export default function PlayScreen() {
@@ -20,37 +20,11 @@ export default function PlayScreen() {
 
     useEffect(() => {
         (async () => {
-            try {
-                const response = await fetch(`http://${REACT_NATIVE_API_IP}:3000/categories`);
-
-                const data = await response.json();
-
-                const formattedCategories = data.map((category) => ({
-                    key: category.id,
-                    label: category.name,
-                    value: category.id,
-                }));
-
-                setCategories(formattedCategories);
-            } catch (error) {
-                console.error("Error fetching categories", error);
-            }
+            setCategories(await fetchCategories());
         })();
 
         (async () => {
-            try {
-                const response = await fetch(`http://${REACT_NATIVE_API_IP}:3000/difficulties`);
-                const data = await response.json();
-
-                const formattedDifficulties = data.map((difficulty) => ({
-                    label: difficulty,
-                    value: difficulty,
-                }));
-
-                setDifficulties(formattedDifficulties);
-            } catch (error) {
-                console.error("Error fetching difficulties", error);
-            }
+            setDifficulties(await fetchDifficulties());
         })();
     }, []);
 

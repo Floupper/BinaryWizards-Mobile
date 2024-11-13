@@ -1,5 +1,39 @@
 import { REACT_NATIVE_API_IP } from "@env";
 
+export const fetchCategories = async () => {
+  try {
+    const response = await fetch(`http://${REACT_NATIVE_API_IP}:3000/categories`);
+
+    const data = await response.json();
+
+    const formattedCategories = data.map((category) => ({
+      key: category.id,
+      label: category.name,
+      value: category.id,
+    }));
+
+    return formattedCategories;
+  } catch (error) {
+    console.error("Error fetching categories", error);
+  }
+}
+
+export const fetchDifficulties = async () => {
+  try {
+    const response = await fetch(`http://${REACT_NATIVE_API_IP}:3000/difficulties`);
+    const data = await response.json();
+
+    const formattedDifficulties = data.map((difficulty) => ({
+      label: difficulty,
+      value: difficulty,
+    }));
+
+    return formattedDifficulties;
+  } catch (error) {
+    console.error("Error fetching difficulties", error);
+  }
+}
+
 export const fetchQuestion = async ({ quizId }) => {
   try {
     const result = await fetch(
