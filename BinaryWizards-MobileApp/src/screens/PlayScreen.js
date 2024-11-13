@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, StyleSheet, Button } from "react-native";
+import { View, Text, StyleSheet, Button, TextInput } from "react-native";
 import RNPickerSelect from "react-native-picker-select";
+import Toast from "react-native-toast-message"; // Import du toast
+import { SelectList } from "react-native-dropdown-select-list"; // Import de SelectList
 
 import { styleContainer } from "../styles/container";
 import { useNavigation } from "@react-navigation/native";
 
-import { nbQuestionsOptions } from "../data/nbQuestionsOptions";
 import { fetchAndCreateQuestion, fetchCategories, fetchDifficulties } from "../services/requests";
-import { REACT_NATIVE_API_IP } from "@env";
 
 export default function PlayScreen() {
     const [categories, setCategories] = useState([]);
@@ -28,38 +28,66 @@ export default function PlayScreen() {
         })();
     }, []);
 
+    const handleNbQuestionsChange = (value) => {
+        const numericValue = parseInt(value, 10);
+        if (!isNaN(numericValue) && numericValue >= 1 && numericValue <= 50) {
+            setNbQuestions(value);
+        } else {
+            Toast.show({
+                type: "error",
+                text1: "Invalid Input",
+                text2: "Please enter a number between 1 and 50",
+                position: "bottom",
+            });
+            setNbQuestions(""); // Réinitialise si la valeur n'est pas valide
+        }
+    };
+
     return (
         <View style={styleContainer.container}>
             <View style={styles.pickerContainer}>
                 <Text style={styles.label}>Category</Text>
-                <RNPickerSelect
-                    onValueChange={(value) => setSelectedCategory(value)}
-                    items={categories}
-                    style={pickerSelectStyles}
+                <SelectList
+                    setSelected={(value) => setSelectedCategory(value)}
+                    data={categories}
+                    placeholder="Select category"
+                    boxStyles={styles.input}
+                    dropdownStyles={styles.selectListDropdown}
                 />
             </View>
 
             <View style={styles.pickerContainer}>
                 <Text style={styles.label}>Nb. questions</Text>
-                <RNPickerSelect
-                    onValueChange={(value) => setNbQuestions(value)}
-                    items={nbQuestionsOptions}
-                    style={pickerSelectStyles}
+                <TextInput
+                    style={styles.input}
+                    keyboardType="numeric"
+                    placeholder="Enter number of questions"
+                    value={nbQuestions}
+                    onChangeText={handleNbQuestionsChange}
+                    maxLength={2} // Limite l'entrée à deux chiffres
                 />
             </View>
 
             <View style={styles.pickerContainer}>
                 <Text style={styles.label}>Difficulty</Text>
-                <RNPickerSelect
-                    onValueChange={(value) => setDifficulty(value)}
-                    items={difficulties}
-                    style={pickerSelectStyles}
+                <SelectList
+                    setSelected={(value) => setDifficulty(value)}
+                    data={difficulties}
+                    placeholder="Select difficulty"
+                    boxStyles={styles.input}
+                    dropdownStyles={styles.selectListDropdown}
                 />
             </View>
 
             <View style={styles.buttonContainer}>
-                <Button title={"Start Game"} onPress={() => fetchAndCreateQuestion(selectedCategory, nbQuestions, difficulty, navigation)} />
+                <Button
+                    title={"Start Game"}
+                    onPress={() => fetchAndCreateQuestion(selectedCategory, nbQuestions, difficulty, navigation)}
+                    disabled={!nbQuestions || isNaN(parseInt(nbQuestions, 10))}
+                />
             </View>
+
+            <Toast />
         </View>
     );
 }
@@ -74,35 +102,29 @@ const styles = StyleSheet.create({
         marginBottom: 5,
         paddingHorizontal: 10,
     },
+    input: {
+        height: 50,
+        width: '90%',
+        marginHorizontal: 12,
+        borderWidth: 1,
+        borderRadius: 10,
+        paddingHorizontal: 10,
+        fontSize: 18,
+        textAlign: 'center',
+        borderColor: 'gray',
+        color: 'black',
+    },
     buttonContainer: {
         marginTop: 30,
         width: '100%',
         borderRadius: 10,
         backgroundColor: '#f0f0f0',
     },
-});
-
-const pickerSelectStyles = StyleSheet.create({
-    inputIOS: {
-        fontSize: 16,
-        marginHorizontal: 10,
-        paddingVertical: 12,
-        paddingHorizontal: 10,
+    selectListDropdown: {
+        width: '90%',
+        marginHorizontal: 12,
+        borderRadius: 10,
         borderWidth: 1,
         borderColor: 'gray',
-        borderRadius: 4,
-        color: 'black',
-        paddingRight: 30,
-    },
-    inputAndroid: {
-        fontSize: 16,
-        marginHorizontal: 10,
-        paddingHorizontal: 10,
-        paddingVertical: 8,
-        borderWidth: 1,
-        borderColor: 'gray',
-        borderRadius: 8,
-        color: 'black',
-        paddingRight: 30,
     },
 });

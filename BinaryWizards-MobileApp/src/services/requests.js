@@ -9,7 +9,7 @@ export const fetchCategories = async () => {
     const formattedCategories = data.map((category) => ({
       key: category.id,
       label: category.name,
-      value: category.id,
+      value: category.name,
     }));
 
     return formattedCategories;
