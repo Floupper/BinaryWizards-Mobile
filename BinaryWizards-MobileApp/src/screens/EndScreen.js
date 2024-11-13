@@ -6,7 +6,7 @@ import { styleText } from "../styles/text";
 import { resetQuiz } from "../services/requests";
 
 export default function EndScreen({ route }) {
-  const { score, quizId } = route.params;
+  const { score, maxScore, quizId } = route.params;
   const navigation = useNavigation();
 
   const backToHome = () => {
@@ -23,7 +23,7 @@ export default function EndScreen({ route }) {
         <Text style={styleText.quizIdText}>Quiz id : {quizId}</Text>
       </View>
       <View style={styleContainer.middleSection}>
-        <Text>Score final : {score}</Text>
+        <Text>Score final : {score}/{maxScore}</Text>
       </View>
       <View style={styleContainer.bottomSection}>
         <PrimaryButton

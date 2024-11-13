@@ -21,8 +21,8 @@ export default function QuestionScreen({ route }) {
 
   const fetchAndSetQuestion = async () => {
     const question_result = await fetchQuestion({ quizId: quizId }); // Change IP address to your own
-    if (question_result.quizz_finished) {
-      navigation.navigate("End", { score: question_result.score, quizId: quizId });
+    if (question_result.quiz_finished) {
+      navigation.navigate("End", { score: question_result.score, quizId: quizId, maxScore: question_result.max_score });
       return;
     }
     setQuestion(question_result);
