@@ -2,7 +2,7 @@ import { REACT_NATIVE_API_IP } from "@env";
 
 export const fetchCategories = async () => {
   try {
-    const response = await fetch(`http://${REACT_NATIVE_API_IP}:3000/categories`);
+    const response = await fetch(`http://${REACT_NATIVE_API_IP}:33012/categories`);
 
     const data = await response.json();
 
@@ -20,7 +20,7 @@ export const fetchCategories = async () => {
 
 export const fetchDifficulties = async () => {
   try {
-    const response = await fetch(`http://${REACT_NATIVE_API_IP}:3000/difficulties`);
+    const response = await fetch(`http://${REACT_NATIVE_API_IP}:33012/difficulties`);
     const data = await response.json();
 
     const formattedDifficulties = data.map((difficulty) => ({
@@ -37,7 +37,7 @@ export const fetchDifficulties = async () => {
 export const fetchQuestion = async ({ quizId }) => {
   try {
     const result = await fetch(
-      `http://${REACT_NATIVE_API_IP}:3000/quiz/${quizId}/question`
+      `http://${REACT_NATIVE_API_IP}:33012/quiz/${quizId}/question`
     );
     if (!result.ok) {
       throw new Error(`HTTP error! Status: ${result.status}`);
@@ -52,7 +52,7 @@ export const fetchQuestion = async ({ quizId }) => {
 
 export const sendAnswer = async ({ quizId, question_index, option_index }) => {
   try {
-    const response = await fetch(`http://${REACT_NATIVE_API_IP}:3000/quiz/${quizId}/question`, {
+    const response = await fetch(`http://${REACT_NATIVE_API_IP}:33012/quiz/${quizId}/question`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -72,14 +72,14 @@ export const sendAnswer = async ({ quizId, question_index, option_index }) => {
   }
 }
 
-export async function fetchAndCreateQuestion(category, nbQuestions, difficulty, navigation) {
+export async function fetchAndCreateQuiz(category, nbQuestions, difficulty, navigation) {
   const quizData = {
     category: Number(category),
     amount: Number(nbQuestions),
     difficulty: String(difficulty),
   };
 
-  await fetch(`http://${REACT_NATIVE_API_IP}:3000/quiz`, {
+  await fetch(`http://${REACT_NATIVE_API_IP}:33012/quiz`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -88,5 +88,16 @@ export async function fetchAndCreateQuestion(category, nbQuestions, difficulty, 
   }).then(async (response) => {
     const data = await response.json();
     navigation.navigate("Questions", { quizId: data.quiz_id });
+  });
+}
+
+export async function resetQuiz(quizId, navigation){
+  await fetch(`http://${REACT_NATIVE_API_IP}:33012/quiz/${quizId}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  }).then(() => {
+    navigation.navigate("Questions", { quizId: quizId });
   });
 }
