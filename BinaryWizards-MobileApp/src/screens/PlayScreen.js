@@ -6,7 +6,7 @@ import { SelectList } from "react-native-dropdown-select-list"; // Import de Sel
 import { styleContainer } from "../styles/container";
 import { useNavigation, useFocusEffect } from "@react-navigation/native";
 
-import { fetchAndCreateQuestion, fetchCategories, fetchDifficulties } from "../services/requests";
+import { fetchAndCreateQuiz, fetchCategories, fetchDifficulties } from "../services/requests";
 
 export default function PlayScreen() {
     const [categories, setCategories] = useState([]);
@@ -89,7 +89,7 @@ export default function PlayScreen() {
             <View style={styles.buttonContainer}>
                 <Button
                     title={"Start Game"}
-                    onPress={() => fetchAndCreateQuestion(selectedCategory, nbQuestions, difficulty, navigation)}
+                    onPress={() => fetchAndCreateQuiz(selectedCategory, nbQuestions, difficulty, navigation)}
                     disabled={!nbQuestions || isNaN(parseInt(nbQuestions, 10))}
                 />
             </View>

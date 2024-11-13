@@ -72,7 +72,7 @@ export const sendAnswer = async ({ quizId, question_index, option_index }) => {
   }
 }
 
-export async function fetchAndCreateQuestion(category, nbQuestions, difficulty, navigation) {
+export async function fetchAndCreateQuiz(category, nbQuestions, difficulty, navigation) {
   const quizData = {
     category: Number(category),
     amount: Number(nbQuestions),
