@@ -3,9 +3,7 @@ import Toast from "react-native-toast-message";
 
 export const fetchCategories = async () => {
   try {
-    const response = await fetch(
-      `http://${REACT_NATIVE_API_IP}:${REACT_NATIVE_API_PORT}/categories`
-    );
+    const response = await fetch(`http://${REACT_NATIVE_API_IP}:${REACT_NATIVE_API_PORT}/categories`);
 
     const data = await response.json();
 
@@ -28,9 +26,7 @@ export const fetchCategories = async () => {
 
 export const fetchDifficulties = async () => {
   try {
-    const response = await fetch(
-      `http://${REACT_NATIVE_API_IP}:${REACT_NATIVE_API_PORT}/difficulties`
-    );
+    const response = await fetch(`http://${REACT_NATIVE_API_IP}:${REACT_NATIVE_API_PORT}/difficulties`);
     const data = await response.json();
 
     const formattedDifficulties = data.map((difficulty) => ({
