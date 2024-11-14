@@ -3,9 +3,7 @@ import Toast from "react-native-toast-message";
 
 export const fetchCategories = async () => {
   try {
-    const response = await fetch(
-      `http://${REACT_NATIVE_API_IP}:${REACT_NATIVE_API_PORT}/categories`
-    );
+    const response = await fetch(`http://${REACT_NATIVE_API_IP}:${REACT_NATIVE_API_PORT}/categories`);
 
     const data = await response.json();
 
@@ -28,9 +26,7 @@ export const fetchCategories = async () => {
 
 export const fetchDifficulties = async () => {
   try {
-    const response = await fetch(
-      `http://${REACT_NATIVE_API_IP}:${REACT_NATIVE_API_PORT}/difficulties`
-    );
+    const response = await fetch(`http://${REACT_NATIVE_API_IP}:${REACT_NATIVE_API_PORT}/difficulties`);
     const data = await response.json();
 
     const formattedDifficulties = data.map((difficulty) => ({
@@ -162,4 +158,24 @@ export async function resetQuiz(quizId, navigation) {
   }).then(() => {
     navigation.navigate("Questions", { quizId: quizId });
   });
+}
+
+export async function checkQuizExists(quizId) {
+  try {
+    const result = await fetch(
+      `http://${REACT_NATIVE_API_IP}:${REACT_NATIVE_API_PORT}/quiz/${quizId}/question`
+    );
+    if (!result.ok) {
+      throw new Error(`HTTP error! Status: ${result.status}`);
+    }
+    const json = await result.json();
+    return json;
+  } catch (error) {
+    Toast.show({
+      type: 'error',
+      text1: 'Error',
+      text2: 'An error occured while fetching the question',
+    });
+    return null;
+  }
 }
