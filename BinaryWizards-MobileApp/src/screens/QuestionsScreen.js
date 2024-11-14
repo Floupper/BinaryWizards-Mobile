@@ -27,6 +27,8 @@ export default function QuestionScreen({ route }) {
         score: question_result.score,
         quizId: quizId,
         maxScore: question_result.max_score,
+        correct_answers_nb: question_result.correct_answers_nb,
+        nb_questions_total: question_result.nb_questions_total,
       });
       return;
     }
