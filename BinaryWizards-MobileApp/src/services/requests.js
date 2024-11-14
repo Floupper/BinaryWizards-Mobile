@@ -34,13 +34,6 @@ export const fetchDifficulties = async () => {
       value: String(difficulty).charAt(0).toUpperCase() + String(difficulty).slice(1),
     }));
 
-    const randomDifficulty = {
-      label: "Random",
-      value: "Random",
-    };
-
-    formattedDifficulties.unshift(randomDifficulty);
-
     return formattedDifficulties;
   } catch (error) {
     Toast.show({

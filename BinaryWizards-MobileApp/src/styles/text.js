@@ -3,7 +3,7 @@ import { StyleSheet } from "react-native";
 export const styleText = StyleSheet.create({
   quizIdText: {
     textAlign: "center",
-    color: "lightgray",
+    color: "gray",
   },
   title: {
     fontSize: 32,
@@ -23,4 +23,7 @@ export const styleText = StyleSheet.create({
     color: "black",
     textAlign: "center",
   },
+  secondary: {
+    color:"#3552b0"
+  }
 });
