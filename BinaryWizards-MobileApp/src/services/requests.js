@@ -3,7 +3,7 @@ import Toast from "react-native-toast-message";
 
 export const fetchCategories = async () => {
   try {
-    const response = await fetch(`http://${REACT_NATIVE_API_IP}:${REACT_NATIVE_API_PORT}/categories`);
+    const response = await fetch(`https://${REACT_NATIVE_API_IP}:${REACT_NATIVE_API_PORT}/categories/`);
 
     const data = await response.json();
 
@@ -26,13 +26,20 @@ export const fetchCategories = async () => {
 
 export const fetchDifficulties = async () => {
   try {
-    const response = await fetch(`http://${REACT_NATIVE_API_IP}:${REACT_NATIVE_API_PORT}/difficulties`);
+    const response = await fetch(`https://${REACT_NATIVE_API_IP}:${REACT_NATIVE_API_PORT}/difficulties`);
     const data = await response.json();
 
     const formattedDifficulties = data.map((difficulty) => ({
       label: difficulty,
-      value: difficulty,
+      value: String(difficulty).charAt(0).toUpperCase() + String(difficulty).slice(1),
     }));
+
+    const randomDifficulty = {
+      label: "Random",
+      value: "Random",
+    };
+
+    formattedDifficulties.unshift(randomDifficulty);
 
     return formattedDifficulties;
   } catch (error) {
@@ -48,7 +55,7 @@ export const fetchDifficulties = async () => {
 export const fetchQuestion = async ({ quizId }) => {
   try {
     const result = await fetch(
-      `http://${REACT_NATIVE_API_IP}:${REACT_NATIVE_API_PORT}/quiz/${quizId}/question`
+      `https://${REACT_NATIVE_API_IP}:${REACT_NATIVE_API_PORT}/quiz/${quizId}/question`
     );
     if (!result.ok) {
       throw new Error(`HTTP error! Status: ${result.status}`);
@@ -69,7 +76,7 @@ export const fetchQuestion = async ({ quizId }) => {
 export const sendAnswer = async ({ quizId, question_index, option_index }) => {
   try {
     const response = await fetch(
-      `http://${REACT_NATIVE_API_IP}:${REACT_NATIVE_API_PORT}/quiz/${quizId}/question`,
+      `https://${REACT_NATIVE_API_IP}:${REACT_NATIVE_API_PORT}/quiz/${quizId}/question`,
       {
         method: "POST",
         headers: {
@@ -127,10 +134,10 @@ export async function fetchAndCreateQuiz(
   }
 
   if (difficulty) {
-    quizData.difficulty = String(difficulty);
+    quizData.difficulty = String(difficulty).toLowerCase();
   }
 
-  await fetch(`http://${REACT_NATIVE_API_IP}:${REACT_NATIVE_API_PORT}/quiz`, {
+  await fetch(`https://${REACT_NATIVE_API_IP}:${REACT_NATIVE_API_PORT}/quiz`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -150,7 +157,7 @@ export async function fetchAndCreateQuiz(
 }
 
 export async function resetQuiz(quizId, navigation) {
-  await fetch(`http://${REACT_NATIVE_API_IP}:${REACT_NATIVE_API_PORT}/quiz/${quizId}`, {
+  await fetch(`https://${REACT_NATIVE_API_IP}:${REACT_NATIVE_API_PORT}/quiz/${quizId}`, {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",
@@ -163,7 +170,7 @@ export async function resetQuiz(quizId, navigation) {
 export async function checkQuizExists(quizId) {
   try {
     const result = await fetch(
-      `http://${REACT_NATIVE_API_IP}:${REACT_NATIVE_API_PORT}/quiz/${quizId}/question`
+      `https://${REACT_NATIVE_API_IP}:${REACT_NATIVE_API_PORT}/quiz/${quizId}/question`
     );
     if (!result.ok) {
       throw new Error(`HTTP error! Status: ${result.status}`);
