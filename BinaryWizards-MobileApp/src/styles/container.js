@@ -6,8 +6,8 @@ export const styleContainer = StyleSheet.create({
     backgroundColor: "white",
   },
   quizIdContainer: {
-    paddingTop: 10,
-    paddingHorizontal: 10,
+    textAlign: "center",
+    padding: 10,
   },
   container: {
     flex: 1,
