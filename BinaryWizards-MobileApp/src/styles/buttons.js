@@ -15,9 +15,7 @@ export const styleButton = StyleSheet.create({
   },
 });
 
-
-
-export const determineButtonStyle = (index) => {
+export const determineButtonStyle = (index, userAnswerIndex, correctAnswer) => {
   if (userAnswerIndex === null) {
     return "#3552b0"; 
   } else if (index === correctAnswer?.correct_option_index) {

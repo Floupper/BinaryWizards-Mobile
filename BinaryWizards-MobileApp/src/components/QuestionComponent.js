@@ -27,7 +27,7 @@ export default function QuestionComponent({ question, selectedAnswer, correctAns
             text={option}
             onPress={() => sendUserAnswer(index)}
             disabled={userAnswerIndex !== null}
-            style={[styleButton.button, {backgroundColor: determineButtonStyle(index)}]}
+            style={[styleButton.button, {backgroundColor: determineButtonStyle(index, userAnswerIndex, correctAnswer)}]}
           />
         ))
       ) : (
