@@ -38,10 +38,6 @@ export default function PlayScreen() {
       setNbQuestions("10");
       setSelectedCategory("");
       setDifficulty("");
-      console.log("Play screen focused");
-      console.log("Nb questions:", nbQuestions);
-      console.log("Selected category:", selectedCategory);
-      console.log("Difficulty:", difficulty);
     }, [])
   );
 
