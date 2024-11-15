@@ -3,7 +3,7 @@ import Toast from "react-native-toast-message";
 
 export const fetchCategories = async () => {
   try {
-    const response = await fetch(`${REACT_NATIVE_API_URL}:${REACT_NATIVE_API_PORT}/categories/`);
+    const response = await fetch(process.env.REACT_NATIVE_API_URL + ':' + process.env.REACT_NATIVE_API_PORT + '/categories/');
 
     const data = await response.json();
 
@@ -118,6 +118,15 @@ export async function fetchAndCreateQuiz(
       type: 'error',
       text1: 'Number of questions',
       text2: 'You must select a number of questions between 1 and 50',
+    });
+    return;
+  }
+
+  if(category === ""){
+    Toast.show({
+      type: 'error',
+      text1: 'Category',
+      text2: 'You must select a category',
     });
     return;
   }
