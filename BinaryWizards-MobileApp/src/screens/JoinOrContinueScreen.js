@@ -1,10 +1,11 @@
 import React from 'react';
-import { View, TextInput, StyleSheet, TouchableOpacity } from 'react-native';
-import Icon from 'react-native-vector-icons/AntDesign';
+import { View, Text, TextInput, StyleSheet } from 'react-native';
 import { styleContainer } from '../styles/container';
 import { checkQuizExists } from '../services/requests';
 import Toast from 'react-native-toast-message';
 import { useNavigation } from '@react-navigation/native';
+import PrimaryButton from '../components/PrimaryButton';
+import { styleButton } from '../styles/buttons';
 
 export default function JoinScreen() {
     const [quizId, setQuizId] = React.useState('');
@@ -35,15 +36,14 @@ export default function JoinScreen() {
 
     return (
         <View style={styleContainer.container}>
+            <Text style={styles.label}>Quiz Code</Text>
             <TextInput
                 style={styles.input}
                 onChangeText={setQuizId}
                 placeholder="Enter the quiz code"
                 value={quizId}
             />
-            <TouchableOpacity onPress={handlePress} style={styles.icon}>
-                <Icon name="playcircleo" size={100} color="#000" />
-            </TouchableOpacity>
+            <PrimaryButton text="Join" onPress={handlePress} style={styleButton.button}/>
         </View>
     );
 }
@@ -60,5 +60,10 @@ const styles = StyleSheet.create({
     },
     icon: {
         marginTop: 20,
+    },
+    label: {
+        fontSize: 16,
+        marginBottom: 5,
+        paddingHorizontal: 10,
     },
 });
