@@ -1,12 +1,12 @@
 import React from "react";
-import { Text, View, StyleSheet, Pressable } from "react-native";
-import { buttonStyles, styleButton } from "../styles/buttons";
+import { Text, View, Pressable } from "react-native";
+import { styleButton } from "../styles/buttons";
 
-export default function PrimaryButton({ onPress, disabled, text }) {
+export default function PrimaryButton({ onPress, disabled, text, style }) {
   return (
     <View>
       <Pressable
-        style={styleButton.button}
+        style={[style, {minWidth: 200}]}
         onPress={() => onPress()}
         disabled={disabled}
       >

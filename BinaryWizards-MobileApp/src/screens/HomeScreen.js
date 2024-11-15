@@ -1,22 +1,20 @@
 import React from 'react';
-import { View, Text, Button, StyleSheet } from 'react-native';
+import { View, Text, Button, StyleSheet, Pressable } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
 import { styleContainer } from '../styles/container';
 import { styleText } from '../styles/text';
+import PrimaryButton from '../components/PrimaryButton';
+import { styleButton } from '../styles/buttons';
 
 export default function HomeScreen() {
     const navigation = useNavigation();
 
     return (
         <View style={styleContainer.container}>
-            <Text style={styleText.title}>BinaryWizards</Text>
-            <View style={styles.buttonContainer}>
-                <Button title="Play Quiz" onPress={() => navigation.navigate('Play')} />
-            </View>
-            <View style={styles.buttonContainer}>
-                <Button title="Join or Continue" onPress={() => navigation.navigate('Join')} />
-            </View>
+            <Text style={styleText.title}>Quiz</Text>
+            <PrimaryButton text="Create quiz" onPress={() => navigation.navigate('Play')} style={styleButton.button}/>
+            <PrimaryButton text="Join quiz" onPress={() => navigation.navigate('Join')} style={styleButton.button}/>
         </View>
     );
 }

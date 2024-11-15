@@ -6,6 +6,7 @@ import { fetchQuestion, sendAnswer } from "../services/requests";
 import { useNavigation, useFocusEffect } from "@react-navigation/native";
 import { styleContainer } from "../styles/container";
 import { styleText } from "../styles/text";
+import { styleButton } from "../styles/buttons";
 import HomeButton from "../components/HomeButton";
 
 export default function QuestionScreen({ route }) {
@@ -24,9 +25,7 @@ export default function QuestionScreen({ route }) {
     const question_result = await fetchQuestion({ quizId: quizId }); // Change IP address to your own
     if (question_result.quiz_finished) {
       navigation.navigate("End", {
-        score: question_result.score,
         quizId: quizId,
-        maxScore: question_result.max_score,
         correct_answers_nb: question_result.correct_answers_nb,
         nb_questions_total: question_result.nb_questions_total,
       });
@@ -52,6 +51,7 @@ export default function QuestionScreen({ route }) {
         question_index: question.question_index,
         option_index: index,
       });
+      result.user_answer_index = index;
       setQuestionAnswer(result);
     } catch (error) {
       console.error("Error:", error);
@@ -67,7 +67,6 @@ export default function QuestionScreen({ route }) {
         <Text style={styleText.quizIdText}>Quiz id : {quizId}</Text>
       </View>
       <View style={styleContainer.infoContainer}>
-        <Text>Score : {question.score}</Text>
         <Text>
           Question : {question.question_index}/{question.nb_questions_total}
         </Text>
@@ -83,6 +82,7 @@ export default function QuestionScreen({ route }) {
         onPress={nextQuestion}
         disabled={questionAnswer === null}
         text={"Next question"}
+        style={styleButton.button}
       />
     </View>
   );

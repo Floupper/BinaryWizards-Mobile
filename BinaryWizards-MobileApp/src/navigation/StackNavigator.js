@@ -22,25 +22,25 @@ export default function StackNavigator() {
             <Stack.Screen
                 name="Join"
                 component={JoinOrContinueScreen}
-                options={{ headerShown: true, title: "Join" }
+                options={{ headerShown: true, title: "Join a quiz" }
                 }
             />
             <Stack.Screen
                 name="Play"
                 component={PlayScreen}
-                options={{ headerShown: true, title: "Play" }
+                options={{ headerShown: true, title: "Create a quiz" }
                 }
             />
             <Stack.Screen
                 name="Questions"
                 component={QuestionScreen}
-                options={{ headerShown: false, title: "Questions" }
+                options={{ headerShown: false }
                 }
             />
             <Stack.Screen
                 name="End"
                 component={EndScreen}
-                options={{ headerShown: false, title: "End" }
+                options={{ headerShown: false }
                 }
             />
         </Stack.Navigator>

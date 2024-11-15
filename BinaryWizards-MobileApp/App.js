@@ -1,14 +1,17 @@
-import React from 'react';
-import { NavigationContainer } from '@react-navigation/native';
-import Toast from 'react-native-toast-message';
+import React from "react";
+import { SafeAreaView } from "react-native";
+import { NavigationContainer } from "@react-navigation/native";
+import Toast from "react-native-toast-message";
 
-import StackNavigator from './src/navigation/StackNavigator';
+import StackNavigator from "./src/navigation/StackNavigator";
 
 export default function App() {
   return (
-    <NavigationContainer>
-      <StackNavigator />
-      <Toast />
-    </NavigationContainer>
+    <SafeAreaView style={{flex:1}}>
+      <NavigationContainer>
+        <StackNavigator />
+        <Toast />
+      </NavigationContainer>
+    </SafeAreaView>
   );
 }
