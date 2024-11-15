@@ -38,6 +38,10 @@ export default function PlayScreen() {
       setNbQuestions("10");
       setSelectedCategory("");
       setDifficulty("");
+      console.log("Play screen focused");
+      console.log("Nb questions:", nbQuestions);
+      console.log("Selected category:", selectedCategory);
+      console.log("Difficulty:", difficulty);
     }, [])
   );
 
@@ -106,13 +110,16 @@ export default function PlayScreen() {
           disabled={
             !nbQuestions ||
             isNaN(parseInt(nbQuestions, 10)) ||
-            difficulty === ""
+            difficulty === "" ||
+            selectedCategory === ""
           }
           style={[
             styleButton.button,
             (!nbQuestions ||
               isNaN(parseInt(nbQuestions, 10)) ||
-              difficulty === "") && { backgroundColor: "gray" },
+              difficulty === "" ||
+              selectedCategory === ""           
+            ) && { backgroundColor: "gray" },
           ]}
         />
       </View>

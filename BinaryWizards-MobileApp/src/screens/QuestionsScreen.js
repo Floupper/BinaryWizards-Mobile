@@ -68,6 +68,9 @@ export default function QuestionScreen({ route }) {
       </View>
       <View style={styleContainer.infoContainer}>
         <Text>
+          Score : {question.correct_answers_nb}
+        </Text>
+        <Text>
           Question : {question.question_index}/{question.nb_questions_total}
         </Text>
       </View>
