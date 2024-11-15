@@ -103,8 +103,17 @@ export default function PlayScreen() {
               navigation
             )
           }
-          disabled={!nbQuestions || isNaN(parseInt(nbQuestions, 10))}
-          style={styleButton.button}
+          disabled={
+            !nbQuestions ||
+            isNaN(parseInt(nbQuestions, 10)) ||
+            difficulty === ""
+          }
+          style={[
+            styleButton.button,
+            (!nbQuestions ||
+              isNaN(parseInt(nbQuestions, 10)) ||
+              difficulty === "") && { backgroundColor: "gray" },
+          ]}
         />
       </View>
 
