@@ -101,12 +101,12 @@ export default function QuestionScreen({ route }) {
       <View>
         <HomeButton />
       </View>
-      <View style={styleContainer.quizIdContainer}>
-        <Text style={styleText.quizIdText}>Game id : {gameId}</Text>
+      <View style={styleContainer.gameIdContainer}>
+        <Text style={styleText.gameIdText}>Game id : {gameId}</Text>
         <Feather name="copy" size={24} color="black" onPress={copyGameIdToClipboard} />
       </View>
-      <View style={styleContainer.quizIdContainer}>
-        <Text style={styleText.gameIdText}>Game id : {gameId}</Text>
+      <View style={styleContainer.gameIdContainer}>
+        <Text style={styleText.gameIdText}>Quiz id : {quizId}</Text>
         <Feather name="copy" size={24} color="black" onPress={copyQuizIdToClipboard} />
       </View>
       <View style={styleContainer.infoContainer}>
