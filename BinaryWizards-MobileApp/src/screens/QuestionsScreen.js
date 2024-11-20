@@ -8,6 +8,9 @@ import { styleContainer } from "../styles/container";
 import { styleText } from "../styles/text";
 import { styleButton } from "../styles/buttons";
 import HomeButton from "../components/HomeButton";
+import Feather from '@expo/vector-icons/Feather';
+import * as Clipboard from 'expo-clipboard';
+import Toast from 'react-native-toast-message';
 
 export default function QuestionScreen({ route }) {
   const { gameId } = route.params;
@@ -15,6 +18,15 @@ export default function QuestionScreen({ route }) {
   const [questionAnswer, setQuestionAnswer] = useState(null);
 
   const navigation = useNavigation();
+
+  const copyQuizIdToClipboard = () => {
+    Clipboard.setString(quizId);
+    Toast.show({
+      type: 'success',
+      text1: 'Copied to clipboard',
+      text2: 'Quiz id copied to clipboard !',
+    });
+  };
 
   const nextQuestion = () => {
     setQuestionAnswer(null);
@@ -63,8 +75,9 @@ export default function QuestionScreen({ route }) {
       <View>
         <HomeButton />
       </View>
-      <View style={styleContainer.gameIdContainer}>
+      <View style={styleContainer.quizIdContainer}>
         <Text style={styleText.gameIdText}>Game id : {gameId}</Text>
+        <Feather name="copy" size={24} color="black" onPress={copyQuizIdToClipboard} />
       </View>
       <View style={styleContainer.infoContainer}>
         <Text>
