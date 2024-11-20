@@ -6,8 +6,12 @@ export const styleContainer = StyleSheet.create({
     backgroundColor: "white",
   },
   quizIdContainer: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
     textAlign: "center",
-    padding: 10,
+    justifyContent: "space-evenly",
+    padding: 5,
   },
   container: {
     flex: 1,
@@ -38,6 +42,6 @@ export const styleContainer = StyleSheet.create({
     alignItems: "center",
   },
   bottomSection: {
-    margin:80
+    margin: 80
   },
 });
