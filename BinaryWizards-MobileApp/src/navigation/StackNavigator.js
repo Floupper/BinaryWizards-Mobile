@@ -5,6 +5,7 @@ import HomeScreen from "../screens/HomeScreen";
 import JoinOrContinueScreen from "../screens/JoinOrContinueScreen";
 import QuestionScreen from "../screens/QuestionsScreen";
 import EndScreen from "../screens/EndScreen";
+import CreateGame from "../screens/CreateGame";
 
 const Stack = createNativeStackNavigator();
 
@@ -22,6 +23,12 @@ export default function StackNavigator() {
                 name="Join"
                 component={JoinOrContinueScreen}
                 options={{ headerShown: true, title: "Join a quiz" }
+                }
+            />
+            <Stack.Screen
+                name="Create"
+                component={CreateGame}
+                options={{ headerShown: true, title: "Create a game" }
                 }
             />
             <Stack.Screen
