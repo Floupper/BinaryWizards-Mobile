@@ -5,7 +5,7 @@ export const styleContainer = StyleSheet.create({
     flex: 1,
     backgroundColor: "white",
   },
-  quizIdContainer: {
+  gameIdContainer: {
     display: "flex",
     flexDirection: "row",
     alignItems: "center",
@@ -44,4 +44,13 @@ export const styleContainer = StyleSheet.create({
   bottomSection: {
     margin: 80
   },
+  gameList:{
+    flex:1,
+    justifyContent:"center",
+    alignItems:"center",
+    border:"1px solid black",
+    margin:10,
+    padding:10,
+    borderRadius:10,
+  }
 });

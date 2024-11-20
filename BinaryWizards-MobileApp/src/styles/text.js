@@ -1,7 +1,7 @@
 import { StyleSheet } from "react-native";
 
 export const styleText = StyleSheet.create({
-  quizIdText: {
+  gameIdText: {
     textAlign: "center",
     color: "gray",
   },
