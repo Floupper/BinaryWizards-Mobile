@@ -45,10 +45,10 @@ export const fetchDifficulties = async () => {
   }
 };
 
-export const fetchQuestion = async ({ quizId }) => {
+export const fetchQuestion = async ({ gameId }) => {
   try {
     const result = await fetch(
-      `${REACT_NATIVE_API_URL}:${REACT_NATIVE_API_PORT}/quiz/${quizId}/question`
+      `${REACT_NATIVE_API_URL}:${REACT_NATIVE_API_PORT}/game/${gameId}/question`
     );
     if (!result.ok) {
       throw new Error(`HTTP error! Status: ${result.status}`);
@@ -66,10 +66,10 @@ export const fetchQuestion = async ({ quizId }) => {
   }
 };
 
-export const sendAnswer = async ({ quizId, question_index, option_index }) => {
+export const sendAnswer = async ({ gameId, question_index, option_index }) => {
   try {
     const response = await fetch(
-      `${REACT_NATIVE_API_URL}:${REACT_NATIVE_API_PORT}/quiz/${quizId}/question`,
+      `${REACT_NATIVE_API_URL}:${REACT_NATIVE_API_PORT}/game/${gameId}/question`,
       {
         method: "POST",
         headers: {
@@ -105,7 +105,7 @@ export async function fetchAndCreateQuiz(
   difficulty,
   navigation
 ) {
-  
+
   const quizData = {
     amount: null,
   };
@@ -113,7 +113,7 @@ export async function fetchAndCreateQuiz(
   if (nbQuestions) {
     quizData.amount = Number(nbQuestions);
   }
-  else{
+  else {
     Toast.show({
       type: 'error',
       text1: 'Number of questions',
@@ -122,7 +122,7 @@ export async function fetchAndCreateQuiz(
     return;
   }
 
-  if(category === ""){
+  if (category === "") {
     Toast.show({
       type: 'error',
       text1: 'Category',
@@ -185,6 +185,29 @@ export async function checkQuizExists(quizId) {
       text1: 'Error',
       text2: 'An error occured while fetching the question',
     });
+    return null;
+  }
+}
+
+export async function createGame(quizId) {
+  try {
+    const response = await fetch(
+      `${REACT_NATIVE_API_URL}:${REACT_NATIVE_API_PORT}/game/${quizId}/create`
+    );
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+
+    const json = await response.json();
+    return json;
+  } catch (error) {
+    Toast.show({
+      type: 'error',
+      text1: 'Error',
+      text2: 'An error occured while creating the game',
+    });
+    console.error("Error creating game:", error);
     return null;
   }
 }
