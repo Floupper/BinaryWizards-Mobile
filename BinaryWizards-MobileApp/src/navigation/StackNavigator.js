@@ -4,6 +4,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import HomeScreen from "../screens/HomeScreen";
 import QuestionScreen from "../screens/QuestionsScreen";
 import EndScreen from "../screens/EndScreen";
+import CreateGame from "../screens/CreateGame";
 import ResumeGamesScreen from "../screens/ResumeGamesScreen";
 
 const Stack = createNativeStackNavigator();
@@ -22,6 +23,12 @@ export default function StackNavigator() {
                 name="ResumeGames"
                 component={ResumeGamesScreen}
                 options={{ headerShown: true, title: "Resume game" }
+                }
+            />
+            <Stack.Screen
+                name="Create"
+                component={CreateGame}
+                options={{ headerShown: true, title: "Create a game" }
                 }
             />
             <Stack.Screen

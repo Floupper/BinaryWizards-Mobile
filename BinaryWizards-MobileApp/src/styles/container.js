@@ -5,6 +5,14 @@ export const styleContainer = StyleSheet.create({
     flex: 1,
     backgroundColor: "white",
   },
+  quizIdContainer: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    textAlign: "center",
+    justifyContent: "space-evenly",
+    padding: 5,
+  },
   gameIdContainer: {
     display: "flex",
     flexDirection: "row",
@@ -44,13 +52,13 @@ export const styleContainer = StyleSheet.create({
   bottomSection: {
     margin: 80
   },
-  gameList:{
-    flex:1,
-    justifyContent:"center",
-    alignItems:"center",
-    border:"1px solid black",
-    margin:10,
-    padding:10,
-    borderRadius:10,
+  gameList: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    border: "1px solid black",
+    margin: 10,
+    padding: 10,
+    borderRadius: 10,
   }
 });

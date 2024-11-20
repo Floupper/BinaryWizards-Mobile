@@ -22,10 +22,10 @@ export const fetchQuestion = async ({ gameId }) => {
   }
 };
 
-export const sendAnswer = async ({ quizId, question_index, option_index }) => {
+export const sendAnswer = async ({ gameId, question_index, option_index }) => {
   try {
     const response = await fetch(
-      `${REACT_NATIVE_API_URL}:${REACT_NATIVE_API_PORT}/quiz/${quizId}/question`,
+      `${REACT_NATIVE_API_URL}:${REACT_NATIVE_API_PORT}/game/${gameId}/question`,
       {
         method: "POST",
         headers: {
@@ -146,6 +146,29 @@ export async function checkGameExists(gameId) {
       text1: "Error",
       text2: "Game does not exist",
     });
+    return null;
+  }
+}
+
+export async function createGame(quizId) {
+  try {
+    const response = await fetch(
+      `${REACT_NATIVE_API_URL}:${REACT_NATIVE_API_PORT}/game/${quizId}/create`
+    );
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+
+    const json = await response.json();
+    return json;
+  } catch (error) {
+    Toast.show({
+      type: 'error',
+      text1: 'Error',
+      text2: 'An error occured while creating the game',
+    });
+    console.error("Error creating game:", error);
     return null;
   }
 }

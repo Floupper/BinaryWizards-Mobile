@@ -13,7 +13,8 @@ export default function HomeScreen() {
     return (
         <View style={styleContainer.container}>
             <Text style={styleText.title}>Quiz</Text>
-            <PrimaryButton text="Resume game" onPress={() => navigation.navigate('ResumeGames')} style={styleButton.button}/>
+            <PrimaryButton text="Resume game" onPress={() => navigation.navigate('ResumeGames')} style={styleButton.button} />
+            <PrimaryButton text="Create game" onPress={() => navigation.navigate('Create')} style={styleButton.button} />
         </View>
     );
 }
