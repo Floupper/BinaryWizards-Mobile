@@ -2,9 +2,9 @@ import React from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 import HomeScreen from "../screens/HomeScreen";
-import JoinOrContinueScreen from "../screens/JoinOrContinueScreen";
 import QuestionScreen from "../screens/QuestionsScreen";
 import EndScreen from "../screens/EndScreen";
+import ResumeGamesScreen from "../screens/ResumeGamesScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -19,9 +19,9 @@ export default function StackNavigator() {
                 }
             />
             <Stack.Screen
-                name="Join"
-                component={JoinOrContinueScreen}
-                options={{ headerShown: true, title: "Join a quiz" }
+                name="ResumeGames"
+                component={ResumeGamesScreen}
+                options={{ headerShown: true, title: "Resume game" }
                 }
             />
             <Stack.Screen

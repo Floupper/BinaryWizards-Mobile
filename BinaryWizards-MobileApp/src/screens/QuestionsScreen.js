@@ -10,7 +10,7 @@ import { styleButton } from "../styles/buttons";
 import HomeButton from "../components/HomeButton";
 
 export default function QuestionScreen({ route }) {
-  const { quizId } = route.params;
+  const { gameId } = route.params;
   const [question, setQuestion] = useState("");
   const [questionAnswer, setQuestionAnswer] = useState(null);
 
@@ -22,10 +22,10 @@ export default function QuestionScreen({ route }) {
   };
 
   const fetchAndSetQuestion = async () => {
-    const question_result = await fetchQuestion({ quizId: quizId }); // Change IP address to your own
-    if (question_result.quiz_finished) {
+    const question_result = await fetchQuestion({ gameId: gameId }); // Change IP address to your own
+    if (question_result.game_finished) {
       navigation.navigate("End", {
-        quizId: quizId,
+        gameId: gameId,
         correct_answers_nb: question_result.correct_answers_nb,
         nb_questions_total: question_result.nb_questions_total,
       });
@@ -47,7 +47,7 @@ export default function QuestionScreen({ route }) {
   onSelectedAnswer = async (index) => {
     try {
       const result = await sendAnswer({
-        quizId: quizId,
+        gameId: gameId,
         question_index: question.question_index,
         option_index: index,
       });
@@ -63,8 +63,8 @@ export default function QuestionScreen({ route }) {
       <View>
         <HomeButton />
       </View>
-      <View style={styleContainer.quizIdContainer}>
-        <Text style={styleText.quizIdText}>Quiz id : {quizId}</Text>
+      <View style={styleContainer.gameIdContainer}>
+        <Text style={styleText.gameIdText}>Game id : {gameId}</Text>
       </View>
       <View style={styleContainer.infoContainer}>
         <Text>
