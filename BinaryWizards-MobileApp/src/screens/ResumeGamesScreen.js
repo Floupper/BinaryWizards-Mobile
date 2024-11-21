@@ -1,7 +1,7 @@
 import React from "react";
 import { View, Text, TextInput, StyleSheet } from "react-native";
 import { styleContainer } from "../styles/container";
-import { checkGameExists } from "../services/startRequests";
+import { checkGameExists } from "../services/gamesRequests";
 import Toast from "react-native-toast-message";
 import { useNavigation } from "@react-navigation/native";
 import PrimaryButton from "../components/PrimaryButton";
@@ -49,7 +49,7 @@ export default function JoinAndListGamesScreen() {
           style={styleButton.button}
         />
       </View>
-      <View style={{width: "100%", flex: 1}}>
+      <View style={{ width: "100%", flex: 1 }}>
         <GameList />
       </View>
     </View>

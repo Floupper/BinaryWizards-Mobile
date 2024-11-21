@@ -2,7 +2,7 @@ import React, { useEffect, useState, useCallback } from "react";
 import QuestionComponent from "../components/QuestionComponent";
 import { Text, View } from "react-native";
 import PrimaryButton from "../components/PrimaryButton";
-import { fetchQuestion, sendAnswer } from "../services/questionsRequests";
+import { fetchQuestion, sendAnswer } from "../services/questionScreenRequests";
 import { useNavigation } from "@react-navigation/native";
 import { styleContainer } from "../styles/container";
 import { styleButton } from "../styles/buttons";

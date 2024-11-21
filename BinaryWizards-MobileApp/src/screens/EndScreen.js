@@ -4,7 +4,8 @@ import { useNavigation } from "@react-navigation/native";
 import { styleContainer } from "../styles/container";
 import { styleText } from "../styles/text";
 import { styleButton } from "../styles/buttons";
-import { resetQuiz } from "../services/endRequests";
+import { resetQuiz } from "../services/endScreenRequests";
+import GenericClipboard from "../components/GenericClipboard";
 
 export default function EndScreen({ route }) {
   const { quizId, gameId, correct_answers_nb, nb_questions_total } =
@@ -22,10 +23,10 @@ export default function EndScreen({ route }) {
   return (
     <View style={styleContainer.mainContainer}>
       <View style={styleContainer.gameIdContainer}>
-        <Text style={styleText.gameIdText}>Quiz id : {quizId}</Text>
+        <GenericClipboard text={"Quiz id"} id={quizId} />
       </View>
       <View>
-        <Text style={styleText.gameIdText}>Game id : {gameId}</Text>
+        <GenericClipboard text={"Game id"} id={gameId} />
       </View>
       <View style={styleContainer.middleSection}>
         <Text style={styleText.title}>Quiz completed!</Text>

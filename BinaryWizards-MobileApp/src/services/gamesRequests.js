@@ -1,16 +1,18 @@
 import Toast from "react-native-toast-message";
+import axiosInstance from "../utils/axiosInstance";
+import axios from "axios";
 
 export async function checkGameExists(gameId) {
   try {
-    const response = await fetch(`${process.env.REACT_NATIVE_API_URL}:${process.env.REACT_NATIVE_API_PORT}/game/${gameId}/question`);
-    
-    if (!response.ok) {
+    const response = await axiosInstance.get(`/game/${gameId}/question`);
+
+    if (!response) {
       throw new Error(`HTTP error! Status: ${response.status}`);
     }
 
-    const res = await response.json();
-    return res;
-    
+    const data = await response.data;
+    return data;
+
   } catch (error) {
     console.error("Error fetching game data:", error);
     Toast.show({
@@ -24,16 +26,14 @@ export async function checkGameExists(gameId) {
 
 export async function createGame(quizId) {
   try {
-    const response = await fetch(
-      `${process.env.REACT_NATIVE_API_URL}:${process.env.REACT_NATIVE_API_PORT}/game/${quizId}/create`
-    );
+    const response = await axiosInstance.get(`/game/${quizId}/create`);
 
-    if (!response.ok) {
+    if (!response) {
       throw new Error(`HTTP error! Status: ${response.status}`);
     }
 
-    const json = await response.json();
-    return json;
+    const data = await response.data;
+    return data;
   } catch (error) {
     Toast.show({
       type: 'error',
