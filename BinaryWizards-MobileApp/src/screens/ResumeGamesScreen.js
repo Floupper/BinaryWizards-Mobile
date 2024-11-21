@@ -1,7 +1,7 @@
 import React from "react";
 import { View, Text, TextInput, StyleSheet } from "react-native";
 import { styleContainer } from "../styles/container";
-import { checkGameExists } from "../services/requests";
+import { checkGameExists } from "../services/startRequests";
 import Toast from "react-native-toast-message";
 import { useNavigation } from "@react-navigation/native";
 import PrimaryButton from "../components/PrimaryButton";
@@ -16,7 +16,7 @@ export default function JoinAndListGamesScreen() {
     if (gameId.trim()) {
       const response = await checkGameExists(gameId);
       if (response) {
-        navigate("Questions", { gameId: gameId, question: response });
+        navigate("Questions", { gameId: gameId, question: response, quizId: response.quiz_id });
       } else {
         Toast.show({
           type: "error",

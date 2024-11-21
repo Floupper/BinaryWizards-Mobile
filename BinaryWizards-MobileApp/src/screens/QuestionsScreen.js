@@ -2,8 +2,8 @@ import React, { useEffect, useState, useCallback } from "react";
 import QuestionComponent from "../components/QuestionComponent";
 import { Text, View } from "react-native";
 import PrimaryButton from "../components/PrimaryButton";
-import { fetchQuestion, sendAnswer } from "../services/requests";
-import { useNavigation, useFocusEffect } from "@react-navigation/native";
+import { fetchQuestion, sendAnswer } from "../services/questionsRequests";
+import { useNavigation } from "@react-navigation/native";
 import { styleContainer } from "../styles/container";
 import { styleButton } from "../styles/buttons";
 import HomeButton from "../components/HomeButton";
@@ -11,8 +11,8 @@ import Toast from 'react-native-toast-message';
 import GenericClipboard from "../components/GenericClipboard";
 
 export default function QuestionScreen({ route }) {
-  const { gameId } = route.params;
-  const [quizId, setQuizId] = useState("");
+  const [gameId, setGameId] = useState(route.params.gameId);
+  const [quizId, setQuizId] = useState(route.params.quizId);
   const [question, setQuestion] = useState("");
   const [questionAnswer, setQuestionAnswer] = useState(null);
 
@@ -24,10 +24,12 @@ export default function QuestionScreen({ route }) {
   };
 
   const fetchAndSetQuestion = async () => {
-    const question_result = await fetchQuestion({ gameId: gameId }); // Change IP address to your own
+    const currentGameId = route.params.gameId;
+    const question_result = await fetchQuestion({ gameId: currentGameId });
     if (question_result.game_finished) {
       navigation.navigate("End", {
-        gameId: gameId,
+        quizId: quizId,
+        gameId: currentGameId,
         correct_answers_nb: question_result.correct_answers_nb,
         nb_questions_total: question_result.nb_questions_total,
       });
@@ -38,14 +40,9 @@ export default function QuestionScreen({ route }) {
   };
 
   useEffect(() => {
+    setGameId(route.params.gameId);
     fetchAndSetQuestion();
-  }, []);
-
-  useFocusEffect(
-    useCallback(() => {
-      fetchAndSetQuestion();
-    }, [])
-  );
+  }, [route.params.gameId]);
 
   onSelectedAnswer = async (index) => {
     try {
@@ -61,17 +58,17 @@ export default function QuestionScreen({ route }) {
       } else {
         console.error("Error: API returned null or undefined.");
         Toast.show({
-          type: 'error',
-          text1: 'Error',
-          text2: 'Failed to submit your answer. Please try again.',
+          type: "error",
+          text1: "Error",
+          text2: "Failed to submit your answer. Please try again.",
         });
       }
     } catch (error) {
       console.error("Error:", error);
       Toast.show({
-        type: 'error',
-        text1: 'Error',
-        text2: 'An error occurred while submitting your answer.',
+        type: "error",
+        text1: "Error",
+        text2: "An error occurred while submitting your answer.",
       });
     }
   };
@@ -88,9 +85,7 @@ export default function QuestionScreen({ route }) {
         <GenericClipboard text="Quiz id" id={quizId} />
       </View>
       <View style={styleContainer.infoContainer}>
-        <Text>
-          Score : {question.correct_answers_nb}
-        </Text>
+        <Text>Score : {question.correct_answers_nb}</Text>
         <Text>
           Question : {question.question_index}/{question.nb_questions_total}
         </Text>
