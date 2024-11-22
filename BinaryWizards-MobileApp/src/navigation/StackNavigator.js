@@ -6,6 +6,7 @@ import QuestionScreen from "../screens/QuestionsScreen";
 import EndScreen from "../screens/EndScreen";
 import CreateGame from "../screens/CreateGame";
 import ResumeGamesScreen from "../screens/ResumeGamesScreen";
+import Signup from "../screens/Signup";
 
 const Stack = createNativeStackNavigator();
 
@@ -41,6 +42,12 @@ export default function StackNavigator() {
                 name="End"
                 component={EndScreen}
                 options={{ headerShown: false }
+                }
+            />
+            <Stack.Screen
+                name="Signup"
+                component={Signup}
+                options={{ headerShown: true, title: "Sign Up" }
                 }
             />
         </Stack.Navigator>
