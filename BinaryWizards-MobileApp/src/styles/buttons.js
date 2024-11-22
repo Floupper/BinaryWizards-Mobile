@@ -12,6 +12,12 @@ export const styleButton = StyleSheet.create({
     margin: 10,
     borderRadius: 10,
     alignItems: "center",
+  },
+  homeButton:{
+    margin: 10,
+    flexDirection: "row",
+    alignItems: "center",
+    alignSelf: "flex-start"
   }
 });
 

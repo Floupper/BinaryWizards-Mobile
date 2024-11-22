@@ -43,7 +43,7 @@ export default function EndScreen({ route }) {
         />
         <PrimaryButton
           disabled={false}
-          text={"Restart quiz"}
+          text={"Restart game"}
           onPress={playAgain}
           style={styleButton.button}
         />
