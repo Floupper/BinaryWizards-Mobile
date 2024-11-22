@@ -34,7 +34,18 @@ axiosInstance.interceptors.request.use(
 );
 
 axiosInstance.interceptors.response.use(
-    (response) => response,
+    (response) => {
+        if (response.status === 401) {
+            Toast.show({
+                type: 'error',
+                text1: 'Error',
+                text2: 'Unauthorized. Please login again.',
+            });
+            // TODO: Add navigate to login page
+            return;
+        }
+        return response;
+    },
     (error) => {
         const message = error.response?.data?.message || error.message || 'Unknown error occurred';
         if (error.response) {
