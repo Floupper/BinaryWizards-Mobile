@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, TextInput, StyleSheet } from 'react-native';
 import { styleContainer } from '../styles/container';
-import { createGame } from '../services/startRequests';
+import { createGame } from '../services/gamesRequests';
 import Toast from 'react-native-toast-message';
 import { useNavigation } from '@react-navigation/native';
 import PrimaryButton from '../components/PrimaryButton';
