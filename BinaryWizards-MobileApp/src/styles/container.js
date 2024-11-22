@@ -60,5 +60,12 @@ export const styleContainer = StyleSheet.create({
     margin: 10,
     padding: 10,
     borderRadius: 10,
-  }
+  },
+  topBar: {
+    flexDirection: "row",
+    backgroundColor: "transparent",
+    justifyContent: "flex-end",
+    alignItems: "center",
+    padding: 10,
+  },
 });

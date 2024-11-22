@@ -12,7 +12,7 @@ export const styleButton = StyleSheet.create({
     margin: 10,
     borderRadius: 10,
     alignItems: "center",
-  },
+  }
 });
 
 export const determineButtonStyle = (index, userAnswerIndex, correctAnswer) => {

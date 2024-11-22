@@ -25,5 +25,9 @@ export const styleText = StyleSheet.create({
   },
   secondary: {
     color:"#3552b0"
+  },
+  topBarText:{
+    color: "white",
+    fontWeight: "bold",
   }
 });
