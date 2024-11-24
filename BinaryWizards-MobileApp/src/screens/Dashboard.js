@@ -19,7 +19,6 @@ export default function Dashboard() {
           const value = await AsyncStorage.getItem("userToken");
           if (!value) {
             navigation.navigate("Home");
-            console.log("No token found, redirecting to Home");
             return;
           }
 
@@ -27,7 +26,6 @@ export default function Dashboard() {
           if (fetchedQuizzes) {
             setQuizzes(fetchedQuizzes);
           } else {
-            console.log("No quizzes found");
             setQuizzes([]);
           }
         } catch (error) {
