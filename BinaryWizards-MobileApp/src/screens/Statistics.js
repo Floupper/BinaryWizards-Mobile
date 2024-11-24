@@ -19,7 +19,6 @@ export default function Statistics() {
           const value = await AsyncStorage.getItem("userToken");
           if (!value) {
             navigation.navigate("Home");
-            console.log("No token found, redirecting to Home");
             return;
           }
 
@@ -27,7 +26,6 @@ export default function Statistics() {
           if (fetchedGames) {
             setGames(fetchedGames);
           } else {
-            console.log("No games found");
             setGames([]);
           }
         } catch (error) {

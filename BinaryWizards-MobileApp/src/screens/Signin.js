@@ -23,8 +23,6 @@ export default function Signin() {
         setPassword("");
       }
     });
-
-    console.log(res)
   };
 
   return (
