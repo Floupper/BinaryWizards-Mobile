@@ -1,19 +1,19 @@
 import { View, Text, ScrollView } from "react-native";
 import { useNavigation, useFocusEffect } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import React from "react";
+import React, { useState, useCallback } from "react";
 import IconButton from "../components/IconButton";
 import { styleContainer } from "../styles/container";
 import { getGames } from "../services/userRequests";
 import GameListItem from "../components/GameListItem";
 
 export default function Statistics() {
-  const [games, setGames] = React.useState([]);
+  const [games, setGames] = useState([]);
 
   const navigation = useNavigation();
 
   useFocusEffect(
-    React.useCallback(() => {
+    useCallback(() => {
       const fetchGames = async () => {
         try {
           const value = await AsyncStorage.getItem("userToken");

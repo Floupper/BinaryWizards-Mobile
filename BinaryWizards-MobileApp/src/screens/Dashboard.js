@@ -2,18 +2,18 @@ import { View, Text, ScrollView } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { useFocusEffect } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import React from "react";
+import React, { useState, useCallback } from "react";
 import { styleContainer } from "../styles/container";
 import { getQuizzes } from "../services/userRequests";
 import QuizListItem from "../components/QuizListItem";
 import { styleText } from "../styles/text";
 
 export default function Dashboard() {
-  const [quizzes, setQuizzes] = React.useState([]); // État pour stocker les quizzes
+  const [quizzes, setQuizzes] = useState([]); // État pour stocker les quizzes
   const navigation = useNavigation();
 
   useFocusEffect(
-    React.useCallback(() => {
+    useCallback(() => {
       const fetchQuizzes = async () => {
         try {
           const value = await AsyncStorage.getItem("userToken");

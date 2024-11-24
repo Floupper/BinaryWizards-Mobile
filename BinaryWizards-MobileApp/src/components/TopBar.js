@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useState } from "react";
 import { View } from "react-native";
 import { styleContainer } from "../styles/container";
 import { styleButton } from "../styles/buttons";
@@ -13,7 +13,7 @@ export default function TopBar() {
   const navigation = useNavigation();
 
   useFocusEffect(
-    React.useCallback(() => {
+    useCallback(() => {
       const refreshToken = async () => {
         try {
           const value = await AsyncStorage.getItem("userToken");

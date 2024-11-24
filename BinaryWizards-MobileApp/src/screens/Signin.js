@@ -1,6 +1,6 @@
 import { View, TextInput } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import React from "react";
+import React, { useState } from "react";
 import { styleInput } from "../styles/input";
 import { styleContainer } from "../styles/container";
 import PrimaryButton from "../components/PrimaryButton";
@@ -10,8 +10,8 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function Signin() {
 
-  const [username, setUsername] = React.useState("");
-  const [password, setPassword] = React.useState("");
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
 
   const navigation = useNavigation();
 
