@@ -6,7 +6,7 @@ import { styleContainer } from "../styles/container";
 import PrimaryButton from "../components/PrimaryButton";
 import { styleButton } from "../styles/buttons";
 import { signIn } from "../services/userRequests";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { _storeUserToken } from "../utils/asyncStorage";
 
 export default function Signin() {
 
@@ -17,7 +17,7 @@ export default function Signin() {
 
   const handlePress = () => {const res = signIn({ username, password }).then((data) => {
       if (data) {
-        AsyncStorage.setItem("userToken", data.token);
+        _storeUserToken(data.token);
         navigation.navigate("Home");
       } else {
         setPassword("");

@@ -1,5 +1,5 @@
 import axios from 'axios';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import { _retrieveUserToken } from './asyncStorage';
 import Toast from 'react-native-toast-message';
 import { REACT_NATIVE_API_URL, REACT_NATIVE_API_PORT } from '@env';
 
@@ -9,17 +9,6 @@ const axiosInstance = axios.create({
         'Content-Type': 'application/json',
     },
 });
-
-async function _retrieveUserToken() {
-    try {
-        const value = await AsyncStorage.getItem('userToken');
-        if (value !== null) {
-            return value;
-        }
-    } catch (error) {
-        console.error('Error retrieving user token:', error);
-    }
-};
 
 axiosInstance.interceptors.request.use(
     async (config) => {

@@ -1,12 +1,13 @@
 import { View, Text, ScrollView } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { useFocusEffect } from "@react-navigation/native";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import React, { useState, useCallback } from "react";
 import { styleContainer } from "../styles/container";
 import { getQuizzes } from "../services/userRequests";
 import QuizListItem from "../components/QuizListItem";
 import { styleText } from "../styles/text";
+import Toast from "react-native-toast-message";
+import { _retrieveUserToken } from "../utils/asyncStorage";
 
 export default function Dashboard() {
   const [quizzes, setQuizzes] = useState([]);
@@ -16,7 +17,7 @@ export default function Dashboard() {
     useCallback(() => {
       const fetchQuizzes = async () => {
         try {
-          const value = await AsyncStorage.getItem("userToken");
+          const value = await _retrieveUserToken();
           if (!value) {
             navigation.navigate("Home");
             return;
@@ -30,6 +31,11 @@ export default function Dashboard() {
           }
         } catch (error) {
           console.error("Error fetching quizzes or refreshing token:", error);
+          Toast.show({
+            type: "error",
+            text1: "Error fetching quizzes",
+            text2: "Please try again",
+          });
         }
       };
 

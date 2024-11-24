@@ -1,6 +1,6 @@
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import axiosInstance from "../utils/axiosInstance";
 import Toast from "react-native-toast-message";
+import { _retrieveUserToken } from "../utils/asyncStorage";
 
 export const signIn = async ({ username, password }) => {
   if (!username || !password) {
@@ -48,9 +48,10 @@ export const signIn = async ({ username, password }) => {
 
 export const getGames = async () => {
   try {
+    const userToken = await _retrieveUserToken();
     const response = await axiosInstance.get(`/user/played_games`,{
       headers: {
-        Authorization: `Bearer ${await AsyncStorage.getItem("userToken")}`,
+        Authorization: `Bearer ${userToken}`,
       },
     });
 
@@ -85,9 +86,10 @@ export const getGames = async () => {
 
 export const getQuizzes = async () => {
   try {
+    const userToken = await _retrieveUserToken();
     const response = await axiosInstance.get(`/user/quizzes`,{
       headers: {
-        Authorization: `Bearer ${await AsyncStorage.getItem("userToken")}`,
+        Authorization: `Bearer ${userToken}`,
       },
     });
 

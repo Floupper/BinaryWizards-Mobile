@@ -1,11 +1,11 @@
 import { View, Text, ScrollView } from "react-native";
 import { useNavigation, useFocusEffect } from "@react-navigation/native";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import React, { useState, useCallback } from "react";
-import IconButton from "../components/IconButton";
+import Toast from "react-native-toast-message";
 import { styleContainer } from "../styles/container";
 import { getGames } from "../services/userRequests";
 import GameListItem from "../components/GameListItem";
+import { _retrieveUserToken } from "../utils/asyncStorage";
 
 export default function Statistics() {
   const [games, setGames] = useState([]);
@@ -16,7 +16,7 @@ export default function Statistics() {
     useCallback(() => {
       const fetchGames = async () => {
         try {
-          const value = await AsyncStorage.getItem("userToken");
+          const value = await _retrieveUserToken();
           if (!value) {
             navigation.navigate("Home");
             return;
@@ -30,6 +30,11 @@ export default function Statistics() {
           }
         } catch (error) {
           console.error("Error fetching games or refreshing token:", error);
+          Toast.show({
+            type: "error",
+            text1: "Error fetching games",
+            text2: "Please try again",
+          });
         }
       };
 

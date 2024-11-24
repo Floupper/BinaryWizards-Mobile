@@ -1,6 +1,5 @@
 import Toast from "react-native-toast-message";
 import axiosInstance from "../utils/axiosInstance";
-import axios from "axios";
 
 export async function checkGameExists(gameId) {
   try {
@@ -41,6 +40,11 @@ export async function createGame(quizId) {
       text2: 'An error occured while creating the game',
     });
     console.error("Error creating game:", error);
+    Toast.show({
+      type: "error",
+      text1: "Error",
+      text2: "An error occured while creating the game",
+    });
     return null;
   }
 }
