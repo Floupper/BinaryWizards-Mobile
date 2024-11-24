@@ -1,8 +1,5 @@
 import React from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import Icon from "react-native-vector-icons/AntDesign";
-
 import HomeScreen from "../screens/HomeScreen";
 import QuestionScreen from "../screens/QuestionsScreen";
 import EndScreen from "../screens/EndScreen";
@@ -10,44 +7,9 @@ import CreateGame from "../screens/CreateGame";
 import ResumeGamesScreen from "../screens/ResumeGamesScreen";
 import Signup from "../screens/Signup";
 import Signin from "../screens/Signin";
-import Dashboard from "../screens/Dashboard";
-import Statistics from "../screens/Statistics";
+import DashboardTab from "./DashboardTab";
 
 const Stack = createNativeStackNavigator();
-const Tab = createBottomTabNavigator();
-
-const DashboardTab = () => {
-  return (
-    <Tab.Navigator
-      screenOptions={({ route }) => ({
-        tabBarIcon: ({ color, size }) => {
-          let iconName;
-
-          if (route.name === "Dashboard") {
-            iconName = "home";
-          } else if (route.name === "Statistics") {
-            iconName = "linechart";
-          }
-
-          return <Icon name={iconName} size={size} color={color} />;
-        },
-        tabBarActiveTintColor: "#3552b0",
-        tabBarInactiveTintColor: "gray",
-      })}
-    >
-      <Tab.Screen
-        name="Dashboard"
-        component={Dashboard}
-        options={{ headerShown: false }}
-      />
-      <Tab.Screen
-        name="Statistics"
-        component={Statistics}
-        options={{ headerShown: false }}
-      />
-    </Tab.Navigator>
-  );
-};
 
 export default function StackNavigator() {
   return (
