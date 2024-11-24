@@ -29,5 +29,10 @@ export const styleText = StyleSheet.create({
   topBarText:{
     color: "white",
     fontWeight: "bold",
-  }
+  },
+  gameListItemText: {
+    color: "black",
+    textAlign: "center",
+    margin: 10,
+  },
 });

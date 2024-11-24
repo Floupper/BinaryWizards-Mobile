@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, Text, TextInput, StyleSheet } from 'react-native';
 import { styleContainer } from '../styles/container';
 import { createGame } from '../services/gamesRequests';
@@ -8,7 +8,7 @@ import PrimaryButton from '../components/PrimaryButton';
 import { styleButton } from '../styles/buttons';
 
 export default function CreateGame() {
-    const [quizId, setQuizId] = React.useState('');
+    const [quizId, setQuizId] = useState('');
     const { navigate } = useNavigation();
 
     const handlePress = async () => {

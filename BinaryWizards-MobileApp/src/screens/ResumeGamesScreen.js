@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { View, Text, TextInput, StyleSheet } from "react-native";
 import { styleContainer } from "../styles/container";
 import { checkGameExists } from "../services/gamesRequests";
@@ -9,7 +9,7 @@ import { styleButton } from "../styles/buttons";
 import GameList from "../components/GameList";
 
 export default function JoinAndListGamesScreen() {
-  const [gameId, setGameId] = React.useState("");
+  const [gameId, setGameId] = useState("");
   const { navigate } = useNavigation();
 
   const handlePress = async () => {
