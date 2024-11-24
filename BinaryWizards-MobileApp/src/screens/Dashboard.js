@@ -9,7 +9,7 @@ import QuizListItem from "../components/QuizListItem";
 import { styleText } from "../styles/text";
 
 export default function Dashboard() {
-  const [quizzes, setQuizzes] = useState([]); // État pour stocker les quizzes
+  const [quizzes, setQuizzes] = useState([]);
   const navigation = useNavigation();
 
   useFocusEffect(
