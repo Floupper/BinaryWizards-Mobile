@@ -54,7 +54,6 @@ export const styleContainer = StyleSheet.create({
   },
   gameList: {
     flex: 1,
-    justifyContent: "center",
     alignItems: "center",
     border: "1px solid black",
     margin: 10,
@@ -67,5 +66,35 @@ export const styleContainer = StyleSheet.create({
     justifyContent: "flex-end",
     alignItems: "center",
     padding: 10,
+  },
+  gameListColumns:{
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    margin: 10,
+    padding: 10,
+  },
+  gameListItem: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    padding: 10,
+    margin: 5,
+    border: "1px solid lightgray",
+    borderRadius: 10,
+  },
+  quizListItem: {
+    flexDirection: "column",
+    justifyContent: "space-between",
+    alignItems: "center",
+    padding: 10,
+    margin: 5,
+    border: "1px solid lightgray",
+    borderRadius: 10,
+  },
+  quizListItemRow: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center"
   },
 });
