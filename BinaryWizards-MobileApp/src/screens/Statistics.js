@@ -55,12 +55,7 @@ export default function Statistics() {
         </View>
 
         <ScrollView
-          style={{
-            flex: 1,
-            margin: 10,
-            padding: 10,
-            border: "1px solid black",
-          }}
+          style={styleContainer.scrollView}
         >
           {games.length > 0 ? (
             games.map((game, index) => (

@@ -55,7 +55,7 @@ export const styleContainer = StyleSheet.create({
   gameList: {
     flex: 1,
     alignItems: "center",
-    border: "1px solid black",
+    border: "0.1rem solid black",
     margin: 10,
     padding: 10,
     borderRadius: 10,
@@ -80,7 +80,7 @@ export const styleContainer = StyleSheet.create({
     alignItems: "center",
     padding: 10,
     margin: 5,
-    border: "1px solid lightgray",
+    border: "0.1rem solid lightgray",
     borderRadius: 10,
   },
   quizListItem: {
@@ -89,7 +89,7 @@ export const styleContainer = StyleSheet.create({
     alignItems: "center",
     padding: 10,
     margin: 5,
-    border: "1px solid lightgray",
+    border: "0.1rem solid lightgray",
     borderRadius: 10,
   },
   quizListItemRow: {
@@ -97,4 +97,10 @@ export const styleContainer = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center"
   },
+  scrollView:{
+    flex: 1,
+    margin: 10,
+    padding: 10,
+    border: "0.1rem solid black",
+  }
 });

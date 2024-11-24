@@ -44,7 +44,7 @@ export default function Dashboard() {
       <Text style={styleText.title}>
         My Quizzes
       </Text>
-      <ScrollView>
+      <ScrollView style={styleContainer.scrollView}>
         {quizzes.length > 0 ? (
           quizzes.map((quiz, index) => (
             <QuizListItem key={index} id={quiz.id} difficulty={quiz.difficulty} nb_questions={quiz.nb_questions} average_score={quiz.average_score} nb_played={quiz.nb_played} />
