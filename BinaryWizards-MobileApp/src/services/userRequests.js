@@ -1,6 +1,6 @@
 import axiosInstance from "../utils/axiosInstance";
 import Toast from "react-native-toast-message";
-import { _retrieveUserToken } from "../utils/asyncStorage";
+import { _retrieveUserToken, logout } from "../utils/asyncStorage";
 
 export const signIn = async ({ username, password }) => {
   if (!username || !password) {
@@ -32,7 +32,7 @@ export const signIn = async ({ username, password }) => {
       Toast.show({
         type: "error",
         text1: "Error",
-        text2: error.response.data?.error || "An unknown error occurred", // Message spécifique de l'API
+        text2: error.response.data?.error || "An unknown error occurred",
       });
     } else {
       Toast.show({
@@ -46,9 +46,12 @@ export const signIn = async ({ username, password }) => {
   }
 };
 
-export const getGames = async () => {
+export const getGames = async (navigation) => {
   try {
-    const userToken = await _retrieveUserToken();
+    const userToken = await _retrieveUserToken(navigation);
+    if(!userToken) {
+      return null;
+    }
     const response = await axiosInstance.get(`/user/played_games`,{
       headers: {
         Authorization: `Bearer ${userToken}`,
@@ -84,9 +87,12 @@ export const getGames = async () => {
   }
 }
 
-export const getQuizzes = async () => {
+export const getQuizzes = async (navigation) => {
   try {
-    const userToken = await _retrieveUserToken();
+    const userToken = await _retrieveUserToken(navigation);
+    if(!userToken) {
+      return null
+    }
     const response = await axiosInstance.get(`/user/quizzes`,{
       headers: {
         Authorization: `Bearer ${userToken}`,
@@ -99,6 +105,7 @@ export const getQuizzes = async () => {
         text1: "Error",
         text2: response.data?.error || "An unknown error occurred",
       });
+      logout(navigation);
       throw new Error(`HTTP error! Status: ${response.status}`);
     }
 
@@ -118,6 +125,7 @@ export const getQuizzes = async () => {
         text2: error.message || "An unknown error occurred",
       });
     }
+    logout(navigation);
 
     return null;
   }

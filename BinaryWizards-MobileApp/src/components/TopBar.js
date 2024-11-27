@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { View } from "react-native";
 import { styleContainer } from "../styles/container";
 import { styleButton } from "../styles/buttons";
@@ -7,7 +7,6 @@ import { styleText } from "../styles/text";
 import { useNavigation, useFocusEffect } from "@react-navigation/native";
 import { _retrieveUserToken } from "../utils/asyncStorage";
 import IconButton from "./IconButton";
-import Toast from "react-native-toast-message";
 import { logout } from "../utils/asyncStorage";
 
 export default function TopBar() {
@@ -18,15 +17,15 @@ export default function TopBar() {
     useCallback(() => {
       const refreshToken = async () => {
         try {
-          const value = await _retrieveUserToken();
+          const value = await _retrieveUserToken(navigation);
+          if(!value) {
+            setUserToken(null);
+            logout(navigation);
+            return;
+          }
           setUserToken(value);
         } catch (error) {
           console.error("Error refreshing token:", error);
-          Toast.show({
-            type: "error",
-            text1: "Error refreshing token",
-            text2: "Please try again",
-          });
         }
       };
       refreshToken();

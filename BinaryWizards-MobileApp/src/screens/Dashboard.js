@@ -7,7 +7,7 @@ import { getQuizzes } from "../services/userRequests";
 import QuizListItem from "../components/QuizListItem";
 import { styleText } from "../styles/text";
 import Toast from "react-native-toast-message";
-import { _retrieveUserToken } from "../utils/asyncStorage";
+import { _retrieveUserToken, logout } from "../utils/asyncStorage";
 
 export default function Dashboard() {
   const [quizzes, setQuizzes] = useState([]);
@@ -15,19 +15,19 @@ export default function Dashboard() {
 
   useFocusEffect(
     useCallback(() => {
-      const fetchQuizzes = async () => {
+      const fetchQuizzes = async (navigation) => {
         try {
-          const value = await _retrieveUserToken();
+          const value = await _retrieveUserToken(navigation);
           if (!value) {
-            navigation.navigate("Home");
-            return;
+            logout(navigation);
           }
 
-          const fetchedQuizzes = await getQuizzes();
+          const fetchedQuizzes = await getQuizzes(navigation);
           if (fetchedQuizzes) {
             setQuizzes(fetchedQuizzes);
           } else {
             setQuizzes([]);
+            logout(navigation);
           }
         } catch (error) {
           console.error("Error fetching quizzes or refreshing token:", error);
@@ -39,7 +39,7 @@ export default function Dashboard() {
         }
       };
 
-      fetchQuizzes();
+      fetchQuizzes(navigation);
     }, [])
   );
 
