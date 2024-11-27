@@ -35,7 +35,7 @@ export async function checkUsernameAvailability({ username }) {
             throw new Error(`HTTP error! Status: ${response.status}`);
         }
 
-        const data = await response.data.available;
+        const data = await response.data.is_available;
         return data;
     } catch (error) {
         Toast.show({
