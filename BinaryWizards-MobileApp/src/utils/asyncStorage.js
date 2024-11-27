@@ -48,7 +48,6 @@ export async function _storeUserToken(token) {
 export const logout = async (navigation) => {
   try {
     await _removeUserToken();
-    console.log("Logged out");
     navigation.navigate("Home");
   } catch (error) {
     console.error("Error logging out:", error);
