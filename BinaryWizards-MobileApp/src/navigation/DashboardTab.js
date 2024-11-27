@@ -1,12 +1,15 @@
 import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Icon from "react-native-vector-icons/AntDesign";
-import Dashboard from "../screens/Dashboard";
-import Statistics from "../screens/Statistics";
+import MyQuizzes from "../screens/MyQuizzes";
+import GamesHistory from "../screens/GamesHistory";
 
 const Tab = createBottomTabNavigator();
 
 export default function DashboardTab() {
+  const quizzesRoute = "My quizzes";
+  const gamesRoute = "My games";
+
   return (
     <Tab.Navigator
 
@@ -38,15 +41,15 @@ export default function DashboardTab() {
 
       {/* Define the "Dashboard" tab */}
       <Tab.Screen
-        name="Dashboard"
-        component={Dashboard}
+        name={quizzesRoute}
+        component={MyQuizzes}
         options={{ headerShown: false }}
       />
 
       {/* Define the "Statistics" tab */}
       <Tab.Screen
-        name="Statistics"
-        component={Statistics}
+        name={gamesRoute}
+        component={GamesHistory}
         options={{ headerShown: false }}
       />
     </Tab.Navigator>

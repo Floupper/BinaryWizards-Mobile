@@ -10,7 +10,6 @@ export default function IconButton({ onPress, color, icon, text }) {
         style={{
           justifyContent: "center",
           alignItems: "center",
-          padding: 10,
         }}
       >
         <Icon name={icon} size={30} color={color} />
