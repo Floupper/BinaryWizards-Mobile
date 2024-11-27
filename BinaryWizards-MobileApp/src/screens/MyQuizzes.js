@@ -9,7 +9,7 @@ import { styleText } from "../styles/text";
 import Toast from "react-native-toast-message";
 import { _retrieveUserToken, logout } from "../utils/asyncStorage";
 
-export default function Dashboard() {
+export default function MyQuizzes() {
   const [quizzes, setQuizzes] = useState([]);
   const navigation = useNavigation();
 
@@ -51,7 +51,7 @@ export default function Dashboard() {
       <ScrollView style={styleContainer.scrollView}>
         {quizzes.length > 0 ? (
           quizzes.map((quiz, index) => (
-            <QuizListItem key={index} id={quiz.id} difficulty={quiz.difficulty} nb_questions={quiz.nb_questions} average_score={quiz.average_score} nb_played={quiz.nb_played} />
+            <QuizListItem key={index} id={quiz.id} difficulty={quiz.difficulty} title={quiz.title} data={quiz.date_game_creation}/>
           ))
         ) : (
           <Text>No quizzes created yet.</Text>
