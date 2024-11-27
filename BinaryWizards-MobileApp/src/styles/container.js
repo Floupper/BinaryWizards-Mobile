@@ -68,11 +68,28 @@ export const styleContainer = StyleSheet.create({
     padding: 10,
   },
   gameListColumns:{
-    display: "flex",
     flexDirection: "row",
     justifyContent: "space-between",
-    margin: 10,
+    alignItems: "center",
+    margin: 5,
     padding: 10,
+  },
+  quizListItem: {
+    justifyContent: "space-between",
+    alignItems: "center",
+    padding: 10,
+    margin: 5,
+    border: "0.1rem solid lightgray",
+    borderRadius: 10,
+  },
+  scrollView:{
+    flex: 1,
+  },
+  gameListColumns: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    padding: 10,
+    margin:5
   },
   gameListItem: {
     flexDirection: "row",
@@ -83,24 +100,4 @@ export const styleContainer = StyleSheet.create({
     border: "0.1rem solid lightgray",
     borderRadius: 10,
   },
-  quizListItem: {
-    flexDirection: "column",
-    justifyContent: "space-between",
-    alignItems: "center",
-    padding: 10,
-    margin: 5,
-    border: "0.1rem solid lightgray",
-    borderRadius: 10,
-  },
-  quizListItemRow: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center"
-  },
-  scrollView:{
-    flex: 1,
-    margin: 10,
-    padding: 10,
-    border: "0.1rem solid black",
-  }
 });

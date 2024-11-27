@@ -1,22 +1,25 @@
 import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Icon from "react-native-vector-icons/AntDesign";
-import Dashboard from "../screens/Dashboard";
-import Statistics from "../screens/Statistics";
+import MyQuizzes from "../screens/MyQuizzes";
+import GamesHistory from "../screens/GamesHistory";
 
 const Tab = createBottomTabNavigator();
 
 export default function DashboardTab() {
+  const quizzesRoute = "My quizzes";
+  const gamesRoute = "My games";
+
   return (
     <Tab.Navigator
       screenOptions={({ route }) => ({
         tabBarIcon: ({ color, size }) => {
           let iconName;
 
-          if (route.name === "Dashboard") {
-            iconName = "home";
-          } else if (route.name === "Statistics") {
-            iconName = "linechart";
+          if (route.name === quizzesRoute) {
+            iconName = "barschart";
+          } else if (route.name === gamesRoute) {
+            iconName = "database";
           }
 
           return <Icon name={iconName} size={size} color={color} />;
@@ -26,13 +29,13 @@ export default function DashboardTab() {
       })}
     >
       <Tab.Screen
-        name="Dashboard"
-        component={Dashboard}
+        name={quizzesRoute}
+        component={MyQuizzes}
         options={{ headerShown: false }}
       />
       <Tab.Screen
-        name="Statistics"
-        component={Statistics}
+        name={gamesRoute}
+        component={GamesHistory}
         options={{ headerShown: false }}
       />
     </Tab.Navigator>

@@ -6,8 +6,9 @@ import { styleContainer } from "../styles/container";
 import { getGames } from "../services/userRequests";
 import GameListItem from "../components/GameListItem";
 import { _retrieveUserToken, logout } from "../utils/asyncStorage";
+import { styleText } from "../styles/text";
 
-export default function Statistics() {
+export default function GamesHistory() {
   const [games, setGames] = useState([]);
   const navigation = useNavigation();
 
@@ -43,37 +44,33 @@ export default function Statistics() {
 
   return (
     <View style={styleContainer.mainContainer}>
-      <View
-        style={styleContainer.gameIdContainer}
-      >
-        <Text>Games played</Text>
+      <Text style={styleText.title}>Games History</Text>
+      <View style={styleContainer.gameListColumns}>
+        <Text style={{ flex: 1, textAlign: "center" }}>Quiz Id</Text>
+        <Text style={{ flex: 1, textAlign: "center" }}>Date</Text>
+        <Text style={{ flex: 1, textAlign: "center" }}>Score</Text>
+        <Text style={{ flex: 0.3, textAlign: "center" }}></Text>
       </View>
 
-      <View style={{ flex: 5 }}>
-        <View style={styleContainer.gameListColumns}>
-          <Text>Quiz Id</Text>
-          <Text>Game Id</Text>
-          <Text>Score</Text>
-        </View>
-
-        <ScrollView
-          style={styleContainer.scrollView}
-        >
-          {games.length > 0 ? (
-            games.map((game, index) => (
-              <GameListItem
-                key={index}
-                quiz_id={game.quiz_id}
-                game_id={game.game_id}
-                correct_answers_nb={game.correct_answers_nb}
-                current_question_index={game.current_question_index}
-              />
-            ))
-          ) : (
-            <Text>There are no games to resume</Text>
-          )}
-        </ScrollView>
-      </View>
+      <ScrollView style={styleContainer.scrollView}>
+        {games.length > 0 ? (
+          games.map((game, index) => (
+            <GameListItem
+              key={index}
+              quiz_id={game.quiz_id}
+              game_id={game.game_id}
+              correct_answers_nb={game.correct_answers_nb}
+              current_question_index={game.current_question_index}
+              date_game_creation={game.date_game_creation}
+              nb_questions_total={game.nb_questions_total}
+            />
+          ))
+        ) : (
+          <Text style={{ textAlign: "center", marginVertical: 20 }}>
+            There are no games to resume
+          </Text>
+        )}
+      </ScrollView>
     </View>
   );
 }
