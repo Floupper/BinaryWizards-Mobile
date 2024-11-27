@@ -5,8 +5,10 @@ import { styleButton } from "../styles/buttons";
 import SecondaryButton from "./SecondaryButton";
 import { styleText } from "../styles/text";
 import { useNavigation, useFocusEffect } from "@react-navigation/native";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { _retrieveUserToken } from "../utils/asyncStorage";
 import IconButton from "./IconButton";
+import Toast from "react-native-toast-message";
+import { logout } from "../utils/asyncStorage";
 
 export default function TopBar() {
   const [userToken, setUserToken] = useState(null);
@@ -16,15 +18,25 @@ export default function TopBar() {
     useCallback(() => {
       const refreshToken = async () => {
         try {
-          const value = await AsyncStorage.getItem("userToken");
+          const value = await _retrieveUserToken();
           setUserToken(value);
         } catch (error) {
           console.error("Error refreshing token:", error);
+          Toast.show({
+            type: "error",
+            text1: "Error refreshing token",
+            text2: "Please try again",
+          });
         }
       };
       refreshToken();
     }, [])
   );
+
+  const handlePress = async () => {
+    logout(navigation);
+    setUserToken(null);
+  } 
 
   return (
     <View style={styleContainer.topBar}>
@@ -40,15 +52,7 @@ export default function TopBar() {
             <IconButton
               icon="logout"
               color="black"
-              onPress={async () => {
-                try {
-                  await AsyncStorage.removeItem("userToken");
-                  setUserToken(null);
-                  navigation.navigate("Home");
-                } catch (error) {
-                  console.error("Error logging out:", error);
-                }
-              }}
+              onPress={handlePress}
               text="Logout"
             />
             <IconButton
