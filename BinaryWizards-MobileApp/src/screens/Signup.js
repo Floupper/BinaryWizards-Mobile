@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, TextInput } from 'react-native';
+import { View, Text, TextInput } from 'react-native';
 import { styleInput } from '../styles/input';
 import { styleContainer } from '../styles/container';
 import PrimaryButton from "../components/PrimaryButton";
@@ -14,23 +14,22 @@ export default function Signup() {
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const [isUsernameAvailable, setIsUsernameAvailable] = useState(null);
+    const [usernameError, setUsernameError] = useState(false);
+    const [passwordError, setPasswordError] = useState(false);
+    const [confirmPasswordError, setConfirmPasswordError] = useState(false);
+
 
     const navigation = useNavigation();
 
-    const fetchUsernameAvailability = async (username) => {
+    const fetchUsernameAvailability = async () => {
         try {
             const available = await checkUsernameAvailability({ username });
             setIsUsernameAvailable(available);
-            if (available === false) {
-                Toast.show({
-                    type: 'error',
-                    text1: 'Error',
-                    text2: 'Username is already taken.',
-                });
-            } else {
-                setUsername(username);
-            }
+            setUsernameError(!available);
+
+            setUsername(username);
         } catch (error) {
+            setUsernameError(true);
             console.error("Error checking username:", error);
             Toast.show({
                 type: 'error',
@@ -42,6 +41,10 @@ export default function Signup() {
     };
 
     const handlePress = async () => {
+        if (password.length < 8) {
+            setPasswordError(true);
+        }
+
         if (password === confirmPassword) {
             try {
                 const response = await createUser({ username, password });
@@ -55,6 +58,7 @@ export default function Signup() {
                     });
                 }
             } catch (error) {
+                setConfirmPasswordError(true);
                 console.error("Error creating user:", error);
             }
         } else {
@@ -69,10 +73,17 @@ export default function Signup() {
     return (
         <View style={styleContainer.container}>
             <TextInput
-                style={styleInput.input}
+                style={[
+                    styleInput.input,
+                    usernameError && { borderColor: 'red' }
+                ]}
                 placeholder="Username"
                 value={username}
-                onChangeText={fetchUsernameAvailability}
+                onChangeText={(text) => {
+                    setUsername(text);
+                    setUsernameError(false);
+                }}
+                onBlur={fetchUsernameAvailability}
             />
             {isUsernameAvailable === false && (
                 <Text style={{ color: 'red' }}>Username is already taken.</Text>
@@ -80,20 +91,51 @@ export default function Signup() {
             {isUsernameAvailable === true && (
                 <Text style={{ color: 'green' }}>Username is available!</Text>
             )}
+
             <TextInput
-                style={styleInput.input}
+                style={[
+                    styleInput.input,
+                    passwordError && { borderColor: 'red' }
+                ]}
                 placeholder="Password"
                 secureTextEntry
                 value={password}
-                onChangeText={setPassword}
+                onChangeText={(text) => {
+                    setPassword(text);
+                    setPasswordError(false);
+                }}
+                onBlur={() => {
+                    if (password.length < 8) {
+                        setPasswordError(true);
+                    }
+                }}
             />
+            {password.length < 8 && password.length > 0 && (
+                <Text style={{ color: 'red' }}>Password must be at least 8 characters long.</Text>
+            )}
+
             <TextInput
-                style={styleInput.input}
+                style={[
+                    styleInput.input,
+                    confirmPasswordError && { borderColor: 'red' }
+                ]}
                 placeholder="Confirm Password"
                 secureTextEntry
                 value={confirmPassword}
-                onChangeText={setConfirmPassword}
+                onChangeText={(text) => {
+                    setConfirmPassword(text);
+                    setConfirmPasswordError(false);
+                }}
+                onBlur={() => {
+                    if (password !== confirmPassword) {
+                        setConfirmPasswordError(true);
+                    }
+                }}
             />
+            {password !== confirmPassword && confirmPassword.length > 0 && (
+                <Text style={{ color: 'red' }}>Passwords do not match.</Text>
+            )}
+
             <PrimaryButton
                 text="Sign Up"
                 onPress={handlePress}

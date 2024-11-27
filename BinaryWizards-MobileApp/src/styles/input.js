@@ -9,5 +9,6 @@ export const styleInput = StyleSheet.create({
         borderRadius: 10,
         fontSize: 18,
         textAlign: "center",
+        borderColor: "black"
     }
 });
