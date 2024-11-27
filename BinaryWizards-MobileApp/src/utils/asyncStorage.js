@@ -1,12 +1,13 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Toast from "react-native-toast-message";
 
-export async function _retrieveUserToken() {
+export async function _retrieveUserToken(navigation) {
   try {
     const value = await AsyncStorage.getItem("userToken");
-    if (value !== null) {
-      return value;
+    if(value === null) {
+      logout(navigation);
     }
+    return value;
   } catch (error) {
     Toast.show({
       type: "error",
@@ -14,6 +15,7 @@ export async function _retrieveUserToken() {
       text2: "An error occured while retrieving user token",
     });
     console.error("Error retrieving user token:", error);
+    navigation.navigate("Home");
   }
 }
 
@@ -46,6 +48,7 @@ export async function _storeUserToken(token) {
 export const logout = async (navigation) => {
   try {
     await _removeUserToken();
+    console.log("Logged out");
     navigation.navigate("Home");
   } catch (error) {
     console.error("Error logging out:", error);

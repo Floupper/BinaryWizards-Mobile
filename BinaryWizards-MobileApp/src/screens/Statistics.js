@@ -5,28 +5,27 @@ import Toast from "react-native-toast-message";
 import { styleContainer } from "../styles/container";
 import { getGames } from "../services/userRequests";
 import GameListItem from "../components/GameListItem";
-import { _retrieveUserToken } from "../utils/asyncStorage";
+import { _retrieveUserToken, logout } from "../utils/asyncStorage";
 
 export default function Statistics() {
   const [games, setGames] = useState([]);
-
   const navigation = useNavigation();
 
   useFocusEffect(
     useCallback(() => {
-      const fetchGames = async () => {
+      const fetchGames = async (navigation) => {
         try {
-          const value = await _retrieveUserToken();
+          const value = await _retrieveUserToken(navigation);
           if (!value) {
-            navigation.navigate("Home");
-            return;
+            logout(navigation);
           }
 
-          const fetchedGames = await getGames();
+          const fetchedGames = await getGames(navigation);
           if (fetchedGames) {
             setGames(fetchedGames);
           } else {
             setGames([]);
+            logout(navigation);
           }
         } catch (error) {
           console.error("Error fetching games or refreshing token:", error);
@@ -38,7 +37,7 @@ export default function Statistics() {
         }
       };
 
-      fetchGames();
+      fetchGames(navigation);
     }, [])
   );
 

@@ -2,6 +2,7 @@ import axios from 'axios';
 import { _retrieveUserToken } from './asyncStorage';
 import Toast from 'react-native-toast-message';
 import { REACT_NATIVE_API_URL, REACT_NATIVE_API_PORT } from '@env';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const axiosInstance = axios.create({
     baseURL: `${REACT_NATIVE_API_URL}:${REACT_NATIVE_API_PORT}`,
@@ -12,7 +13,7 @@ const axiosInstance = axios.create({
 
 axiosInstance.interceptors.request.use(
     async (config) => {
-        const userToken = await _retrieveUserToken();
+        const userToken = await AsyncStorage.getItem('userToken'); //I don't use _retrieveUserToken() here because it's called before the user is logged in
         if (userToken) {
             config.headers['Authorization'] = `Bearer ${userToken}`;
         }
