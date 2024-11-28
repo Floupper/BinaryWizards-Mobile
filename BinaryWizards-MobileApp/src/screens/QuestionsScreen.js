@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useEffect, useState } from "react";
 import QuestionComponent from "../components/QuestionComponent";
 import { Text, View } from "react-native";
 import PrimaryButton from "../components/PrimaryButton";
@@ -80,9 +80,6 @@ export default function QuestionScreen({ route }) {
       </View>
       <View>
         <GenericClipboard text="Game id" id={gameId} />
-      </View>
-      <View>
-        <GenericClipboard text="Quiz id" id={quizId} />
       </View>
       <View style={styleContainer.infoContainer}>
         <Text>Score : {question.correct_answers_nb}</Text>
