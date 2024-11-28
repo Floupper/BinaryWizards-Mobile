@@ -22,9 +22,6 @@ export default function EndScreen({ route }) {
 
   return (
     <View style={styleContainer.mainContainer}>
-      <View style={styleContainer.gameIdContainer}>
-        <GenericClipboard text={"Quiz id"} id={quizId} />
-      </View>
       <View>
         <GenericClipboard text={"Game id"} id={gameId} />
       </View>
