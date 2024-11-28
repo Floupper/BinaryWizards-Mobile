@@ -3,7 +3,6 @@ import { StyleSheet } from "react-native";
 export const styleContainer = StyleSheet.create({
   mainContainer: {
     flex: 1,
-    backgroundColor: "white",
   },
   quizIdContainer: {
     display: "flex",
@@ -26,12 +25,10 @@ export const styleContainer = StyleSheet.create({
     backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "center",
-    paddingHorizontal: 10,
+    width: "100%",
   },
   contentContainer: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
+    padding: 10
   },
   infoContainer: {
     flexDirection: "row",

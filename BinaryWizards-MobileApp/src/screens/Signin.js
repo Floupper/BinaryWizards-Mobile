@@ -8,7 +8,7 @@ import { signIn } from "../services/userRequests";
 import { _storeUserToken } from "../utils/asyncStorage";
 import { LinearGradient } from "expo-linear-gradient";
 import SigninSvg from "../../assets/signin.svg";
-import { signIngBackgroundColors, stylesSignin } from "../styles/signin";
+import { signBackgroundColors, stylesSignin } from "../styles/signin";
 
 export default function Signin() {
   const [username, setUsername] = useState("");
@@ -30,7 +30,7 @@ export default function Signin() {
   return (
     <View style={styleContainer.container}>
       <LinearGradient
-        colors={signIngBackgroundColors}
+        colors={signBackgroundColors}
         style={styleContainer.container}
       >
         <View

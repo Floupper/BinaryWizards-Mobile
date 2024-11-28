@@ -12,7 +12,7 @@ import {
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigation } from "@react-navigation/native";
 
-import { signIngBackgroundColors, stylesSignin } from "../styles/signin";
+import { signBackgroundColors, stylesSignin } from "../styles/signin";
 import SigninSvg from "../../assets/signin.svg";
 import { LinearGradient } from "expo-linear-gradient";
 
@@ -79,7 +79,7 @@ export default function Signup() {
   return (
     <View style={styleContainer.container}>
       <LinearGradient
-        colors={signIngBackgroundColors}
+        colors={signBackgroundColors}
         style={styleContainer.container}
       >
         <View style={stylesSignin.inputsContainer}>
