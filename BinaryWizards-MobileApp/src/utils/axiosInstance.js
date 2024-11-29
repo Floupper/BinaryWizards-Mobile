@@ -1,8 +1,9 @@
 import axios from 'axios';
-import { _retrieveUserToken } from './asyncStorage';
+import { _retrieveUserToken, logout } from './asyncStorage';
 import Toast from 'react-native-toast-message';
 import { REACT_NATIVE_API_URL, REACT_NATIVE_API_PORT } from '@env';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useNavigation } from '@react-navigation/native';
 
 // Cretae an axios instance to make requests to the server
 const axiosInstance = axios.create({
@@ -29,6 +30,7 @@ axiosInstance.interceptors.request.use(
 // Add a response interceptor to handle the response from the server
 axiosInstance.interceptors.response.use(
     (response) => {
+        const navigation = useNavigation();
 
         if (response.status === 401) {
             Toast.show({
@@ -36,7 +38,8 @@ axiosInstance.interceptors.response.use(
                 text1: 'Error',
                 text2: 'Unauthorized. Please login again.',
             });
-            // TODO: Add navigate to login page
+            logout(navigation);
+            navigation.navigation('Signin');
             return;
         }
 
