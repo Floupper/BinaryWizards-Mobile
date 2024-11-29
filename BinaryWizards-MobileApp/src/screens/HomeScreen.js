@@ -36,7 +36,14 @@ export default function HomeScreen() {
             <SearchQuiz />
           </View>
         ) : (
-          <Text>Home Screen</Text>
+          <View style={styleContainer.container}>
+            <Text style={styleText.title}>Quiz id</Text>
+            <PrimaryButton
+              text="Create game"
+              onPress={() => navigation.navigate('Create')}
+              style={styleButton.button}
+            />
+          </View>
         )}
       </View>
     </QueryClientProvider>
