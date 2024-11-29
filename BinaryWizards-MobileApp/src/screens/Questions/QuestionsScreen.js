@@ -112,7 +112,7 @@ export default function QuestionScreen({ route }) {
                 : 0
             }
             width={null}
-            height={8}
+            height={17}
             color="#FFA033"
             unfilledColor="#FFFFFF"
             borderWidth={0}
