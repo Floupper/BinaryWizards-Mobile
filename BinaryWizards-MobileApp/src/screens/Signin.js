@@ -7,6 +7,7 @@ import PrimaryButton from "../components/PrimaryButton";
 import { styleButton } from "../styles/buttons";
 import { signIn } from "../services/userRequests";
 import { _storeUserToken } from "../utils/asyncStorage";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function Signin() {
 
@@ -15,9 +16,11 @@ export default function Signin() {
 
   const navigation = useNavigation();
 
-  const handlePress = () => {const res = signIn({ username, password }).then((data) => {
+  const handlePress = () => {
+    const res = signIn({ username, password }).then((data) => {
       if (data) {
         _storeUserToken(data.token);
+        AsyncStorage.setItem("username", username);
         navigation.navigate("Home");
       } else {
         setPassword("");
@@ -27,24 +30,24 @@ export default function Signin() {
 
   return (
     <View style={styleContainer.container}>
-            <TextInput
-                style={styleInput.input}
-                placeholder="Username"
-                onChangeText={setUsername}
-                value={username}
-            />
-            <TextInput
-                style={styleInput.input}
-                placeholder="Password"
-                secureTextEntry={true}
-                onChangeText={setPassword}
-                value={password}
-            />
-            <PrimaryButton
-                text="Sign In"
-                onPress={handlePress}
-                style={styleButton.button}
-            />
-        </View>
+      <TextInput
+        style={styleInput.input}
+        placeholder="Username"
+        onChangeText={setUsername}
+        value={username}
+      />
+      <TextInput
+        style={styleInput.input}
+        placeholder="Password"
+        secureTextEntry={true}
+        onChangeText={setPassword}
+        value={password}
+      />
+      <PrimaryButton
+        text="Sign In"
+        onPress={handlePress}
+        style={styleButton.button}
+      />
+    </View>
   );
 }
