@@ -97,13 +97,6 @@ export default function QuestionScreen({ route }) {
         <HomeButton />
       </View>
       <View style={questionStyle.mainContainer}>
-        <View style={questionStyle.infoQuestions}>
-          <GenericClipboard text="id" id={gameId} />
-          <Text style={questionStyle.infoQuestionsText}>
-            Score : {question.correct_answers_nb}
-          </Text>
-        </View>
-
         <View
           style={{
             paddingHorizontal: 20,
@@ -125,8 +118,15 @@ export default function QuestionScreen({ route }) {
             borderWidth={0}
             borderRadius={5}
           />
-          <Text style={{ textAlign: 'center', marginTop: 5 }}>
+        </View>
+
+        <View style={questionStyle.infoQuestions}>
+          <GenericClipboard text="id" id={gameId} />
+          <Text style={questionStyle.infoQuestionsText}>
             {question.question_index}/{question.nb_questions_total}
+          </Text>
+          <Text style={questionStyle.infoQuestionsText}>
+            Score : {question.correct_answers_nb}
           </Text>
         </View>
 
