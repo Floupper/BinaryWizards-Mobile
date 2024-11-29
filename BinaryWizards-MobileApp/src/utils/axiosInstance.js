@@ -35,7 +35,6 @@ axiosInstance.interceptors.response.use(
         text1: 'Error',
         text2: 'Unauthorized. Please login again.',
       });
-      // TODO: Redirect to signin screen
       return;
     }
 
