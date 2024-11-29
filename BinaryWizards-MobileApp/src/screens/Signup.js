@@ -1,20 +1,15 @@
 import React, { useState } from "react";
 import { View, Text, TextInput, Pressable } from "react-native";
-import { styleInput } from "../styles/input";
-import { styleContainer } from "../styles/container";
+import { useNavigation } from "@react-navigation/native";
+import { signStyles, signBackgroundColors } from "../styles/sign";
+import { LinearGradient } from "expo-linear-gradient";
+import SigninSvg from "../../assets/signin.svg";
 import PrimaryButton from "../components/PrimaryButton";
-import { styleButton } from "../styles/buttons";
-import Toast from "react-native-toast-message";
 import {
   createUser,
   checkUsernameAvailability,
 } from "../services/SignUpRequests";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useNavigation } from "@react-navigation/native";
-
-import { signBackgroundColors, stylesSignin } from "../styles/signin";
-import SigninSvg from "../../assets/signin.svg";
-import { LinearGradient } from "expo-linear-gradient";
+import Toast from "react-native-toast-message";
 
 export default function Signup() {
   const [username, setUsername] = useState("");
@@ -24,7 +19,6 @@ export default function Signup() {
   const [usernameError, setUsernameError] = useState(false);
   const [passwordError, setPasswordError] = useState(false);
   const [confirmPasswordError, setConfirmPasswordError] = useState(false);
-
   const navigation = useNavigation();
 
   const fetchUsernameAvailability = async () => {
@@ -32,74 +26,56 @@ export default function Signup() {
       const available = await checkUsernameAvailability({ username });
       setIsUsernameAvailable(available);
       setUsernameError(!available);
-
-      setUsername(username);
     } catch (error) {
-      setUsernameError(true);
       console.error("Error checking username:", error);
-      Toast.show({
-        type: "error",
-        text1: "Error",
-        text2: "An error occured while checking the username",
-      });
-      throw error;
+      setUsernameError(true);
     }
   };
 
   const handlePress = async () => {
     if (password.length < 8) {
       setPasswordError(true);
+      return;
     }
 
-    if (password === confirmPassword) {
-      try {
-        const response = await createUser({ username, password });
-        if (response) {
-          AsyncStorage.setItem("userToken", response.token);
-          navigation.navigate("Signin");
-          Toast.show({
-            type: "success",
-            text1: "Success",
-            text2: "User created successfully.",
-          });
-        }
-      } catch (error) {
-        setConfirmPasswordError(true);
-        console.error("Error creating user:", error);
+    if (password !== confirmPassword) {
+      setConfirmPasswordError(true);
+      return;
+    }
+
+    try {
+      const response = await createUser({ username, password });
+      if (response) {
+        navigation.navigate("Signin");
+        Toast.show({
+          type: "success",
+          text1: "Success",
+          text2: "User created successfully.",
+        });
       }
-    } else {
-      Toast.show({
-        type: "error",
-        text1: "Error",
-        text2: "Passwords do not match.",
-      });
+    } catch (error) {
+      console.error("Error creating user:", error);
     }
   };
 
   return (
-    <View style={styleContainer.container}>
+    <View style={signStyles.container}>
       <LinearGradient
         colors={signBackgroundColors}
-        style={styleContainer.container}
+        style={signStyles.container}
       >
-        <View style={stylesSignin.inputsContainer}>
-          <SigninSvg style={{ width: "20%", height: "20%" }} />
-          <View style={styleContainer.contentContainer}>
-            <View style={{ textAlign: "left" }}>
-              <Text style={{ fontWeight: "bold", fontSize: 20 }}>
-                Welcome to Quiz App
-              </Text>
-              <Text
-                style={{ color: "gray", fontWeight: "600", marginBottom: 15 }}
-              >
-                Please sign up below.
-              </Text>
+        <View style={signStyles.inputsContainer}>
+          <SigninSvg style={signStyles.svgContainer} />
+          <View>
+            <View style={signStyles.textContainer}>
+              <Text style={signStyles.title}>Welcome to Quiz App</Text>
+              <Text style={signStyles.subtitle}>Please sign up below.</Text>
             </View>
-            <View style={{ marginBottom: 15 }}>
-              <Text style={stylesSignin.inputLabel}>Username</Text>
+            <View style={signStyles.inputContainer}>
+              <Text style={signStyles.inputLabel}>Username</Text>
               <TextInput
                 style={[
-                  styleInput.input,
+                  signStyles.input,
                   usernameError && { borderColor: "red" },
                 ]}
                 value={username}
@@ -116,11 +92,11 @@ export default function Signup() {
                 <Text style={{ color: "green" }}>Username is available!</Text>
               )}
             </View>
-            <View style={{ marginBottom: 15 }}>
-              <Text style={stylesSignin.inputLabel}>Password</Text>
+            <View style={signStyles.inputContainer}>
+              <Text style={signStyles.inputLabel}>Password</Text>
               <TextInput
                 style={[
-                  styleInput.input,
+                  signStyles.input,
                   passwordError && { borderColor: "red" },
                 ]}
                 placeholder="Password"
@@ -130,23 +106,18 @@ export default function Signup() {
                   setPassword(text);
                   setPasswordError(false);
                 }}
-                onBlur={() => {
-                  if (password.length < 8) {
-                    setPasswordError(true);
-                  }
-                }}
               />
-              {password.length < 8 && password.length > 0 && (
+              {passwordError && (
                 <Text style={{ color: "red" }}>
                   Password must be at least 8 characters long.
                 </Text>
               )}
             </View>
-            <View style={{ marginBottom: 15 }}>
-              <Text style={stylesSignin.inputLabel}>Confirm Password</Text>
+            <View style={signStyles.inputContainer}>
+              <Text style={signStyles.inputLabel}>Confirm Password</Text>
               <TextInput
                 style={[
-                  styleInput.input,
+                  signStyles.input,
                   confirmPasswordError && { borderColor: "red" },
                 ]}
                 placeholder="Confirm Password"
@@ -156,45 +127,26 @@ export default function Signup() {
                   setConfirmPassword(text);
                   setConfirmPasswordError(false);
                 }}
-                onBlur={() => {
-                  if (password !== confirmPassword) {
-                    setConfirmPasswordError(true);
-                  }
-                }}
               />
-              {password !== confirmPassword && confirmPassword.length > 0 && (
+              {confirmPasswordError && (
                 <Text style={{ color: "red" }}>Passwords do not match.</Text>
               )}
             </View>
             <PrimaryButton
               text="Sign up"
               onPress={handlePress}
-              style={stylesSignin.signinButton}
+              style={signStyles.buttonPrimary}
             />
           </View>
         </View>
-        <View
-          style={{
-            flexDirection: "row",
-            justifyContent: "center",
-            alignItems: "center",
-            width: "40%",
-          }}
-        >
-          <View style={[stylesSignin.line, { marginRight: 10 }]} />
+        <View style={signStyles.outerContainer}>
+          <View style={[signStyles.line, { marginRight: 10 }]} />
           <Text>OR</Text>
-          <View style={[stylesSignin.line, { marginLeft: 10 }]} />
+          <View style={[signStyles.line, { marginLeft: 10 }]} />
         </View>
         <Pressable onPress={() => navigation.navigate("Signin")}>
-          <View
-            style={{
-              flexDirection: "row",
-              justifyContent: "center",
-              alignItems: "center",
-              marginTop: 10,
-            }}
-          >
-            <Text style={stylesSignin.navigateSignup}>Sign in</Text>
+          <View style={signStyles.leaveScreenContainer}>
+            <Text style={signStyles.navigateLink}>Sign in</Text>
           </View>
         </Pressable>
       </LinearGradient>
