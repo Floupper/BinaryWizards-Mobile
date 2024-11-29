@@ -18,6 +18,7 @@ export default function Signin() {
       const data = await signIn({ username, password });
       if (data) {
         _storeUserToken(data.token);
+        AsyncStorage.setItem("username", username);
         navigation.navigate("Home");
       } else {
         setPassword("");
