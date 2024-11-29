@@ -50,6 +50,7 @@ export default function Signup() {
                 const response = await createUser({ username, password });
                 if (response) {
                     AsyncStorage.setItem("userToken", response.token);
+                    AsyncStorage.setItem("username", username);
                     navigation.navigate('Signin');
                     Toast.show({
                         type: 'success',
