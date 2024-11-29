@@ -45,7 +45,7 @@ export default function TopBar({ setHomeScreenUserToken }) {
       await logout(navigation);
       setUserToken(null);
       setUsername(null);
-      setHomeScreenUserToken(null); // Notifier le HomeScreen
+      setHomeScreenUserToken(null);
     } catch (error) {
       console.error('Error during logout:', error);
     }
