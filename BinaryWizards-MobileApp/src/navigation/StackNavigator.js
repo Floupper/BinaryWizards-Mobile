@@ -49,13 +49,13 @@ export default function StackNavigator() {
         <Stack.Screen
           name="Signup"
           component={Signup}
-          options={{ headerShown: true, title: 'Sign Up' }}
+          options={{ headerShown: false, title: 'Sign Up' }}
         />
 
         <Stack.Screen
           name="Signin"
           component={Signin}
-          options={{ headerShown: true, title: 'Sign In' }}
+          options={{ headerShown: false, title: 'Sign In' }}
         />
 
         <Stack.Screen name="Profile" component={DashboardTab} />
