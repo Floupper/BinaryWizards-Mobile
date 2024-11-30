@@ -1,10 +1,14 @@
-import React, { useEffect, useState } from "react";
-import { View, Text } from "react-native";
-import { styleContainer } from "../styles/container";
-import PrimaryButton from "./PrimaryButton";  
-import { styleButton, determineButtonStyle } from "../styles/buttons";
+import React, { useEffect, useState } from 'react';
+import { View, Text } from 'react-native';
+import { styleContainer } from '../styles/container';
+import PrimaryButton from './PrimaryButton';
+import { styleButton, determineButtonStyle } from '../styles/buttons';
 
-export default function QuestionComponent({ question, selectedAnswer, correctAnswer }) {
+export default function QuestionComponent({
+  question,
+  selectedAnswer,
+  correctAnswer,
+}) {
   const [userAnswerIndex, setUserAnswerIndex] = useState(null);
   useEffect(() => {
     setUserAnswerIndex(null);
@@ -19,15 +23,27 @@ export default function QuestionComponent({ question, selectedAnswer, correctAns
 
   return (
     <View>
-      <Text style={styleContainer.questionTitleContainer}>{question.question_text}</Text>
+      <Text style={styleContainer.questionTitleContainer}>
+        {question.question_text}
+      </Text>
       {question.options && Array.isArray(question.options) ? (
-        question.options.map((option, index) => (
+        question.options.map(({ option_text, option_index }) => (
           <PrimaryButton
-            key={index}
-            text={option}
-            onPress={() => sendUserAnswer(index)}
+            key={option_index}
+            text={option_text}
+            onPress={() => sendUserAnswer(option_index)}
             disabled={userAnswerIndex !== null}
-            style={[styleButton.button, {backgroundColor: determineButtonStyle(index, userAnswerIndex, correctAnswer)}]}
+            isQuestion={true}
+            style={[
+              styleButton.button,
+              {
+                backgroundColor: determineButtonStyle(
+                  option_index,
+                  userAnswerIndex,
+                  correctAnswer
+                ),
+              },
+            ]}
           />
         ))
       ) : (
