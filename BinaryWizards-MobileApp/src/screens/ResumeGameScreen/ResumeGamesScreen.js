@@ -1,13 +1,14 @@
 import React, { useState } from "react";
-import { View, Text, TextInput, StyleSheet } from "react-native";
-import { styleContainer } from "../styles/container";
-import { checkGameExists } from "../services/gamesRequests";
+import { View, Text, TextInput } from "react-native";
+import { styleContainer } from "../../styles/container";
+import { checkGameExists } from "../../services/gamesRequests";
 import Toast from "react-native-toast-message";
 import { useNavigation } from "@react-navigation/native";
-import PrimaryButton from "../components/PrimaryButton";
-import { styleButton } from "../styles/buttons";
-import GameList from "../components/GameList";
+import PrimaryButton from "../../components/PrimaryButton";
+import { styleButton } from "../../styles/buttons";
+import GameList from "../../components/GameList/GameList";
 import { QueryClientProvider, QueryClient } from '@tanstack/react-query';
+import styles from "./styles";
 
 const queryClient = new QueryClient();
 
@@ -60,23 +61,3 @@ export default function JoinAndListGamesScreen() {
     </QueryClientProvider>
   );
 }
-
-const styles = StyleSheet.create({
-  input: {
-    height: 50,
-    width: "90%",
-    margin: 12,
-    borderWidth: 1,
-    borderRadius: 10,
-    fontSize: 18,
-    textAlign: "center",
-  },
-  icon: {
-    marginTop: 20,
-  },
-  label: {
-    fontSize: 16,
-    marginBottom: 5,
-    paddingHorizontal: 10,
-  },
-});

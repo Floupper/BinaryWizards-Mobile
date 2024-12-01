@@ -1,12 +1,13 @@
 import React from "react";
 import { Text, View, StyleSheet } from "react-native";
-import { styleContainer } from "../styles/container";
-import IconButton from "./IconButton";
-import { resetQuiz } from "../services/endScreenRequests";
-import { checkGameExists } from "../services/gamesRequests";
+import { styleContainer } from "../../styles/container";
+import IconButton from "../IconButton";
+import { resetQuiz } from "../../services/endScreenRequests";
+import { checkGameExists } from "../../services/gamesRequests";
 import { useNavigation } from "@react-navigation/native";
 import Toast from "react-native-toast-message";
 import dayjs from "dayjs";
+import styles from "./styles";
 
 export default function GameListItem({ item }) {
   const formattedDate = dayjs(item.date_game_creation).format("DD/MM/YYYY");
@@ -31,7 +32,7 @@ export default function GameListItem({ item }) {
           Toast.show({
             type: "error",
             text1: "Erreur",
-            text2: "Le jeu n'existe pas.",
+            text2: "The Game does not exist.",
           });
         }
       }
@@ -39,7 +40,7 @@ export default function GameListItem({ item }) {
       Toast.show({
         type: "error",
         text1: "Erreur",
-        text2: "Une erreur s'est produite.",
+        text2: "An error occurred.",
       });
     }
   };
@@ -57,20 +58,3 @@ export default function GameListItem({ item }) {
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  listItem: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-  },
-  text: {
-    flex: 1,
-    textAlign: "center",
-  },
-  iconContainer: {
-    flex: 0.3,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-});

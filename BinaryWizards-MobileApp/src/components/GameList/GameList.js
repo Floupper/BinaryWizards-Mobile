@@ -1,11 +1,12 @@
 import React, { useEffect } from "react";
-import { View, Text, ActivityIndicator, FlatList, StyleSheet } from "react-native";
+import { View, Text, ActivityIndicator, FlatList } from "react-native";
 import { useInfiniteQuery } from "@tanstack/react-query";
-import { getStartedGames } from "../services/userRequests";
-import GameListItem from "./GameListItem";
+import { getStartedGames } from "../../services/userRequests";
+import GameListItem from "../GameListItem/GameListItem";
 import { useNavigation } from "@react-navigation/native";
+import styles from "./styles";
 
-export default function JoinQuizResumeGame() {
+export default function GameList() {
     const navigation = useNavigation();
     
     useEffect(() => {
@@ -57,32 +58,3 @@ export default function JoinQuizResumeGame() {
         </View>
     );
 }
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: "#f8f8f8",
-        padding: 16,
-    },
-    title: {
-        fontSize: 24,
-        fontWeight: "bold",
-        color: "#333",
-        marginBottom: 20,
-    },
-    loadingIndicator: {
-        marginTop: 20,
-    },
-    flatlist: {
-        marginTop: 10,
-        backgroundColor: "#fff",
-        borderRadius: 8,
-        padding: 10,
-    },
-    emptyMessage: {
-        fontSize: 16,
-        color: "#888",
-        textAlign: "center",
-        marginTop: 20,
-    },
-});

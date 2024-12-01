@@ -4,7 +4,7 @@ import HomeScreen from '../screens/HomeScreen';
 import QuestionScreen from '../screens/Questions/QuestionsScreen';
 import EndScreen from '../screens/EndScreen';
 import CreateGame from '../screens/CreateGame';
-import ResumeGamesScreen from '../screens/ResumeGamesScreen';
+import ResumeGamesScreen from '../screens/ResumeGameScreen/ResumeGamesScreen';
 import Signup from '../screens/Signup';
 import Signin from '../screens/Signin';
 import DashboardTab from './DashboardTab';
