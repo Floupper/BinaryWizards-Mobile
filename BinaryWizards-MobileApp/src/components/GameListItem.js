@@ -1,59 +1,76 @@
 import React from "react";
-import { Text, View } from "react-native";
+import { Text, View, StyleSheet } from "react-native";
 import { styleContainer } from "../styles/container";
 import IconButton from "./IconButton";
 import { resetQuiz } from "../services/endScreenRequests";
 import { checkGameExists } from "../services/gamesRequests";
 import { useNavigation } from "@react-navigation/native";
+import Toast from "react-native-toast-message";
+import dayjs from "dayjs";
 
-export default function GameListItem({
-  quiz_id,
-  game_id,
-  correct_answers_nb,
-  current_question_index,
-  date_game_creation,
-  nb_questions_total,
-}) {
-
+export default function GameListItem({ item }) {
+  const formattedDate = dayjs(item.date_game_creation).format("DD/MM/YYYY");
   const navigation = useNavigation();
 
-  const getPlayIcon = () => {
-    if (current_question_index > nb_questions_total) {
-      return "reload1";
-    } else {
-      return "play";
+  const getPlayIcon = () => 
+    item.current_question_index > item.nb_questions_total ? "reload1" : "play";
+
+  const handlePress = async () => {
+    try {
+      if (item.current_question_index > item.nb_questions_total) {
+        await resetQuiz(item.quiz_id, navigation);
+      } else {
+        const response = await checkGameExists(item.game_id);
+        if (response) {
+          navigation.navigate("Questions", { 
+            gameId: item.game_id, 
+            question: response, 
+            quizId: response.quiz_id 
+          });
+        } else {
+          Toast.show({
+            type: "error",
+            text1: "Erreur",
+            text2: "Le jeu n'existe pas.",
+          });
+        }
+      }
+    } catch (error) {
+      Toast.show({
+        type: "error",
+        text1: "Erreur",
+        text2: "Une erreur s'est produite.",
+      });
     }
   };
 
-  const handlePress = async () => {
-    if (current_question_index > nb_questions_total) {
-      resetQuiz(quiz_id, navigation);
-    } else {
-      const response = await checkGameExists(game_id);
-      if (response) {
-        navigation.navigate("Questions", { gameId: game_id, question: response, quizId: response.quiz_id });
-      } else {
-        Toast.show({
-          type: "error",
-          text1: "Error",
-          text2: "Game does not exist",
-        });
-      }
-    }
-  }
-
   return (
-    <View style={styleContainer.gameListItem}>
-      <Text style={{ flex: 1, textAlign: "center" }}>{quiz_id}</Text>
-      <Text style={{ flex: 1, textAlign: "center" }}>
-        {new Date(date_game_creation).toLocaleDateString()}
+    <View style={[styleContainer.gameListItem, styles.listItem]}>
+      <Text style={styles.text}>{item.title}</Text>
+      <Text style={styles.text}>{formattedDate}</Text>
+      <Text style={styles.text}>
+        {item.current_question_index}/{item.nb_questions_total}
       </Text>
-      <Text style={{ flex: 1, textAlign: "center" }}>
-        {correct_answers_nb}/{nb_questions_total}
-      </Text>
-      <View style={{ flex: 0.3, textAlign: "center" }}>
-        <IconButton icon={getPlayIcon()} onPress={handlePress}/>
+      <View style={styles.iconContainer}>
+        <IconButton icon={getPlayIcon()} onPress={handlePress} />
       </View>
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  listItem: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+  },
+  text: {
+    flex: 1,
+    textAlign: "center",
+  },
+  iconContainer: {
+    flex: 0.3,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+});

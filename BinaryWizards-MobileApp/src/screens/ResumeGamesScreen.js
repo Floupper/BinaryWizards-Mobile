@@ -7,6 +7,9 @@ import { useNavigation } from "@react-navigation/native";
 import PrimaryButton from "../components/PrimaryButton";
 import { styleButton } from "../styles/buttons";
 import GameList from "../components/GameList";
+import { QueryClientProvider, QueryClient } from '@tanstack/react-query';
+
+const queryClient = new QueryClient();
 
 export default function JoinAndListGamesScreen() {
   const [gameId, setGameId] = useState("");
@@ -34,25 +37,27 @@ export default function JoinAndListGamesScreen() {
   };
 
   return (
-    <View style={styleContainer.container}>
-      <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-        <Text style={styles.label}>Game Code</Text>
-        <TextInput
-          style={styles.input}
-          onChangeText={setGameId}
-          placeholder="Enter the game code"
-          value={gameId}
-        />
-        <PrimaryButton
-          text="Join"
-          onPress={handlePress}
-          style={styleButton.button}
-        />
+    <QueryClientProvider client={queryClient}>
+      <View style={styleContainer.container}>
+        <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
+          <Text style={styles.label}>Game Code</Text>
+          <TextInput
+            style={styles.input}
+            onChangeText={setGameId}
+            placeholder="Enter the game code"
+            value={gameId}
+          />
+          <PrimaryButton
+            text="Join"
+            onPress={handlePress}
+            style={styleButton.button}
+          />
+        </View>
+        <View style={{ width: "100%", flex: 1 }}>
+          <GameList />
+        </View>
       </View>
-      <View style={{ width: "100%", flex: 1 }}>
-        <GameList />
-      </View>
-    </View>
+    </QueryClientProvider>
   );
 }
 
