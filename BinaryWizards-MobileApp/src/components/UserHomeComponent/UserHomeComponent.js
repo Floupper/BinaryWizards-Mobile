@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
-import { Text, View, StyleSheet } from 'react-native';
-import SecondaryButton from './SecondaryButton';
-import SearchQuiz from './SearchQuiz';
+import { View, } from 'react-native';
+import SecondaryButton from '../SecondaryButton';
+import SearchQuiz from '../SearchQuiz/SearchQuiz';
+import GameList from '../GameList/GameList';
+import styles from './styles';
 
 export default function UserHomeComponent() {
   const [showOngoingGames, setShowOngoingGames] = useState(true);
@@ -11,15 +13,8 @@ export default function UserHomeComponent() {
   };
 
   return (
-    <View style={{ flex: 1, width: '100%', alignItems: 'center' }}>
-      <View
-        style={{
-          flexDirection: 'row',
-          justifyContent: 'space-around',
-          alignItems: 'center',
-          width: '100%',
-        }}
-      >
+    <View style={styles.container}>
+      <View style={styles.buttonContainer}>
         <SecondaryButton
           text="Ongoing games"
           onPress={() => toggleShowOngoingGames(true)}
@@ -31,19 +26,7 @@ export default function UserHomeComponent() {
           style={showOngoingGames ? styles.button : styles.buttonSelected}
         />
       </View>
-      {showOngoingGames ? <Text>Ongoing games</Text> : <SearchQuiz />}
+      {showOngoingGames ? <GameList /> : <SearchQuiz />}
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  button: {
-    borderRadius: 5,
-    padding: 10,
-  },
-  buttonSelected: {
-    backgroundColor: 'blue',
-    borderRadius: 5,
-    padding: 10,
-  },
-});

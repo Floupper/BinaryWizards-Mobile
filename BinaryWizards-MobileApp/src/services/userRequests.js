@@ -87,6 +87,48 @@ export const getGames = async (navigation) => {
   }
 };
 
+export const getStartedGames = async (navigation, page = 1) => {
+  try {
+    const userToken = await _retrieveUserToken(navigation);
+    if (!userToken) {
+      return null;
+    }
+    const params = new URLSearchParams();
+    params.append('pageSize', 3);
+    params.append('page', page);
+    const url = `game/user/started_games?${params.toString()}`;
+
+    const response = await axiosInstance.get(url);
+
+    if (response.status !== 200) {
+      Toast.show({
+        type: 'error',
+        text1: 'Error',
+        text2: response.data?.error || 'An unknown error occurred',
+      });
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+
+    return response.data;
+  } catch (error) {
+    if (error.response) {
+      Toast.show({
+        type: 'error',
+        text1: 'Error',
+        text2: error.response.data?.error || 'An unknown error occurred',
+      });
+    } else {
+      Toast.show({
+        type: 'error',
+        text1: 'Error',
+        text2: error.message || 'An unknown error occurred',
+      });
+    }
+
+    return null;
+  }
+};
+
 export const getQuizzes = async (navigation) => {
   try {
     const userToken = await _retrieveUserToken(navigation);

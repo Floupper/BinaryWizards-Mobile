@@ -4,7 +4,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 import { styleContainer } from '../styles/container';
 import TopBar from '../components/TopBar';
-import UserHomeComponent from '../components/UserHomeComponent';
+import UserHomeComponent from '../components/UserHomeComponent/UserHomeComponent';
 import HomeComponent from '../components/HomeComponent';
 import PrimaryButton from '../components/PrimaryButton';
 import { styleButton } from '../styles/buttons';

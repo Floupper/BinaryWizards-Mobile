@@ -1,26 +1,26 @@
 import React from 'react';
-import { View, Text, TextInput, StyleSheet } from 'react-native';
-import { styleSearchQuiz } from '../styles/searchQuiz';
+import { View, Text, TextInput } from 'react-native';
+import styles from './styles';
 
 export default function QuestionRangeSelector({ minQuestions, maxQuestions, onMinChange, onMaxChange }) {
     return (
-        <View style={styleSearchQuiz.container}>
-            <Text style={styleSearchQuiz.text}>Select the number of questions</Text>
-            <View style={styleSearchQuiz.rangeInputs}>
-                <View style={styleSearchQuiz.inputGroup}>
-                    <Text style={styleSearchQuiz.label}>Min</Text>
+        <View style={styles.container}>
+            <Text style={styles.text}>Select the number of questions</Text>
+            <View style={styles.rangeInputs}>
+                <View style={styles.inputGroup}>
+                    <Text style={styles.label}>Min</Text>
                     <TextInput
-                        style={styleSearchQuiz.input}
+                        style={styles.input}
                         value={minQuestions.toString()}
                         keyboardType="numeric"
                         placeholder="Min"
                         onChangeText={(value) => onMinChange(Number(value))}
                     />
                 </View>
-                <View style={styleSearchQuiz.inputGroup}>
-                    <Text style={styleSearchQuiz.label}>Max</Text>
+                <View style={styles.inputGroup}>
+                    <Text style={styles.label}>Max</Text>
                     <TextInput
-                        style={styleSearchQuiz.input}
+                        style={styles.input}
                         value={maxQuestions.toString()}
                         keyboardType="numeric"
                         placeholder="Max"

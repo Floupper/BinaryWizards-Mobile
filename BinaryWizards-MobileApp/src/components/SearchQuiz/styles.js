@@ -1,6 +1,6 @@
 import { StyleSheet } from "react-native";
 
-export const styleSearchQuiz = StyleSheet.create({
+export default styles = StyleSheet.create({
     container: {
         flex: 1,
         padding: 16,
@@ -10,6 +10,7 @@ export const styleSearchQuiz = StyleSheet.create({
         fontSize: 18,
         fontWeight: 'bold',
         marginBottom: 12,
+        textAlign: 'center',
     },
     input: {
         height: 50,
@@ -17,22 +18,10 @@ export const styleSearchQuiz = StyleSheet.create({
         borderRadius: 8,
         paddingHorizontal: 12,
         marginBottom: 12,
+        width: '100%',
     },
-    picker: {
-        height: 50,
+    pickerContainer: {
         marginBottom: 12,
-    },
-    searchButton: {
-        backgroundColor: '#6200ee',
-        borderRadius: 8,
-        paddingVertical: 12,
-        marginTop: 26,
-        marginBottom: 16,
-    },
-    searchButtonText: {
-        color: '#fff',
-        textAlign: 'center',
-        fontWeight: 'bold',
     },
     loadingIndicator: {
         marginVertical: 16,
@@ -44,13 +33,10 @@ export const styleSearchQuiz = StyleSheet.create({
         fontSize: 16,
     },
     selectListDropdown: {
-        width: "100%",
+        width: '100%',
         marginHorizontal: 12,
         borderRadius: 10,
         borderWidth: 1,
-        borderColor: "gray",
-    },
-    flatlist: {
-        height: 15
+        borderColor: 'gray',
     },
 });
