@@ -19,7 +19,6 @@ export default function HomeScreen() {
 
   useEffect(() => {
     const listener = (newToken) => {
-      console.log('newToken:', newToken);
       setUserToken(newToken);
     };
 

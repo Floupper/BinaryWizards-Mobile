@@ -35,7 +35,6 @@ axiosInstance.interceptors.response.use(
   async (error) => {
     if (error.response.status === 401) {
       try {
-        console.log('401');
         await _removeUserToken();
         Toast.show({
           type: 'error',

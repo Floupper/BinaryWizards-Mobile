@@ -1,21 +1,10 @@
 import Toast from 'react-native-toast-message';
 import axiosInstance from '../utils/axiosInstance';
-import { _removeUserToken } from '../utils/asyncStorage';
 
 export const fetchCategories = async () => {
   try {
     const response = await axiosInstance.get('/categories/');
     const data = response.data;
-
-    if (response.status === 401) {
-      await _removeUserToken();
-      Toast.show({
-        type: 'error',
-        text1: 'Categories',
-        text2: 'Please login again',
-      });
-      return;
-    }
 
     const formattedCategories = data.map((category) => ({
       key: category.id,
@@ -25,11 +14,7 @@ export const fetchCategories = async () => {
 
     return formattedCategories;
   } catch (error) {
-    Toast.show({
-      type: 'error',
-      text1: 'Error',
-      text2: 'An error occured while fetching the categories',
-    });
+    return null;
   }
 };
 
@@ -48,12 +33,7 @@ export const fetchDifficulties = async () => {
 
     return formattedDifficulties;
   } catch (error) {
-    Toast.show({
-      type: 'error',
-      text1: 'Error',
-      text2: 'An error occured while fetching the difficulties',
-    });
-    console.error('Error fetching difficulties', error);
+    return null;
   }
 };
 
@@ -64,12 +44,6 @@ export const fetchQuestion = async ({ quizId }) => {
     const json = result.data;
     return json;
   } catch (error) {
-    Toast.show({
-      type: 'error',
-      text1: 'Error',
-      text2: 'An error occured while fetching the question',
-    });
-    console.error('Error fetching question:', error);
     return null;
   }
 };
@@ -84,12 +58,6 @@ export const sendAnswer = async ({ quizId, question_index, option_index }) => {
     const data = response.data;
     return data;
   } catch (error) {
-    Toast.show({
-      type: 'error',
-      text1: 'Error',
-      text2: 'An error occured while sending your answer',
-    });
-    console.error('Error:', error);
     return null;
   }
 };
@@ -149,6 +117,7 @@ export async function fetchAndCreateQuiz(
       text2: 'An error occured while creating the quiz',
     });
     console.error('Error creating quiz:', error);
+    return null;
   }
 }
 

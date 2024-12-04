@@ -34,27 +34,9 @@ export default function SearchQuiz() {
     const fetchDifficultiesData = async () => {
       try {
         const response = await fetchDifficulties();
-        console.log('response: in search quiz', response);
-
-        if (!response) {
-          try {
-            logout();
-          } catch (error) {
-            console.error('Error navigating to Home:', error);
-          }
-          return;
-        }
-
         setDifficulties(['all', ...response]);
       } catch (error) {
-        console.error('Error fetching difficulties:', error);
-        if (error.status === 401) {
-          Toast.show({
-            type: 'error',
-            text1: 'Error',
-            text2: 'Unauthorized. Please login again.',
-          });
-        }
+        return null;
       }
     };
 

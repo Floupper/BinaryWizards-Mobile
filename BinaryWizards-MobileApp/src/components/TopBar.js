@@ -18,7 +18,6 @@ export default function TopBar({ setHomeScreenUserToken }) {
 
   useEffect(() => {
     const listener = (newToken) => {
-      console.log('newToken:', newToken);
       setUserToken(newToken);
     };
 
