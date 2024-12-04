@@ -147,13 +147,13 @@ export default function QuestionScreen({ route }) {
                 selectedAnswer={onSelectedAnswer}
                 correctAnswer={questionAnswer}
               />
+              <PrimaryButton
+                onPress={nextQuestion}
+                disabled={questionAnswer === null}
+                text={'Next question'}
+                style={[styleButton.button, { marginBottom: 20 }]}
+              />
             </View>
-            <PrimaryButton
-              onPress={nextQuestion}
-              disabled={questionAnswer === null}
-              text={'Next question'}
-              style={[styleButton.enabledButton, { marginBottom: 20 }]}
-            />
           </View>
         </LinearGradient>
       </View>
