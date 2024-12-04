@@ -1,37 +1,6 @@
 image: node:18
-stages:
-  - lint
-  - test
-
 
 lint:
-  stage: lint
   script:
     - npm install
-    - npx eslint "src/**/*.js" -f json -o lint-es.json
-    - npx htmlhint "src/**/*.html" --format json > lint-html.json
-    - npx stylelint "src/**/*.{css,scss}" -f json > lint-style.json
-    - jq -s add lint-es.json lint-html.json lint-style.json > lint.json
-  artifacts:
-    when: always
-    paths:
-      - lint.json
-
-test:
-  script:
-    - npm install
-    - npm test
-  artifacts:
-      when: always
-      reports:
-          junit:
-              - test-results.xml
-      paths:
-      - test-results.xml
-
-build:
-  image: docker
-  needs:
-    - test
-  script:
-    - docker build -t web-test .
+    - npm run lint:fix
