@@ -26,7 +26,7 @@ export default function GameListItem({ item }) {
         if (response === null) {
           Toast.show({
             type: 'error',
-            text1: 'Erreur',
+            text1: 'Error',
             text2: "Game id doesn't exist",
           });
         } else {
