@@ -1,6 +1,7 @@
 import axiosInstance from '../utils/axiosInstance';
 import Toast from 'react-native-toast-message';
 import { _retrieveUserToken, logout } from '../utils/asyncStorage';
+import { _removeUserToken } from '../utils/asyncStorage';
 
 export const signIn = async ({ username, password }) => {
   if (!username || !password) {
@@ -46,47 +47,6 @@ export const signIn = async ({ username, password }) => {
   }
 };
 
-export const getGames = async (navigation) => {
-  try {
-    const userToken = await _retrieveUserToken(navigation);
-    if (!userToken) {
-      return null;
-    }
-    const response = await axiosInstance.get(`/user/played_games`, {
-      headers: {
-        Authorization: `Bearer ${userToken}`,
-      },
-    });
-
-    if (response.status !== 200) {
-      Toast.show({
-        type: 'error',
-        text1: 'Error',
-        text2: response.data?.error || 'An unknown error occurred',
-      });
-      throw new Error(`HTTP error! Status: ${response.status}`);
-    }
-
-    return response.data;
-  } catch (error) {
-    if (error.response) {
-      Toast.show({
-        type: 'error',
-        text1: 'Error',
-        text2: error.response.data?.error || 'An unknown error occurred',
-      });
-    } else {
-      Toast.show({
-        type: 'error',
-        text1: 'Error',
-        text2: error.message || 'An unknown error occurred',
-      });
-    }
-
-    return null;
-  }
-};
-
 export const getStartedGames = async (navigation, page = 1) => {
   try {
     const userToken = await _retrieveUserToken(navigation);
@@ -100,29 +60,16 @@ export const getStartedGames = async (navigation, page = 1) => {
 
     const response = await axiosInstance.get(url);
 
-    if (response.status !== 200) {
-      Toast.show({
-        type: 'error',
-        text1: 'Error',
-        text2: response.data?.error || 'An unknown error occurred',
-      });
-      throw new Error(`HTTP error! Status: ${response.status}`);
-    }
-
     return response.data;
   } catch (error) {
-    if (error.response) {
+    if (error.status === 401) {
+      await _removeUserToken();
       Toast.show({
         type: 'error',
-        text1: 'Error',
-        text2: error.response.data?.error || 'An unknown error occurred',
+        text1: 'Invalid token',
+        text2: 'Please login again',
       });
-    } else {
-      Toast.show({
-        type: 'error',
-        text1: 'Error',
-        text2: error.message || 'An unknown error occurred',
-      });
+      return null;
     }
 
     return null;

@@ -1,17 +1,16 @@
-import Toast from "react-native-toast-message";
-import axiosInstance from "../utils/axiosInstance";
+import Toast from 'react-native-toast-message';
+import axiosInstance from '../utils/axiosInstance';
 
 export const fetchQuestion = async ({ gameId }) => {
   try {
-    const response = await axiosInstance.get(`/game/${gameId}/question`)
+    const response = await axiosInstance.get(`/game/${gameId}/question`);
     return response.data;
   } catch (error) {
     Toast.show({
-      type: "error",
-      text1: "Error",
-      text2: "An error occured while fetching the question",
+      type: 'error',
+      text1: 'Error',
+      text2: 'An error occured while fetching the question',
     });
-    console.error("Error fetching question:", error);
     return null;
   }
 };
@@ -23,18 +22,8 @@ export const sendAnswer = async ({ gameId, question_index, option_index }) => {
       option_index: option_index,
     });
 
-    if (!response) {
-      throw new Error(`HTTP error! Status: ${response.status}`);
-    }
-
     return response.data;
   } catch (error) {
-    Toast.show({
-      type: "error",
-      text1: "Error",
-      text2: "An error occured while sending your answer",
-    });
-    console.error("Error:", error);
     return null;
   }
 };

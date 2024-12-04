@@ -9,14 +9,14 @@ import { styleButton } from '../styles/buttons';
 
 export default function ResumeGame() {
   const [gameId, setGameId] = useState('');
-  const { navigate } = useNavigation();
+  const navigation = useNavigation();
 
   const handlePress = async () => {
     if (gameId.trim()) {
       const response = await checkGameExists(gameId);
       if (response) {
         setGameId('');
-        navigate('Questions', {
+        navigation.navigate('Questions', {
           gameId: gameId,
           question: response,
           quizId: response.quiz_id,
@@ -25,7 +25,7 @@ export default function ResumeGame() {
         Toast.show({
           type: 'error',
           text1: 'Error',
-          text2: 'Game does not exist',
+          text2: 'Game not found',
         });
       }
     } else {

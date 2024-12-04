@@ -15,10 +15,12 @@ import GenericClipboard from '../../components/GenericClipboard';
 import { questionStyle } from './questionsStyles';
 import { LinearGradient } from 'expo-linear-gradient';
 import ProgressBar from 'react-native-progress/Bar';
+import userTokenEmitter from '../../utils/eventEmitter';
 
 export default function QuestionScreen({ route }) {
   const [gameId, setGameId] = useState(route.params.gameId);
   const [quizId, setQuizId] = useState(route.params.quizId);
+  const [userToken, setUserToken] = useState(null);
   const [question, setQuestion] = useState('');
   const [questionAnswer, setQuestionAnswer] = useState(null);
   const [colorGradient, setColorGradient] = useState([
@@ -56,7 +58,24 @@ export default function QuestionScreen({ route }) {
     fetchAndSetQuestion();
   }, [route.params.gameId]);
 
-  onSelectedAnswer = async (index) => {
+  useEffect(() => {
+    const listener = (newToken) => {
+      //Disconnect the user if the token is invalid
+      if (newToken === null) {
+        navigation.navigate('Home');
+      }
+      console.log('newToken:', newToken);
+      setUserToken(newToken);
+    };
+
+    userTokenEmitter.on('userToken', listener);
+
+    return () => {
+      userTokenEmitter.off('userToken', listener);
+    };
+  }, []);
+
+  const onSelectedAnswer = async (index) => {
     try {
       const result = await sendAnswer({
         gameId: gameId,
@@ -73,13 +92,6 @@ export default function QuestionScreen({ route }) {
         } else {
           setColorGradient(['#F22828', '#F22828', '#F22828']);
         }
-      } else {
-        console.error('Error: API returned null or undefined.');
-        Toast.show({
-          type: 'error',
-          text1: 'Error',
-          text2: 'Failed to submit your answer. Please try again.',
-        });
       }
     } catch (error) {
       console.error('Error:', error);

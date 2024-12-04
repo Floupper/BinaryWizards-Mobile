@@ -35,7 +35,7 @@ export default function CreateGame() {
 
     (async () => {
       let difficulties = await fetchDifficulties();
-      if (!difficulties) {
+      if (difficulties == null) {
         setDifficulties([]);
         navigation.navigate('Home');
       }

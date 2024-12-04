@@ -11,7 +11,7 @@ export const fetchCategories = async () => {
       await _removeUserToken();
       Toast.show({
         type: 'error',
-        text1: 'Error',
+        text1: 'Categories',
         text2: 'Please login again',
       });
       return;
@@ -30,23 +30,12 @@ export const fetchCategories = async () => {
       text1: 'Error',
       text2: 'An error occured while fetching the categories',
     });
-    console.error('Error fetching categories', error);
   }
 };
 
 export const fetchDifficulties = async () => {
   try {
     const response = await axiosInstance.get('/difficulties');
-
-    if (response.status === 401) {
-      await _removeUserToken();
-      Toast.show({
-        type: 'error',
-        text1: 'Error',
-        text2: 'Please login again',
-      });
-      return;
-    }
 
     const data = response.data;
 
@@ -72,15 +61,6 @@ export const fetchQuestion = async ({ quizId }) => {
   try {
     const result = await axiosInstance.get(`/quiz/${quizId}/question`);
 
-    if (result.status == 401) {
-      await _removeUserToken();
-      Toast.show({
-        type: 'error',
-        text1: 'Error',
-        text2: 'Please login again',
-      });
-      return;
-    }
     const json = result.data;
     return json;
   } catch (error) {
@@ -100,10 +80,6 @@ export const sendAnswer = async ({ quizId, question_index, option_index }) => {
       question_index: question_index,
       option_index: option_index,
     });
-
-    if (!response.ok) {
-      throw new Error(`HTTP error! Status: ${response.status}`);
-    }
 
     const data = response.data;
     return data;

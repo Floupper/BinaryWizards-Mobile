@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useState, useEffect } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { styleContainer } from '../styles/container';
 import { styleButton } from '../styles/buttons';
@@ -9,11 +9,25 @@ import { _retrieveUserToken } from '../utils/asyncStorage';
 import IconButton from './IconButton';
 import { logout } from '../utils/asyncStorage';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import userTokenEmitter from '../utils/eventEmitter';
 
 export default function TopBar({ setHomeScreenUserToken }) {
   const [userToken, setUserToken] = useState(null);
   const [username, setUsername] = useState(null);
   const navigation = useNavigation();
+
+  useEffect(() => {
+    const listener = (newToken) => {
+      console.log('newToken:', newToken);
+      setUserToken(newToken);
+    };
+
+    userTokenEmitter.on('userToken', listener);
+
+    return () => {
+      userTokenEmitter.off('userToken', listener);
+    };
+  }, []);
 
   useFocusEffect(
     useCallback(() => {

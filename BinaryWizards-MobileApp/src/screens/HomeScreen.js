@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View } from 'react-native';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import userTokenEmitter from '../utils/eventEmitter';
 
 import { styleContainer } from '../styles/container';
 import TopBar from '../components/TopBar';
@@ -15,6 +16,19 @@ const queryClient = new QueryClient();
 export default function HomeScreen() {
   const [userToken, setUserToken] = useState(null);
   const navigation = useNavigation();
+
+  useEffect(() => {
+    const listener = (newToken) => {
+      console.log('newToken:', newToken);
+      setUserToken(newToken);
+    };
+
+    userTokenEmitter.on('userToken', listener);
+
+    return () => {
+      userTokenEmitter.off('userToken', listener);
+    };
+  }, []);
 
   return (
     <QueryClientProvider client={queryClient}>
