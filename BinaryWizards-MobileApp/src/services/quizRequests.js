@@ -1,7 +1,13 @@
-import Toast from "react-native-toast-message";
-import axiosInstance from "../utils/axiosInstance";
+import Toast from 'react-native-toast-message';
+import axiosInstance from '../utils/axiosInstance';
 
-export const fetchSearchedQuiz = async ({ text = '', difficulty = '', minQuestions, maxQuestions, page = 1 }) => {
+export const fetchSearchedQuiz = async ({
+  text = '',
+  difficulty = '',
+  minQuestions,
+  maxQuestions,
+  page = 1,
+}) => {
   try {
     // Dynamically build query parameters
     const params = new URLSearchParams();
@@ -33,13 +39,11 @@ export const fetchSearchedQuiz = async ({ text = '', difficulty = '', minQuestio
     const response = await axiosInstance.get(url);
     return response.data;
   } catch (error) {
-    Toast.show(
-      {
-        text1: "Error",
-        text2: "An error occurred while fetching quizzes.",
-        type: "error",
-      }
-    );
+    Toast.show({
+      text1: 'Error',
+      text2: 'An error occurred while fetching quizzes.',
+      type: 'error',
+    });
     console.error('Error fetching quizzes:', error);
     return null;
   }
