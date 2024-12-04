@@ -3,6 +3,7 @@ import { StyleSheet } from "react-native";
 export default styles = StyleSheet.create({
     container: {
         flex: 1,
+        height: "20%",
         backgroundColor: "#f8f8f8",
         padding: 16,
     },
@@ -14,12 +15,6 @@ export default styles = StyleSheet.create({
     },
     loadingIndicator: {
         marginTop: 20,
-    },
-    flatlist: {
-        marginTop: 10,
-        backgroundColor: "#fff",
-        borderRadius: 8,
-        padding: 10,
     },
     emptyMessage: {
         fontSize: 16,
