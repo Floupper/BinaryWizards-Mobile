@@ -4,7 +4,7 @@ import React, { useState, useCallback } from "react";
 import Toast from "react-native-toast-message";
 import { styleContainer } from "../styles/container";
 import { getGames } from "../services/userRequests";
-import GameListItem from "../components/GameListItem";
+import GameListItem from "../components/GameListItem/GameListItem";
 import { _retrieveUserToken, logout } from "../utils/asyncStorage";
 import { styleText } from "../styles/text";
 

@@ -5,36 +5,35 @@ import {
     TextInput,
     FlatList,
     ActivityIndicator,
-    TouchableOpacity,
     Pressable,
 } from 'react-native';
 import Toast from 'react-native-toast-message';
 import { useInfiniteQuery } from '@tanstack/react-query';
-import { fetchSearchedQuiz } from '../services/quizRequests';
-import { fetchDifficulties } from '../services/createGame';
+import { fetchSearchedQuiz } from '../../services/quizRequests';
+import { fetchDifficulties, createGameId } from '../../services/createGame';
 import { useNavigation } from '@react-navigation/native';
-import { createGameId } from '../services/createGame';
-import QuestionRangeSelector from './QuestionRangeSelector';
-import QuizListItem from './QuizListItem';
-import { styleSearchQuiz } from '../styles/searchQuiz';
+import QuestionRangeSelector from '../QuestionRangeSelector/QuestionRangeSelector';
+import QuizListItem from '../QuizListItem';
 import { SelectList } from 'react-native-dropdown-select-list';
+import styles from './styles';
 
 export default function SearchQuiz() {
     const navigation = useNavigation();
 
     // State management
     const [text, setText] = useState('');
-    const [selectedDifficulty, setSelectedDifficulty] = useState('');
-    const [difficulties, setDifficulties] = useState([]);
-    const [minQuestions, setMinQuestions] = useState(1);
+    const [selectedDifficulty, setSelectedDifficulty] = useState('all');
+    const [difficulties, setDifficulties] = useState(['all']);
+    const [minQuestions, setMinQuestions] = useState(0);
     const [maxQuestions, setMaxQuestions] = useState(50);
 
     // Fetch difficulties on mount
     useEffect(() => {
+        refetch();
         const fetchDifficultiesData = async () => {
             try {
                 const response = await fetchDifficulties();
-                setDifficulties(response);
+                setDifficulties(['all', ...response]);
             } catch (error) {
                 Toast.show({
                     type: 'error',
@@ -60,7 +59,7 @@ export default function SearchQuiz() {
         queryFn: ({ pageParam = 1 }) =>
             fetchSearchedQuiz({
                 text,
-                difficulty: selectedDifficulty,
+                difficulty: selectedDifficulty === 'all' ? '' : selectedDifficulty,
                 page: pageParam,
                 maxQuestions,
                 minQuestions,
@@ -70,7 +69,8 @@ export default function SearchQuiz() {
     });
 
     // Search handler
-    const handleSearch = () => {
+    const handleSearchText = (text) => {
+        setText(text.trim());
         refetch();
     };
 
@@ -84,6 +84,7 @@ export default function SearchQuiz() {
                     text1: 'Game Created',
                     text2: 'Game was created successfully!',
                 });
+                navigation.navigate('GameScreen', { gameId: gameResponse.game_id });
             } else {
                 throw new Error('Invalid game creation response.');
             }
@@ -97,43 +98,38 @@ export default function SearchQuiz() {
     };
 
     return (
-        <View style={styleSearchQuiz.container}>
-            <Text style={styleSearchQuiz.text}>Browse Quiz</Text>
+        <View style={styles.container}>
+            <Text style={styles.text}>Browse Quiz</Text>
             <TextInput
-                style={styleSearchQuiz.input}
+                style={styles.input}
                 placeholder="Enter text to search for a quiz"
                 value={text}
-                onChangeText={setText}
+                onChangeText={handleSearchText}
             />
+            <View style={styles.pickerContainer}>
+                <Text style={styles.text}>Select Difficulty</Text>
+                <SelectList
+                    setSelected={(value) => {
+                        setSelectedDifficulty(value);
+                        refetch();
+                    }}
+                    data={difficulties}
+                    placeholder="Select a difficulty"
+                    boxStyles={styles.input}
+                    dropdownStyles={styles.selectListDropdown}
+                />
+            </View>
             <QuestionRangeSelector
                 minQuestions={minQuestions}
                 maxQuestions={maxQuestions}
                 onMinChange={setMinQuestions}
                 onMaxChange={setMaxQuestions}
             />
-            <View style={styleSearchQuiz.picker}>
-                <Text style={styleSearchQuiz.text}>Select Difficulty</Text>
-                <SelectList
-                    setSelected={(value) => setSelectedDifficulty(value)}
-                    data={difficulties}
-                    placeholder="Select a difficulty"
-                    boxStyles={styleSearchQuiz.input}
-                    dropdownStyles={styleSearchQuiz.selectListDropdown}
-                />
-            </View>
-            <TouchableOpacity onPress={handleSearch} style={styleSearchQuiz.searchButton}>
-                <Text style={styleSearchQuiz.searchButtonText}>Search</Text>
-            </TouchableOpacity>
-
-            {isLoading && <ActivityIndicator style={styleSearchQuiz.loadingIndicator} />}
-
+            {isLoading && <ActivityIndicator style={styles.loadingIndicator} />}
             <FlatList
-                style={styleSearchQuiz.flatlist}
                 data={data?.pages?.flatMap((page) => page?.quizzes || [])}
                 renderItem={({ item }) => (
-                    <Pressable
-                        onPress={() => handlePressCreate(item.quiz_id)}
-                    >
+                    <Pressable onPress={() => handlePressCreate(item.quiz_id)}>
                         <QuizListItem
                             difficulty={item.difficulty}
                             title={item.title}
@@ -141,17 +137,16 @@ export default function SearchQuiz() {
                             date_game_creation={item.created_at}
                         />
                     </Pressable>
-
                 )}
-                keyExtractor={(item) => item?.quiz_id} 
+                keyExtractor={(item) => item?.quiz_id.toString()}
                 onEndReached={hasNextPage ? fetchNextPage : null}
                 onEndReachedThreshold={0.5}
                 ListFooterComponent={
-                    isFetchingNextPage && <ActivityIndicator style={styleSearchQuiz.loadingIndicator} />
+                    isFetchingNextPage && <ActivityIndicator style={styles.loadingIndicator} />
                 }
                 ListEmptyComponent={
                     !isLoading && (
-                        <Text style={styleSearchQuiz.emptyMessage}>No quizzes found.</Text>
+                        <Text style={styles.emptyMessage}>No quizzes found.</Text>
                     )
                 }
             />

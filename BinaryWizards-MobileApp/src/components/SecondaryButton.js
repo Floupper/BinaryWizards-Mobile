@@ -1,14 +1,16 @@
-import React from "react";
-import { Text, View, Pressable } from "react-native";
+import React from 'react';
+import { Text, View, Pressable } from 'react-native';
 
-export default function SecondaryButton({ onPress, disabled, text, style, textStyle }) {
+export default function SecondaryButton({
+  onPress,
+  disabled,
+  text,
+  style,
+  textStyle,
+}) {
   return (
     <View>
-      <Pressable
-        style={[style]}
-        onPress={() => onPress()}
-        disabled={disabled}
-      >
+      <Pressable style={style} onPress={() => onPress()} disabled={disabled}>
         <Text style={textStyle}>{text}</Text>
       </Pressable>
     </View>
