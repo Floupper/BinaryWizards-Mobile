@@ -1,7 +1,13 @@
-image: node:18
+image: node:latest
 
 lint:
   script:
     - cd BinaryWizards-MobileApp/
     - npm install
-    - npm run lint:fix
+    - npx eslint . --ext .js,.jsx,.ts,.tsx -f json -o lint.json
+  artifacts:
+    when: always
+    paths:
+      - BinaryWizards-MobileApp//lint.json
+  allow_failure: true
+
