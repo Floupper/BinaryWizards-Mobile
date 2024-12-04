@@ -59,16 +59,6 @@ export const getStartedGames = async (page = 1) => {
 
     return response.data;
   } catch (error) {
-    const errorMessage =
-      error.response?.data?.error ||
-      error.message ||
-      'An unknown error occurred';
-    Toast.show({
-      type: 'error',
-      text1: 'Error',
-      text2: errorMessage,
-    });
-
     if (error.response && error.response.status === 401) {
       logout();
     }
