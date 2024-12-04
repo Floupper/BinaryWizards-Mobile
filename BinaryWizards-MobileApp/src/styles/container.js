@@ -6,7 +6,7 @@ export const styleContainer = StyleSheet.create({
   },
   container: {
     alignItems: 'center',
-    backgroundColor: '#fff',
+    backgroundColor: 'rgba(244, 242, 238, 1)',
     flex: 1,
     justifyContent: 'center',
     paddingHorizontal: 10,
