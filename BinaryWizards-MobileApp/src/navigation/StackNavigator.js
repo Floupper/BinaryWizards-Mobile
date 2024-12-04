@@ -2,7 +2,7 @@ import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import HomeScreen from '../screens/HomeScreen';
 import QuestionScreen from '../screens/Questions/QuestionsScreen';
-import EndScreen from '../screens/EndScreen';
+import EndScreen from '../screens/EndScreen/EndScreen';
 import CreateGame from '../screens/CreateGame';
 import ResumeGamesScreen from '../screens/ResumeGameScreen/ResumeGamesScreen';
 import Signup from '../screens/Signup';
