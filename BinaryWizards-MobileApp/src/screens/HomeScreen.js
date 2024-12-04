@@ -25,9 +25,10 @@ export default function HomeScreen() {
             <UserHomeComponent />
             <View style={styleContainer.divider} />
             <PrimaryButton
+              isQuestion={false}
               text="Create quiz"
               onPress={() => navigation.navigate('Create')}
-              style={styleButton.button}
+              style={styleButton.enabledButton}
             />
           </View>
         ) : (

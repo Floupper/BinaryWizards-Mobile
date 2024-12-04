@@ -73,13 +73,13 @@ export default function TopBar({ setHomeScreenUserToken }) {
           <SecondaryButton
             text="Sign up"
             onPress={() => navigation.navigate('Signup')}
-            style={styleButton.button}
+            style={styleButton.enabledButton}
             textStyle={styleText.topBarText}
           />
           <SecondaryButton
             text="Sign in"
             onPress={() => navigation.navigate('Signin')}
-            style={styleButton.button}
+            style={styleButton.enabledButton}
             textStyle={styleText.topBarText}
           />
         </>

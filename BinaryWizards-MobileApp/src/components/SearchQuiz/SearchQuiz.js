@@ -12,7 +12,6 @@ import { useInfiniteQuery } from '@tanstack/react-query';
 import { fetchSearchedQuiz } from '../../services/quizRequests';
 import { fetchDifficulties, createGameId } from '../../services/createGame';
 import { useNavigation } from '@react-navigation/native';
-import QuestionRangeSelector from '../QuestionRangeSelector/QuestionRangeSelector';
 import QuizListItem from '../QuizListItem';
 import { SelectList } from 'react-native-dropdown-select-list';
 import styles from './styles';
@@ -20,16 +19,14 @@ import styles from './styles';
 export default function SearchQuiz() {
     const navigation = useNavigation();
 
-    // State management
     const [text, setText] = useState('');
     const [selectedDifficulty, setSelectedDifficulty] = useState('all');
     const [difficulties, setDifficulties] = useState(['all']);
     const [minQuestions, setMinQuestions] = useState(0);
     const [maxQuestions, setMaxQuestions] = useState(50);
 
-    // Fetch difficulties on mount
     useEffect(() => {
-        refetch();
+        // Fetch available difficulties
         const fetchDifficultiesData = async () => {
             try {
                 const response = await fetchDifficulties();
@@ -46,7 +43,6 @@ export default function SearchQuiz() {
         fetchDifficultiesData();
     }, []);
 
-    // Infinite query for quizzes
     const {
         data,
         isLoading,
@@ -59,22 +55,20 @@ export default function SearchQuiz() {
         queryFn: ({ pageParam = 1 }) =>
             fetchSearchedQuiz({
                 text,
-                difficulty: selectedDifficulty === 'all' ? '' : selectedDifficulty,
+                difficulty: selectedDifficulty === 'all' ? '' : selectedDifficulty.toLowerCase(),
                 page: pageParam,
                 maxQuestions,
                 minQuestions,
             }),
         getNextPageParam: (lastPage) => lastPage?.nextPage ?? undefined,
-        enabled: false, // Prevent automatic execution
+        enabled: true
     });
 
-    // Search handler
-    const handleSearchText = (text) => {
-        setText(text.trim());
+    const handleSearchText = (inputText) => {
+        setText(inputText.trim());
         refetch();
     };
 
-    // Handle game creation
     const handlePressCreate = async (quizId) => {
         try {
             const gameResponse = await createGameId(quizId, navigation);
@@ -110,22 +104,49 @@ export default function SearchQuiz() {
                 <Text style={styles.text}>Select Difficulty</Text>
                 <SelectList
                     setSelected={(value) => {
-                        setSelectedDifficulty(value);
-                        refetch();
+                        setSelectedDifficulty(value.toString().toLowerCase());
+                        refetch(); 
                     }}
                     data={difficulties}
                     placeholder="Select a difficulty"
                     boxStyles={styles.input}
                     dropdownStyles={styles.selectListDropdown}
                 />
+                <Text style={styles.text}>Select the number of questions</Text>
+                <View style={styles.rangeInputs}>
+                    <View style={styles.inputGroup}>
+                        <Text style={styles.label}>Min</Text>
+                        <TextInput
+                            style={styles.input}
+                            value={minQuestions.toString()}
+                            keyboardType="numeric"
+                            placeholder="Min"
+                            onChangeText={(value) => {
+                                const newValue = parseInt(value, 10);
+                                setMinQuestions(newValue || 0);
+                                refetch(); 
+                            }}
+                        />
+                    </View>
+                    <View style={styles.inputGroup}>
+                        <Text style={styles.label}>Max</Text>
+                        <TextInput
+                            style={styles.input}
+                            value={maxQuestions.toString()}
+                            keyboardType="numeric"
+                            placeholder="Max"
+                            onChangeText={(value) => {
+                                const newValue = parseInt(value, 10);
+                                setMaxQuestions(newValue || 50);
+                                refetch(); 
+                            }}
+                        />
+                    </View>
+                </View>
             </View>
-            <QuestionRangeSelector
-                minQuestions={minQuestions}
-                maxQuestions={maxQuestions}
-                onMinChange={setMinQuestions}
-                onMaxChange={setMaxQuestions}
-            />
+
             {isLoading && <ActivityIndicator style={styles.loadingIndicator} />}
+
             <FlatList
                 data={data?.pages?.flatMap((page) => page?.quizzes || [])}
                 renderItem={({ item }) => (
@@ -142,7 +163,9 @@ export default function SearchQuiz() {
                 onEndReached={hasNextPage ? fetchNextPage : null}
                 onEndReachedThreshold={0.5}
                 ListFooterComponent={
-                    isFetchingNextPage && <ActivityIndicator style={styles.loadingIndicator} />
+                    isFetchingNextPage && (
+                        <ActivityIndicator style={styles.loadingIndicator} />
+                    )
                 }
                 ListEmptyComponent={
                     !isLoading && (
