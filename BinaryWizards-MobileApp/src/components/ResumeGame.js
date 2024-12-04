@@ -25,7 +25,7 @@ export default function ResumeGame() {
         const response = await checkGameExists(gameId);
         if (response) {
           setGameId('');
-          navigate('Questions', {
+          navigation.navigate('Questions', {
             gameId: gameId,
             question: response,
             quizId: response.quiz_id,
