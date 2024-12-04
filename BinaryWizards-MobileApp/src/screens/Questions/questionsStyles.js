@@ -10,6 +10,7 @@ export const questionStyle = StyleSheet.create({
     padding: 10,
   },
   gradientContainer: {
+    width: '100%',
     height: '85%',
     padding: 10,
     borderRadius: 30,

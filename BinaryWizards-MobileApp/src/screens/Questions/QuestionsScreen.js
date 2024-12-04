@@ -9,7 +9,6 @@ import {
 import { useNavigation } from '@react-navigation/native';
 import { styleContainer } from '../../styles/container';
 import { styleButton } from '../../styles/buttons';
-import HomeButton from '../../components/HomeButton';
 import Toast from 'react-native-toast-message';
 import GenericClipboard from '../../components/GenericClipboard';
 import { questionStyle } from './questionsStyles';
@@ -84,13 +83,18 @@ export default function QuestionScreen({ route }) {
       });
 
       if (result) {
-        result.user_answer_index = index;
-        setQuestionAnswer(result);
-
-        if (result.is_correct) {
-          setColorGradient(['#417336', '#417336', '#417336']);
+        if (result.resynchronize) {
+          setQuestion(result.data);
+          setQuestionAnswer(null);
         } else {
-          setColorGradient(['#F22828', '#F22828', '#F22828']);
+          result.user_answer_index = index;
+          setQuestionAnswer(result);
+
+          if (result.is_correct) {
+            setColorGradient(['#417336', '#417336', '#417336']);
+          } else {
+            setColorGradient(['#F22828', '#F22828', '#F22828']);
+          }
         }
       }
     } catch (error) {
@@ -105,9 +109,6 @@ export default function QuestionScreen({ route }) {
 
   return (
     <View style={styleContainer.mainContainer}>
-      <View>
-        <HomeButton />
-      </View>
       <View style={questionStyle.mainContainer}>
         <View
           style={{
@@ -161,13 +162,13 @@ export default function QuestionScreen({ route }) {
                 selectedAnswer={onSelectedAnswer}
                 correctAnswer={questionAnswer}
               />
+              <PrimaryButton
+                onPress={nextQuestion}
+                disabled={questionAnswer === null}
+                text={'Next question'}
+                style={[styleButton.button, { marginBottom: 20 }]}
+              />
             </View>
-            <PrimaryButton
-              onPress={nextQuestion}
-              disabled={questionAnswer === null}
-              text={'Next question'}
-              style={[styleButton.button, { marginBottom: 20 }]}
-            />
           </View>
         </LinearGradient>
       </View>

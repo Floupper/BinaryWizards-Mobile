@@ -1,15 +1,13 @@
-import React, { useState } from "react";
-import { View, Text, TextInput, Pressable } from "react-native";
+import React, { useState, useEffect, useCallback } from "react";
+import { View, Text, TextInput, Pressable, ActivityIndicator } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { signStyles, signBackgroundColors } from "../styles/sign";
 import { LinearGradient } from "expo-linear-gradient";
 import SigninSvg from "../../assets/signin.svg";
 import PrimaryButton from "../components/PrimaryButton";
-import {
-  createUser,
-  checkUsernameAvailability,
-} from "../services/SignUpRequests";
+import { createUser, checkUsernameAvailability } from "../services/SignUpRequests";
 import Toast from "react-native-toast-message";
+import debounce from "lodash.debounce";
 
 export default function Signup() {
   const [username, setUsername] = useState("");
@@ -19,17 +17,28 @@ export default function Signup() {
   const [usernameError, setUsernameError] = useState(false);
   const [passwordError, setPasswordError] = useState(false);
   const [confirmPasswordError, setConfirmPasswordError] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const navigation = useNavigation();
 
-  const fetchUsernameAvailability = async () => {
-    try {
-      const available = await checkUsernameAvailability({ username });
-      setIsUsernameAvailable(available);
-      setUsernameError(!available);
-    } catch (error) {
-      console.error("Error checking username:", error);
-      setUsernameError(true);
-    }
+  const debouncedFetchUsernameAvailability = useCallback(
+    debounce(async (text) => {
+      try {
+        const available = await checkUsernameAvailability({ username: text });
+        setIsUsernameAvailable(available);
+        setUsernameError(!available);
+      } catch (error) {
+        console.error("Error checking username:", error);
+        setUsernameError(true);
+      }
+    }, 200),
+    []
+  );
+
+  const handleUsernameChange = (text) => {
+    setUsername(text);
+    setUsernameError(false);
+    setIsUsernameAvailable(null);
+    debouncedFetchUsernameAvailability(text);
   };
 
   const handlePress = async () => {
@@ -43,7 +52,18 @@ export default function Signup() {
       return;
     }
 
+    setIsLoading(true);
+
     try {
+      const available = await checkUsernameAvailability({ username });
+      setIsUsernameAvailable(available);
+      setUsernameError(!available);
+
+      if (!available) {
+        setIsLoading(false);
+        return;
+      }
+
       const response = await createUser({ username, password });
       if (response) {
         navigation.navigate("Signin");
@@ -55,6 +75,8 @@ export default function Signup() {
       }
     } catch (error) {
       console.error("Error creating user:", error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -79,11 +101,7 @@ export default function Signup() {
                   usernameError && { borderColor: "red" },
                 ]}
                 value={username}
-                onChangeText={(text) => {
-                  setUsername(text);
-                  setUsernameError(false);
-                }}
-                onBlur={fetchUsernameAvailability}
+                onChangeText={handleUsernameChange}
               />
               {isUsernameAvailable === false && (
                 <Text style={{ color: "red" }}>Username is already taken.</Text>
@@ -133,10 +151,13 @@ export default function Signup() {
               )}
             </View>
             <PrimaryButton
-              text="Sign up"
+              text={isLoading ? "" : "Sign up"}
               onPress={handlePress}
               style={signStyles.buttonPrimary}
-            />
+              disabled={isLoading || usernameError}
+            >
+              {isLoading && <ActivityIndicator color="white" />}
+            </PrimaryButton>
           </View>
         </View>
         <View style={signStyles.outerContainer}>

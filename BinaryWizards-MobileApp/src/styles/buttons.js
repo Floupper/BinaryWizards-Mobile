@@ -12,8 +12,9 @@ export const styleButton = StyleSheet.create({
     textAlign: 'center',
   },
   button: {
-    backgroundColor: '#120000',
+    backgroundColor: '#fff',
     padding: 10,
+    color: 'white',
     margin: 10,
     borderRadius: 10,
     alignItems: 'center',
@@ -24,21 +25,33 @@ export const styleButton = StyleSheet.create({
     shadowRadius: 4, // on iOS
   },
   homeButton: {
-    margin: 10, 
+    margin: 10,
     flexDirection: 'row',
     alignItems: 'center',
     alignSelf: 'flex-start',
   },
+  enabledButton: {
+    backgroundColor: '#000',
+    padding: 10,
+    color: 'white',
+    margin: 10,
+    borderRadius: 10,
+    alignItems: 'center',
+    elevation: 10, // Shadow on android
+    shadowColor: '#000', // on iOS
+    shadowOffset: { width: 0, height: 4 }, // Shadow position on iOS
+    shadowOpacity: 0.3, // on iOS
+    shadowRadius: 4, // on iOS
+    opacity: 1,
+  },
+  disabledButton: {
+    backgroundColor: "#050505",
+    opacity: 0.6,
+  },
+  disabledText: {
+    color: "grey",
+    fontWeight: 'bold',
+    textAlign: 'center',
+  },
 });
 
-export const determineButtonStyle = (index, userAnswerIndex, correctAnswer) => {
-  if (userAnswerIndex === null) {
-    return '#FFFFFF';
-  } else if (index === correctAnswer?.correct_option_index) {
-    return 'green';
-  } else if (index === correctAnswer?.user_answer_index) {
-    return 'red';
-  } else {
-    return 'white';
-  }
-};

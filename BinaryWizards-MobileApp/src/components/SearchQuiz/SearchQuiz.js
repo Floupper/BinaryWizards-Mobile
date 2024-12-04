@@ -12,7 +12,6 @@ import { useInfiniteQuery } from '@tanstack/react-query';
 import { fetchSearchedQuiz } from '../../services/quizRequests';
 import { fetchDifficulties, createGameId } from '../../services/createGame';
 import { useNavigation } from '@react-navigation/native';
-import QuestionRangeSelector from '../QuestionRangeSelector/QuestionRangeSelector';
 import QuizListItem from '../QuizListItem';
 import { SelectList } from 'react-native-dropdown-select-list';
 import styles from './styles';
@@ -21,29 +20,30 @@ import { logout } from '../../utils/asyncStorage';
 export default function SearchQuiz() {
   const navigation = useNavigation();
 
-  // State management
   const [text, setText] = useState('');
   const [selectedDifficulty, setSelectedDifficulty] = useState('all');
   const [difficulties, setDifficulties] = useState(['all']);
   const [minQuestions, setMinQuestions] = useState(0);
   const [maxQuestions, setMaxQuestions] = useState(50);
 
-  // Fetch difficulties on mount
   useEffect(() => {
-    refetch();
+    // Fetch available difficulties
     const fetchDifficultiesData = async () => {
       try {
         const response = await fetchDifficulties();
         setDifficulties(['all', ...response]);
       } catch (error) {
-        return null;
+        Toast.show({
+          type: 'error',
+          text1: 'Error',
+          text2: `Unable to fetch difficulties: ${error.message}`,
+        });
       }
     };
 
     fetchDifficultiesData();
   }, []);
 
-  // Infinite query for quizzes
   const {
     data,
     isLoading,
@@ -56,22 +56,21 @@ export default function SearchQuiz() {
     queryFn: ({ pageParam = 1 }) =>
       fetchSearchedQuiz({
         text,
-        difficulty: selectedDifficulty === 'all' ? '' : selectedDifficulty,
+        difficulty:
+          selectedDifficulty === 'all' ? '' : selectedDifficulty.toLowerCase(),
         page: pageParam,
         maxQuestions,
         minQuestions,
       }),
     getNextPageParam: (lastPage) => lastPage?.nextPage ?? undefined,
-    enabled: false, // Prevent automatic execution
+    enabled: true,
   });
 
-  // Search handler
-  const handleSearchText = (text) => {
-    setText(text.trim());
+  const handleSearchText = (inputText) => {
+    setText(inputText.trim());
     refetch();
   };
 
-  // Handle game creation
   const handlePressCreate = async (quizId) => {
     try {
       const gameResponse = await createGameId(quizId, navigation);
@@ -82,6 +81,8 @@ export default function SearchQuiz() {
           text2: 'Game was created successfully!',
         });
         navigation.navigate('GameScreen', { gameId: gameResponse.game_id });
+      } else {
+        throw new Error('Invalid game creation response.');
       }
     } catch (error) {
       Toast.show({
@@ -105,7 +106,7 @@ export default function SearchQuiz() {
         <Text style={styles.text}>Select Difficulty</Text>
         <SelectList
           setSelected={(value) => {
-            setSelectedDifficulty(value);
+            setSelectedDifficulty(value.toString().toLowerCase());
             refetch();
           }}
           data={difficulties}
@@ -113,14 +114,41 @@ export default function SearchQuiz() {
           boxStyles={styles.input}
           dropdownStyles={styles.selectListDropdown}
         />
+        <Text style={styles.text}>Select the number of questions</Text>
+        <View style={styles.rangeInputs}>
+          <View style={styles.inputGroup}>
+            <Text style={styles.label}>Min</Text>
+            <TextInput
+              style={styles.input}
+              value={minQuestions.toString()}
+              keyboardType="numeric"
+              placeholder="Min"
+              onChangeText={(value) => {
+                const newValue = parseInt(value, 10);
+                setMinQuestions(newValue || 0);
+                refetch();
+              }}
+            />
+          </View>
+          <View style={styles.inputGroup}>
+            <Text style={styles.label}>Max</Text>
+            <TextInput
+              style={styles.input}
+              value={maxQuestions.toString()}
+              keyboardType="numeric"
+              placeholder="Max"
+              onChangeText={(value) => {
+                const newValue = parseInt(value, 10);
+                setMaxQuestions(newValue || 50);
+                refetch();
+              }}
+            />
+          </View>
+        </View>
       </View>
-      <QuestionRangeSelector
-        minQuestions={minQuestions}
-        maxQuestions={maxQuestions}
-        onMinChange={setMinQuestions}
-        onMaxChange={setMaxQuestions}
-      />
+
       {isLoading && <ActivityIndicator style={styles.loadingIndicator} />}
+
       <FlatList
         data={data?.pages?.flatMap((page) => page?.quizzes || [])}
         renderItem={({ item }) => (

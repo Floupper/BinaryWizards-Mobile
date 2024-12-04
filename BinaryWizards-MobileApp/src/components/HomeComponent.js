@@ -16,7 +16,8 @@ export default function HomeComponent() {
       <PrimaryButton
         text="Create quiz"
         onPress={() => navigation.navigate('Create')}
-        style={styleButton.button}
+        style={styleButton.enabledButton}
+        isQuestion={false}
       />
     </View>
   );

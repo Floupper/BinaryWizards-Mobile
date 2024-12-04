@@ -24,6 +24,22 @@ export const sendAnswer = async ({ gameId, question_index, option_index }) => {
 
     return response.data;
   } catch (error) {
+    if (error.response.status == 400) {
+      Toast.show({
+        type: 'success',
+        text1: 'Resynchronization with the game',
+        text2: 'Actualization of the question',
+      });
+      const newQuestionData = await fetchQuestion({ gameId });
+      return { resynchronize: true, data: newQuestionData };
+    } else {
+      Toast.show({
+        type: 'error',
+        text1: 'Error',
+        text2: 'An error occured while sending your answer',
+      });
+      console.error('Error:', error);
+    }
     return null;
   }
 };
