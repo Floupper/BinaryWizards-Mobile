@@ -1,6 +1,6 @@
-import { View, TextInput, Text, Pressable } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
 import React, { useState } from 'react';
+import { View, TextInput, Text, Pressable, ActivityIndicator } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 import { signStyles, signBackgroundColors } from '../styles/sign';
 import PrimaryButton from '../components/PrimaryButton';
 import { signIn } from '../services/userRequests';
@@ -12,20 +12,24 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 export default function Signin() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
   const navigation = useNavigation();
 
   const handlePress = async () => {
+    setIsLoading(true);
     try {
       const data = await signIn({ username, password });
       if (data) {
-        _storeUserToken(data.token);
-        AsyncStorage.setItem('username', username);
+        await _storeUserToken(data.token);
+        await AsyncStorage.setItem('username', username);
         navigation.navigate('Home');
       } else {
         setPassword('');
       }
     } catch (error) {
       console.error('Sign in error:', error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -62,10 +66,16 @@ export default function Signin() {
               />
             </View>
             <PrimaryButton
-              text="Sign in"
+              isQuestion={false}
               onPress={handlePress}
               style={signStyles.buttonPrimary}
-            />
+              disabled={isLoading}
+              text={isLoading ? "" : "Sign in"}
+            >
+              {isLoading &&
+                <ActivityIndicator color="#fff" />
+              }
+            </PrimaryButton>
           </View>
         </View>
         <View style={signStyles.outerContainer}>

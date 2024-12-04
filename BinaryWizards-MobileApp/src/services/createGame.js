@@ -136,7 +136,7 @@ export async function fetchAndCreateQuiz(
             throw new Error("No data returned");
         }
 
-        createGameId(data.quiz_id, navigation);
+        await createGameId(data.quiz_id, navigation);
     } catch (error) {
         Toast.show({
             type: 'error',

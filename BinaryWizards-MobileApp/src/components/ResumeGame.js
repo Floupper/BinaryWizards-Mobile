@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, StyleSheet } from 'react-native';
+import { View, Text, TextInput, StyleSheet, ActivityIndicator } from 'react-native';
 import { styleContainer } from '../styles/container';
 import { checkGameExists } from '../services/gamesRequests';
 import Toast from 'react-native-toast-message';
@@ -9,24 +9,32 @@ import { styleButton } from '../styles/buttons';
 
 export default function ResumeGame() {
   const [gameId, setGameId] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
   const { navigate } = useNavigation();
 
   const handlePress = async () => {
     if (gameId.trim()) {
-      const response = await checkGameExists(gameId);
-      if (response) {
-        setGameId('');
-        navigate('Questions', {
-          gameId: gameId,
-          question: response,
-          quizId: response.quiz_id,
-        });
-      } else {
-        Toast.show({
-          type: 'error',
-          text1: 'Error',
-          text2: 'Game does not exist',
-        });
+      setIsLoading(true);
+      try {
+        const response = await checkGameExists(gameId);
+        if (response) {
+          setGameId('');
+          navigate('Questions', {
+            gameId: gameId,
+            question: response,
+            quizId: response.quiz_id,
+          });
+        } else {
+          Toast.show({
+            type: 'error',
+            text1: 'Error',
+            text2: 'Game does not exist',
+          });
+        }
+      } catch (error) {
+        console.error('Error checking game existence:', error);
+      } finally {
+        setIsLoading(false);
       }
     } else {
       Toast.show({
@@ -48,10 +56,14 @@ export default function ResumeGame() {
           value={gameId}
         />
         <PrimaryButton
-          text="Play"
+          isQuestion={false}
           onPress={handlePress}
-          style={styleButton.button}
-        />
+          style={styleButton.enabledButton}
+          disabled={isLoading}
+          text={isLoading ? "" : "Play"}
+        >
+          {isLoading && <ActivityIndicator color="#fff" />}
+        </PrimaryButton>
       </View>
     </View>
   );

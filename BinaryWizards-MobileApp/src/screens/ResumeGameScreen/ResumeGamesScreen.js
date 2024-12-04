@@ -49,9 +49,10 @@ export default function JoinAndListGamesScreen() {
             value={gameId}
           />
           <PrimaryButton
+            isQuestion={false}
             text="Join"
             onPress={handlePress}
-            style={styleButton.button}
+            style={styleButton.enabledButton}
           />
         </View>
         <View style={{ width: "100%", flex: 1 }}>

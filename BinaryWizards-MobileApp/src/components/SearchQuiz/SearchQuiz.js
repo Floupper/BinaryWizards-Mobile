@@ -59,7 +59,7 @@ export default function SearchQuiz() {
         queryFn: ({ pageParam = 1 }) =>
             fetchSearchedQuiz({
                 text,
-                difficulty: selectedDifficulty === 'all' ? '' : selectedDifficulty,
+                difficulty: selectedDifficulty === 'all' ? '' : selectedDifficulty.toLowerCase(),
                 page: pageParam,
                 maxQuestions,
                 minQuestions,
