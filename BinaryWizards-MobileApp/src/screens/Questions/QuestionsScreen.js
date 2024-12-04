@@ -9,7 +9,6 @@ import {
 import { useNavigation } from '@react-navigation/native';
 import { styleContainer } from '../../styles/container';
 import { styleButton } from '../../styles/buttons';
-import HomeButton from '../../components/HomeButton';
 import Toast from 'react-native-toast-message';
 import GenericClipboard from '../../components/GenericClipboard';
 import { questionStyle } from './questionsStyles';
@@ -91,9 +90,6 @@ export default function QuestionScreen({ route }) {
 
   return (
     <View style={styleContainer.mainContainer}>
-      <View>
-        <HomeButton />
-      </View>
       <View style={questionStyle.mainContainer}>
         <View
           style={{
