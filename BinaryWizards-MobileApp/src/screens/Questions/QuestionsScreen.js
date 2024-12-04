@@ -94,7 +94,7 @@ export default function QuestionScreen({ route }) {
   return (
     <View style={styleContainer.mainContainer}>
       <View>
-        <HomeButton />
+        <HomeButton text={'Back'} />
       </View>
       <View style={questionStyle.mainContainer}>
         <View
