@@ -58,14 +58,12 @@ export default function CreateGame() {
     };
 
     const handleStartPress = async () => {
-        // Début du chargement
         setIsLoading(true);
         try {
             await fetchAndCreateQuiz(selectedCategory, nbQuestions, difficulty, navigation);
         } catch (error) {
             console.error("Error starting the quiz:", error);
         } finally {
-            // Fin du chargement
             setIsLoading(false);
         }
     };
