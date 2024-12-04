@@ -11,36 +11,32 @@ export const fetchSearchedQuiz = async ({ text = '', difficulty = '', minQuestio
       params.append('text', text);
     }
 
-    // Add difficulty if provided
-    if (difficulty.trim && difficulty != 'all') {
+    // Add difficulty if provided and not 'all'
+    if (difficulty && difficulty !== 'all') {
       params.append('difficulty', difficulty);
     }
 
-    // Add minQuestions and maxQuestions if both are provided
-    if (minQuestions && maxQuestions) {
-      params.append('minQuestions', minQuestions);
-      params.append('maxQuestions', maxQuestions);
-    }
+    params.append('minQuestions', minQuestions > 0 ? minQuestions : 0);
+    params.append('maxQuestions', maxQuestions > 0 ? maxQuestions : 50);
 
     // Add standard parameters
-    params.append('pageSize', 5);
-    params.append('page', page);
+    params.append('pageSize', 5); 
+    params.append('page', page); 
 
-    // Build the full URL
+    // Build the full URL for the search query
     const url = `/quiz/search?${params.toString()}`;
 
     // Make the request
     const response = await axiosInstance.get(url);
     return response.data;
   } catch (error) {
-    Toast.show(
-      {
-        text1: "Error",
-        text2: "An error occurred while fetching quizzes.",
-        type: "error",
-      }
-    );
+    // Show error toast message
+    Toast.show({
+      type: "error",
+      text1: "Error",
+      text2: "An error occurred while fetching quizzes.",
+    });
     console.error('Error fetching quizzes:', error);
-    return null;
+    return null; // Return null on error
   }
 };
