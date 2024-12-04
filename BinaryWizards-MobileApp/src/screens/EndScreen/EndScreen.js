@@ -1,4 +1,5 @@
-import { Text, View } from 'react-native';
+import React, { useState } from 'react';
+import { Text, View, ActivityIndicator } from 'react-native';
 import PrimaryButton from '../../components/PrimaryButton';
 import { useNavigation } from '@react-navigation/native';
 import { styleContainer } from '../../styles/container';
@@ -12,12 +13,29 @@ export default function EndScreen({ route }) {
   const { quizId, correct_answers_nb, nb_questions_total } = route.params;
   const navigation = useNavigation();
 
-  const backToHome = () => {
-    navigation.navigate('Home');
+  const [isLoadingHome, setIsLoadingHome] = useState(false);
+  const [isLoadingPlayAgain, setIsLoadingPlayAgain] = useState(false);
+
+  const backToHome = async () => {
+    setIsLoadingHome(true);
+    try {
+      navigation.navigate('Home');
+    } catch (error) {
+      console.error('Error navigating to home:', error);
+    } finally {
+      setIsLoadingHome(false);
+    }
   };
 
-  const playAgain = () => {
-    resetQuiz(quizId, navigation);
+  const playAgain = async () => {
+    setIsLoadingPlayAgain(true);
+    try {
+      await resetQuiz(quizId, navigation);
+    } catch (error) {
+      console.error('Error restarting quiz:', error);
+    } finally {
+      setIsLoadingPlayAgain(false);
+    }
   };
 
   return (
@@ -54,17 +72,23 @@ export default function EndScreen({ route }) {
           </View>
           <View style={styleContainer.bottomSection}>
             <PrimaryButton
-              disabled={false}
-              text={'Home page'}
+              isQuestion={false}
               onPress={backToHome}
-              style={styleButton.button}
-            />
+              style={styleButton.enabledButton}
+              disabled={isLoadingHome}
+              text={isLoadingHome ? "" : "Home page"}
+            >
+              {isLoadingHome && <ActivityIndicator color="#fff" />}
+            </PrimaryButton>
             <PrimaryButton
-              disabled={false}
-              text={'Restart quiz'}
+              isQuestion={false}
               onPress={playAgain}
-              style={styleButton.button}
-            />
+              style={styleButton.enabledButton}
+              disabled={isLoadingPlayAgain}
+              text={isLoadingPlayAgain ? "" : "Restart quiz"}
+            >
+              {isLoadingPlayAgain && <ActivityIndicator color="#fff" />}
+            </PrimaryButton>
           </View>
         </View>
       </View>
