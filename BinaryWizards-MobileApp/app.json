@@ -21,6 +21,8 @@
         "backgroundColor": "#ffffff"
       },
       "package": "com.mathieuackermann.BinaryWizardsMobileApp"
+      },
+      "package": "com.mathieuackermann.BinaryWizardsMobileApp"
     },
     "web": {
       "favicon": "./assets/favicon.png"
