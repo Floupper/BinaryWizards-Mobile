@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useCallback } from "react";
-import { View, Text, StyleSheet, Button, TextInput } from "react-native";
+import { View, Text, StyleSheet, TextInput, ActivityIndicator } from "react-native";
 import Toast from "react-native-toast-message";
 import { SelectList } from "react-native-dropdown-select-list";
 
@@ -20,6 +20,7 @@ export default function CreateGame() {
     const [nbQuestions, setNbQuestions] = useState("10");
     const [difficulty, setDifficulty] = useState("");
     const [difficulties, setDifficulties] = useState([]);
+    const [isLoading, setIsLoading] = useState(false);
 
     const navigation = useNavigation();
 
@@ -56,6 +57,19 @@ export default function CreateGame() {
         }
     };
 
+    const handleStartPress = async () => {
+        // Début du chargement
+        setIsLoading(true);
+        try {
+            await fetchAndCreateQuiz(selectedCategory, nbQuestions, difficulty, navigation);
+        } catch (error) {
+            console.error("Error starting the quiz:", error);
+        } finally {
+            // Fin du chargement
+            setIsLoading(false);
+        }
+    };
+
     return (
         <View style={styleContainer.container}>
             <View style={styles.pickerContainer}>
@@ -66,6 +80,7 @@ export default function CreateGame() {
                     placeholder="Select a category"
                     boxStyles={styles.input}
                     dropdownStyles={styles.selectListDropdown}
+                    defaultOption={null}
                 />
             </View>
 
@@ -89,32 +104,33 @@ export default function CreateGame() {
                     placeholder="Select a difficulty"
                     boxStyles={styles.input}
                     dropdownStyles={styles.selectListDropdown}
+                    defaultOption={null}
                 />
             </View>
 
             <View>
                 <PrimaryButton
-                    text="Start"
-                    onPress={() =>
-                        fetchAndCreateQuiz(
-                            selectedCategory,
-                            nbQuestions,
-                            difficulty,
-                            navigation
-                        )
-                    }
+                    onPress={handleStartPress}
+                    text={isLoading ? "" : "Play"}
+                    isQuestion={false}
                     disabled={
+                        isLoading ||
                         !nbQuestions ||
                         isNaN(parseInt(nbQuestions, 10)) ||
                         difficulty === ""
                     }
                     style={[
-                        styleButton.button,
-                        (!nbQuestions ||
+                        styleButton.enabledButton,
+                        (isLoading ||
+                            !nbQuestions ||
                             isNaN(parseInt(nbQuestions, 10)) ||
                             difficulty === "") && { backgroundColor: "gray" },
                     ]}
-                />
+                >
+                    {isLoading &&
+                        <ActivityIndicator color="#fff" />
+                    }
+                </PrimaryButton>
             </View>
 
             <Toast />
