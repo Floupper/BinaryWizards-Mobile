@@ -2,5 +2,6 @@ image: node:18
 
 lint:
   script:
+    - cd BinaryWizards-MobileApp/
     - npm install
     - npm run lint:fix
