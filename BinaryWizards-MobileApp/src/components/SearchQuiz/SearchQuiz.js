@@ -15,7 +15,6 @@ import { useNavigation } from '@react-navigation/native';
 import QuizListItem from '../QuizListItem';
 import { SelectList } from 'react-native-dropdown-select-list';
 import styles from './styles';
-import { logout } from '../../utils/asyncStorage';
 
 export default function SearchQuiz() {
   const navigation = useNavigation();
@@ -95,7 +94,7 @@ export default function SearchQuiz() {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.text}>Browse Quiz</Text>
+      <Text style={styles.text}>Search Quiz</Text>
       <TextInput
         style={styles.input}
         placeholder="Enter text to search for a quiz"

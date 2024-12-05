@@ -71,7 +71,7 @@ export default function HomeScreen() {
           ]}
         />
         <BlurView
-          intensity={10}
+          intensity={5}
           style={[
             styles.blurContainer,
             { width: windowWidth, height: windowHeight },
@@ -83,12 +83,12 @@ export default function HomeScreen() {
               { width: windowWidth, height: windowHeight },
             ]}
           />
-          <BlurView style={styles.container}>
+          <BlurView intensity={10} style={styles.container}>
             <View style={styles.homeButton}>
               <TopBar setHomeScreenUserToken={setUserToken} />
             </View>
             {userToken ? (
-              <View style={{ flex: 1 }}>
+              <View style={{ flex: 1, alignItems: 'center', width: '100%' }}>
                 <UserHomeComponent />
                 <View style={styleContainer.divider} />
                 <PrimaryButton

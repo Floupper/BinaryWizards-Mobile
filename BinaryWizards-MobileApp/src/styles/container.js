@@ -6,7 +6,7 @@ export const styleContainer = StyleSheet.create({
   },
   container: {
     alignItems: 'center',
-    backgroundColor: 'rgba(244, 242, 238, 1)',
+    backgroundColor: 'transparent',
     flex: 1,
     justifyContent: 'center',
     paddingHorizontal: 10,
@@ -19,7 +19,7 @@ export const styleContainer = StyleSheet.create({
   divider: {
     borderBottomColor: '#8B2DF1',
     borderBottomWidth: 3,
-    width: '100%',
+    width: '90%',
   },
   gameIdContainer: {
     alignItems: 'center',

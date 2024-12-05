@@ -22,7 +22,7 @@ export const styles = StyleSheet.create({
   formContainer: {
     alignItems: 'center',
     height: '100%',
-    justifyContent: 'center',
+    justifyContent: 'space-between',
     width: '100%',
   },
   header: {
@@ -59,6 +59,7 @@ export const styles = StyleSheet.create({
   mainContent: {
     alignItems: 'center',
     flex: 1,
+    height: '100%',
     justifyContent: 'center',
     width: '100%',
   },

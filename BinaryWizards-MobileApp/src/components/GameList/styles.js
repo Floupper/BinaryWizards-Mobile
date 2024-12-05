@@ -4,7 +4,6 @@ export default styles = StyleSheet.create({
   container: {
     flex: 1,
     height: '20%',
-    padding: 16,
     width: '100%',
   },
   emptyMessage: {

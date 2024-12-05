@@ -90,9 +90,8 @@ export default function CreateGame() {
           { width: windowWidth, height: windowHeight },
         ]}
       />
-
       <BlurView
-        intensity={10}
+        intensity={5}
         style={[
           styles.blurContainer,
           { width: windowWidth, height: windowHeight },

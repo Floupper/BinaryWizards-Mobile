@@ -11,7 +11,7 @@ export default function HomeComponent() {
 
   return (
     <View style={{ flex: 1, width: '100%', alignItems: 'center' }}>
-      <Text style={styleText.title}>Quiz id</Text>
+      <Text style={styleText.title}>Play a game</Text>
       <ResumeGame />
       <PrimaryButton
         text="Create quiz"

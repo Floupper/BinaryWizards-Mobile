@@ -29,7 +29,7 @@ export default function StackNavigator() {
         <Stack.Screen
           name="Questions"
           component={QuestionScreen}
-          options={{ headerShown: true }}
+          options={{ headerShown: false }}
         />
 
         <Stack.Screen

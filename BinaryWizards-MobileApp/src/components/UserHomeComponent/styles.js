@@ -31,6 +31,6 @@ export default styles = StyleSheet.create({
     backgroundColor: 'transparent',
     flex: 1,
     paddingTop: 20,
-    width: '100%',
+    width: '90%',
   },
 });

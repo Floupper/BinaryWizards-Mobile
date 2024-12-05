@@ -15,10 +15,8 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
     paddingHorizontal: 10,
   },
-
   container: {
     alignItems: 'center',
-    flex: 1,
     height: '100%',
     justifyContent: 'center',
     width: '100%',

@@ -3,7 +3,6 @@ import { View, Text, ActivityIndicator, FlatList } from 'react-native';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { getStartedGames } from '../../services/userRequests';
 import GameListItem from '../GameListItem/GameListItem';
-import { useNavigation } from '@react-navigation/native';
 import styles from './styles';
 
 export default function GameList() {
