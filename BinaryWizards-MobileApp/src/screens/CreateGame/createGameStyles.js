@@ -34,6 +34,7 @@ export const styles = StyleSheet.create({
     width: '100%',
   },
   input: {
+    alignSelf: 'center',
     backgroundColor: 'white',
     borderColor: 'gray',
     borderRadius: 10,
@@ -41,8 +42,7 @@ export const styles = StyleSheet.create({
     fontSize: 14,
     height: 50,
     paddingHorizontal: 10,
-    width: '90%', // Largeur cohérente
-    alignSelf: 'center',
+    width: '90%',
   },
   inputField: {
     alignItems: 'center',
@@ -64,17 +64,17 @@ export const styles = StyleSheet.create({
     width: '100%',
   },
   selectListBox: {
-    backgroundColor: 'white',
-    width: '90%', // Assure que la largeur est la même que l'input
     alignSelf: 'center',
+    backgroundColor: 'white',
+    width: '90%',
     zIndex: 10,
   },
   selectListDropdown: {
+    alignSelf: 'center',
     backgroundColor: 'white',
     borderRadius: 10,
     borderWidth: 1,
-    width: '90%', // Largeur identique
-    alignSelf: 'center',
+    width: '90%',
     zIndex: 10,
   },
   svgBackground: {
