@@ -1,20 +1,21 @@
-import React from "react";
-import { Text, View, StyleSheet } from "react-native";
-import { styleContainer } from "../../styles/container";
-import IconButton from "../IconButton";
-import { resetQuiz } from "../../services/endScreenRequests";
-import { checkGameExists } from "../../services/gamesRequests";
-import { useNavigation } from "@react-navigation/native";
-import Toast from "react-native-toast-message";
-import dayjs from "dayjs";
-import styles from "./styles";
+import React from 'react';
+import { Text, View } from 'react-native';
+import { styleContainer } from '../../styles/container';
+import IconButton from '../IconButton';
+import { resetQuiz } from '../../services/endScreenRequests';
+import { checkGameExists } from '../../services/gamesRequests';
+import { useNavigation } from '@react-navigation/native';
+import Toast from 'react-native-toast-message';
+import dayjs from 'dayjs';
+import styles from './styles';
+import { logout } from '../../utils/asyncStorage';
 
 export default function GameListItem({ item }) {
-  const formattedDate = dayjs(item.date_game_creation).format("DD/MM/YYYY");
+  const formattedDate = dayjs(item.date_game_creation).format('DD/MM/YYYY');
   const navigation = useNavigation();
 
-  const getPlayIcon = () => 
-    item.current_question_index > item.nb_questions_total ? "reload1" : "play";
+  const getPlayIcon = () =>
+    item.current_question_index > item.nb_questions_total ? 'reload1' : 'play';
 
   const handlePress = async () => {
     try {
@@ -22,25 +23,25 @@ export default function GameListItem({ item }) {
         await resetQuiz(item.quiz_id, navigation);
       } else {
         const response = await checkGameExists(item.game_id);
-        if (response) {
-          navigation.navigate("Questions", { 
-            gameId: item.game_id, 
-            question: response, 
-            quizId: response.quiz_id 
+        if (response === null) {
+          Toast.show({
+            type: 'error',
+            text1: 'Error',
+            text2: "Game id doesn't exist",
           });
         } else {
-          Toast.show({
-            type: "error",
-            text1: "Erreur",
-            text2: "The Game does not exist.",
+          navigation.navigate('Questions', {
+            gameId: item.game_id,
+            question: response,
+            quizId: response.quiz_id,
           });
         }
       }
     } catch (error) {
       Toast.show({
-        type: "error",
-        text1: "Erreur",
-        text2: "An error occurred.",
+        type: 'error',
+        text1: 'Error',
+        text2: 'An error occurred.',
       });
     }
   };

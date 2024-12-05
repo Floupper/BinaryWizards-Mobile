@@ -1,5 +1,6 @@
-import Toast from "react-native-toast-message";
-import axiosInstance from "../utils/axiosInstance";
+import Toast from 'react-native-toast-message';
+import axiosInstance from '../utils/axiosInstance';
+import { _removeUserToken } from '../utils/asyncStorage';
 
 export async function checkGameExists(gameId) {
   try {
@@ -11,40 +12,15 @@ export async function checkGameExists(gameId) {
 
     const data = await response.data;
     return data;
-
   } catch (error) {
-    console.error("Error fetching game data:", error);
-    Toast.show({
-      type: "error",
-      text1: "Error",
-      text2: "Game does not exist",
-    });
-    return null;
-  }
-}
-
-export async function createGame(quizId) {
-  try {
-    const response = await axiosInstance.get(`/game/${quizId}/create`);
-
-    if (!response) {
-      throw new Error(`HTTP error! Status: ${response.status}`);
+    if (error.status === 401) {
+      await _removeUserToken();
+      Toast.show({
+        type: 'error',
+        text1: 'Error while fetching game data',
+        text2: 'Please login again',
+      });
     }
-
-    const data = await response.data;
-    return data;
-  } catch (error) {
-    Toast.show({
-      type: 'error',
-      text1: 'Error',
-      text2: 'An error occured while creating the game',
-    });
-    console.error("Error creating game:", error);
-    Toast.show({
-      type: "error",
-      text1: "Error",
-      text2: "An error occured while creating the game",
-    });
     return null;
   }
 }
