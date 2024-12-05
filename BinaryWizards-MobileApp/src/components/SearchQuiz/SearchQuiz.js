@@ -74,7 +74,7 @@ export default function SearchQuiz() {
   const handlePressCreate = async (quizId) => {
     try {
       const gameResponse = await createGameId(quizId, navigation);
-      if (gameResponse?.game_id) {
+      if (gameResponse) {
         Toast.show({
           type: 'success',
           text1: 'Game Created',

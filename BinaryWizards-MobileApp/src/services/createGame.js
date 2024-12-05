@@ -125,6 +125,7 @@ export async function createGameId(quizId, navigation) {
     const gameResponse = await axiosInstance.get(`/game/${quizId}/create`);
     if (gameResponse && gameResponse.data.game_id) {
       navigation.navigate('Questions', { gameId: gameResponse.data.game_id });
+      return gameResponse.data.game_id;
     } else {
       Toast.show({
         type: 'error',
