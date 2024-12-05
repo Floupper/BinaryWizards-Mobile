@@ -1,5 +1,11 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, StyleSheet, ActivityIndicator } from 'react-native';
+import {
+  View,
+  Text,
+  TextInput,
+  StyleSheet,
+  ActivityIndicator,
+} from 'react-native';
 import { styleContainer } from '../styles/container';
 import { checkGameExists } from '../services/gamesRequests';
 import Toast from 'react-native-toast-message';
@@ -10,7 +16,7 @@ import { styleButton } from '../styles/buttons';
 export default function ResumeGame() {
   const [gameId, setGameId] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const { navigate } = useNavigation();
+  const navigation = useNavigation();
 
   const handlePress = async () => {
     if (gameId.trim()) {
@@ -19,7 +25,7 @@ export default function ResumeGame() {
         const response = await checkGameExists(gameId);
         if (response) {
           setGameId('');
-          navigate('Questions', {
+          navigation.navigate('Questions', {
             gameId: gameId,
             question: response,
             quizId: response.quiz_id,
@@ -60,7 +66,7 @@ export default function ResumeGame() {
           onPress={handlePress}
           style={styleButton.enabledButton}
           disabled={isLoading}
-          text={isLoading ? "" : "Play"}
+          text={isLoading ? '' : 'Play'}
         >
           {isLoading && <ActivityIndicator color="#fff" />}
         </PrimaryButton>

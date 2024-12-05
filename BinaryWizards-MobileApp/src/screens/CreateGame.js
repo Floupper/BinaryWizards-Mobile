@@ -210,31 +210,31 @@ export default function CreateGame() {
 }
 
 const styles = StyleSheet.create({
-  pickerContainer: {
-    marginBottom: 20,
-    width: '100%',
+  input: {
+    borderColor: 'gray',
+    borderRadius: 10,
+    borderWidth: 1,
+    color: 'black',
+    fontSize: 14,
+    height: 50,
+    marginHorizontal: 12,
+    paddingHorizontal: 10,
+    width: '90%',
   },
   label: {
     fontSize: 16,
     marginBottom: 5,
     paddingHorizontal: 10,
   },
-  input: {
-    height: 50,
-    width: '90%',
-    marginHorizontal: 12,
-    borderWidth: 1,
-    borderRadius: 10,
-    paddingHorizontal: 10,
-    fontSize: 14,
-    borderColor: 'gray',
-    color: 'black',
+  pickerContainer: {
+    marginBottom: 20,
+    width: '100%',
   },
   selectListDropdown: {
-    width: '90%',
-    marginHorizontal: 12,
+    borderColor: 'gray',
     borderRadius: 10,
     borderWidth: 1,
-    borderColor: 'gray',
+    marginHorizontal: 12,
+    width: '90%',
   },
 });

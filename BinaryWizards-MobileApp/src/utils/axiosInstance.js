@@ -3,6 +3,7 @@ import { _retrieveUserToken, logout } from './asyncStorage';
 import Toast from 'react-native-toast-message';
 import { REACT_NATIVE_API_URL, REACT_NATIVE_API_PORT } from '@env';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { _removeUserToken } from './asyncStorage';
 
 // Cretae an axios instance to make requests to the server
 const axiosInstance = axios.create({
@@ -29,35 +30,35 @@ axiosInstance.interceptors.request.use(
 // Add a response interceptor to handle the response from the server
 axiosInstance.interceptors.response.use(
   (response) => {
-    if (response.status === 401) {
-      Toast.show({
-        type: 'error',
-        text1: 'Error',
-        text2: 'Unauthorized. Please login again.',
-      });
-      return;
-    }
-
     return response;
   },
-  (error) => {
-    const message =
-      error.response?.data?.message ||
-      error.message ||
-      'Unknown error occurred';
+  async (error) => {
+    if (error.response.status === 401) {
+      try {
+        await _removeUserToken();
+        Toast.show({
+          type: 'error',
+          text1: 'Invalid token',
+          text2: 'Please login again',
+        });
+      } catch (err) {
+        console.error('Error removing user token:', err);
+      }
+      return null;
+    }
 
-    if (error.response) {
-      Toast.show({
-        type: 'error',
-        text1: 'Error',
-        text2: message,
-      });
-    } else {
-      Toast.show({
-        type: 'error',
-        text1: 'Error',
-        text2: 'Network error. Please try again.',
-      });
+    if (error.response.status === 404) {
+      try {
+        await _removeUserToken();
+        Toast.show({
+          type: 'error',
+          text1: 'Request error',
+          text2: error.response.data.message,
+        });
+      } catch (err) {
+        console.error('Error removing user token:', err);
+      }
+      return null;
     }
 
     return Promise.reject(error);
