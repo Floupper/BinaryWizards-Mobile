@@ -45,8 +45,6 @@ export default function GameList() {
 
   return (
     <View style={styles.container} onLayout={handleContainerLayout}>
-      <Text style={styles.title}>Resume Game</Text>
-
       {isLoading && !data && (
         <ActivityIndicator
           size="large"

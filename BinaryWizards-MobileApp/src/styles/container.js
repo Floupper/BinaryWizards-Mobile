@@ -17,8 +17,8 @@ export const styleContainer = StyleSheet.create({
     justifyContent: 'center',
   },
   divider: {
-    borderBottomColor: 'lightgray',
-    borderBottomWidth: 1,
+    borderBottomColor: '#8B2DF1',
+    borderBottomWidth: 3,
     width: '100%',
   },
   gameIdContainer: {
@@ -52,12 +52,15 @@ export const styleContainer = StyleSheet.create({
   },
   gameListItem: {
     alignItems: 'center',
-    border: '0.1rem solid lightgray',
+    backgroundColor: 'white',
     borderRadius: 10,
     flexDirection: 'row',
     justifyContent: 'space-between',
     margin: 5,
     padding: 10,
+    shadowColor: 'black',
+    shadowOffset: { width: 1, height: 2 },
+    shadowOpacity: 0.25,
   },
   infoContainer: {
     flexDirection: 'row',

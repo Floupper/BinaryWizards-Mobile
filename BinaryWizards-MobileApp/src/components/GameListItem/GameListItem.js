@@ -8,7 +8,6 @@ import { useNavigation } from '@react-navigation/native';
 import Toast from 'react-native-toast-message';
 import dayjs from 'dayjs';
 import styles from './styles';
-import { logout } from '../../utils/asyncStorage';
 
 export default function GameListItem({ item }) {
   const formattedDate = dayjs(item.date_game_creation).format('DD/MM/YYYY');
