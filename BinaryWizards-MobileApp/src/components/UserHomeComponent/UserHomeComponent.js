@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, } from 'react-native';
+import { View } from 'react-native';
 import SecondaryButton from '../SecondaryButton';
 import SearchQuiz from '../SearchQuiz/SearchQuiz';
 import GameList from '../GameList/GameList';

@@ -1,9 +1,9 @@
 import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import HomeScreen from '../screens/HomeScreen';
+import HomeScreen from '../screens/HomeScreen/HomeScreen';
 import QuestionScreen from '../screens/Questions/QuestionsScreen';
 import EndScreen from '../screens/EndScreen/EndScreen';
-import CreateGame from '../screens/CreateGame';
+import CreateGame from '../screens/CreateGame/CreateGame';
 import Signup from '../screens/Signup';
 import Signin from '../screens/Signin';
 
@@ -23,13 +23,13 @@ export default function StackNavigator() {
         <Stack.Screen
           name="Create"
           component={CreateGame}
-          options={{ headerShown: true, title: 'Create a game' }}
+          options={{ headerShown: false, title: 'Create a game' }}
         />
 
         <Stack.Screen
           name="Questions"
           component={QuestionScreen}
-          options={{ headerShown: true }}
+          options={{ headerShown: false }}
         />
 
         <Stack.Screen
