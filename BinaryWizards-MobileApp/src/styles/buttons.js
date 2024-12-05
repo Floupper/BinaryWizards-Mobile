@@ -1,18 +1,8 @@
 import { StyleSheet } from 'react-native';
 
 export const styleButton = StyleSheet.create({
-  textStyle: {
-    color: 'white',
-    fontWeight: 'bold',
-    textAlign: 'center',
-  },
-  textStyleQuestion: {
-    color: 'black',
-    fontWeight: 'bold',
-    textAlign: 'center',
-  },
   button: {
-    backgroundColor: '#fff',
+    backgroundColor: 'black',
     padding: 10,
     color: 'white',
     margin: 10,
@@ -24,11 +14,14 @@ export const styleButton = StyleSheet.create({
     shadowOpacity: 0.3, // on iOS
     shadowRadius: 4, // on iOS
   },
-  homeButton: {
-    margin: 10,
-    flexDirection: 'row',
-    alignItems: 'center',
-    alignSelf: 'flex-start',
+  disabledButton: {
+    backgroundColor: '#050505',
+    opacity: 0.6,
+  },
+  disabledText: {
+    color: 'grey',
+    fontWeight: 'bold',
+    textAlign: 'center',
   },
   enabledButton: {
     backgroundColor: '#000',
@@ -44,14 +37,20 @@ export const styleButton = StyleSheet.create({
     shadowRadius: 4, // on iOS
     opacity: 1,
   },
-  disabledButton: {
-    backgroundColor: "#050505",
-    opacity: 0.6,
+  homeButton: {
+    alignItems: 'center',
+    alignSelf: 'flex-start',
+    flexDirection: 'row',
+    margin: 10,
   },
-  disabledText: {
-    color: "grey",
+  textStyle: {
+    color: 'white',
+    fontWeight: 'bold',
+    textAlign: 'center',
+  },
+  textStyleQuestion: {
+    color: 'black',
     fontWeight: 'bold',
     textAlign: 'center',
   },
 });
-

@@ -9,12 +9,12 @@ import {
 import { useNavigation } from '@react-navigation/native';
 import { styleContainer } from '../../styles/container';
 import { styleButton } from '../../styles/buttons';
-import Toast from 'react-native-toast-message';
 import GenericClipboard from '../../components/GenericClipboard';
 import { questionStyle } from './questionsStyles';
 import { LinearGradient } from 'expo-linear-gradient';
 import ProgressBar from 'react-native-progress/Bar';
 import userTokenEmitter from '../../utils/eventEmitter';
+import HomeButton from '../../components/HomeButton';
 
 export default function QuestionScreen({ route }) {
   const [gameId, setGameId] = useState(route.params.gameId);
@@ -99,11 +99,6 @@ export default function QuestionScreen({ route }) {
       }
     } catch (error) {
       console.error('Error:', error);
-      Toast.show({
-        type: 'error',
-        text1: 'Error',
-        text2: 'An error occurred while submitting your answer.',
-      });
     }
   };
 
