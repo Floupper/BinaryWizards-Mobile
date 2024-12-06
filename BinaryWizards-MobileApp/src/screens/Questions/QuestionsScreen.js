@@ -132,7 +132,7 @@ export default function QuestionScreen({ route }) {
         </View>
 
         <View style={questionStyle.infoQuestions}>
-          <GenericClipboard text="id" id={gameId} />
+          {userToken ? <GenericClipboard text="id" id={gameId} /> : null}
           <Text style={questionStyle.infoQuestionsText}>
             {question.question_index}/{question.nb_questions_total}
           </Text>
