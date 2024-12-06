@@ -11,7 +11,14 @@ export default function HomeComponent() {
 
   return (
     <View style={{ flex: 1, width: '100%', alignItems: 'center' }}>
-      <Text style={styleText.title}>Play a game</Text>
+      <Text
+        style={[
+          styleText.title,
+          { color: 'white', paddingTop: 120, marginBottom: -90, fontSize: 50 },
+        ]}
+      >
+        Play a game
+      </Text>
       <ResumeGame />
       <PrimaryButton
         text="Create quiz"

@@ -54,7 +54,6 @@ export default function ResumeGame() {
   return (
     <View style={styleContainer.container}>
       <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-        <Text style={styles.label}>Game Id</Text>
         <TextInput
           style={styles.input}
           onChangeText={setGameId}
@@ -80,6 +79,7 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   input: {
+    backgroundColor: 'white',
     borderRadius: 10,
     borderWidth: 1,
     fontSize: 18,
