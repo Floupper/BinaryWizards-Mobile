@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Dimensions } from 'react-native';
+import { View, Dimensions, StatusBar } from 'react-native';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import userTokenEmitter from '../../utils/eventEmitter';
 
@@ -58,6 +58,7 @@ export default function HomeScreen() {
 
   return (
     <QueryClientProvider client={queryClient}>
+      <StatusBar barStyle="dark-content" />
       <View style={{ width: windowWidth, height: windowHeight }}>
         <LinearGradient
           colors={['#F1F1F1', '#C9D6FF']}
