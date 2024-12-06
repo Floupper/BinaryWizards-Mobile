@@ -56,7 +56,7 @@ export default function ResumeGame() {
       <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
         <Text style={styles.label}>Game Id</Text>
         <TextInput
-          style={styles.input}
+          style={[styles.input, { minWidth: 200 }]}
           onChangeText={setGameId}
           placeholder="Enter a game id"
           value={gameId}
