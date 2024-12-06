@@ -15,7 +15,6 @@ import { LinearGradient } from 'expo-linear-gradient';
 
 import Circles from '../../../assets/circles.svg';
 import Iphone from '../../../assets/iphone.svg';
-import HomeButton from '../../components/HomeButton';
 import { BlurView } from 'expo-blur';
 
 const queryClient = new QueryClient();
@@ -23,10 +22,10 @@ const queryClient = new QueryClient();
 export default function HomeScreen() {
   const [userToken, setUserToken] = useState(null);
   const [windowWidth, setWindowWidth] = useState(
-    Dimensions.get('window').width
+    Dimensions.get('screen').width
   );
   const [windowHeight, setWindowHeight] = useState(
-    Dimensions.get('window').height
+    Dimensions.get('screen').height
   );
   const navigation = useNavigation();
 
@@ -59,30 +58,14 @@ export default function HomeScreen() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <View style={styleContainer.mainContainer}>
+      <View style={{ width: windowWidth, height: windowHeight }}>
         <LinearGradient
           colors={['#F1F1F1', '#C9D6FF']}
-          style={{ width: windowWidth, height: windowHeight }}
+          style={{ width: windowWidth }}
         />
-        <Circles
-          style={[
-            styles.svgBackground,
-            { width: windowWidth, height: windowHeight },
-          ]}
-        />
-        <BlurView
-          intensity={5}
-          style={[
-            styles.blurContainer,
-            { width: windowWidth, height: windowHeight },
-          ]}
-        >
-          <Iphone
-            style={[
-              styles.backgroundImage,
-              { width: windowWidth, height: windowHeight },
-            ]}
-          />
+        <Circles style={[styles.svgBackground, { width: windowWidth }]} />
+
+        <View>
           <BlurView intensity={10} style={styles.container}>
             <View style={styles.homeButton}>
               <TopBar setHomeScreenUserToken={setUserToken} />
@@ -90,21 +73,14 @@ export default function HomeScreen() {
             {userToken ? (
               <View style={{ flex: 1, alignItems: 'center', width: '100%' }}>
                 <UserHomeComponent />
-                <View style={styleContainer.divider} />
-                <PrimaryButton
-                  isQuestion={false}
-                  text="Create quiz"
-                  onPress={() => navigation.navigate('Create')}
-                  style={styleButton.enabledButton}
-                />
               </View>
             ) : (
-              <View style={{ flex: 1 }}>
+              <View style={{ flex: 1, width: '100%' }}>
                 <HomeComponent />
               </View>
             )}
           </BlurView>
-        </BlurView>
+        </View>
       </View>
     </QueryClientProvider>
   );

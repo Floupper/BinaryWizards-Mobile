@@ -2,9 +2,10 @@ import { StyleSheet } from 'react-native';
 
 export default styles = StyleSheet.create({
   container: {
+    alignItems: 'center',
     flex: 1,
-    height: '20%',
-    width: '100%',
+    justifyContent: 'flex-start',
+    padding: 16,
   },
   emptyMessage: {
     color: '#888',

@@ -15,6 +15,9 @@ import { useNavigation } from '@react-navigation/native';
 import QuizListItem from '../QuizListItem';
 import { SelectList } from 'react-native-dropdown-select-list';
 import styles from './styles';
+import PrimaryButton from '../PrimaryButton';
+import { styleButton } from '../../styles/buttons';
+import { styleContainer } from '../../styles/container';
 
 export default function SearchQuiz() {
   const navigation = useNavigation();
@@ -173,6 +176,16 @@ export default function SearchQuiz() {
             <Text style={styles.emptyMessage}>No quizzes found.</Text>
           )
         }
+      />
+
+      <View style={styleContainer.divider} />
+      <PrimaryButton
+        isQuestion={false}
+        text="Create quiz"
+        onPress={() => {
+          navigation.navigate('Create');
+        }}
+        style={styleButton.enabledButton}
       />
     </View>
   );

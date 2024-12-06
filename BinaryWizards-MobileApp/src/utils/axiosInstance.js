@@ -13,6 +13,8 @@ const axiosInstance = axios.create({
   },
 });
 
+console.log('API URL:', `${REACT_NATIVE_API_URL}:${REACT_NATIVE_API_PORT}`);
+
 // Add a request interceptor to add the user token to the request headers if a user token exists
 axiosInstance.interceptors.request.use(
   async (config) => {

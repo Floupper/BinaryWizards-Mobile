@@ -1,23 +1,19 @@
 import React, { useEffect, useState, useCallback } from 'react';
-import { View, Text, TextInput, Dimensions } from 'react-native';
+import { View, Text, TextInput, Dimensions, StyleSheet } from 'react-native';
 import Toast from 'react-native-toast-message';
 import { SelectList } from 'react-native-dropdown-select-list';
 import { BlurView } from 'expo-blur';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useNavigation, useFocusEffect } from '@react-navigation/native';
-
+import PrimaryButton from '../../components/PrimaryButton';
+import { styles } from './createGameStyles';
+import { styleButton } from '../../styles/buttons';
 import {
   fetchAndCreateQuiz,
   fetchCategories,
   fetchDifficulties,
 } from '../../services/createGame';
-import PrimaryButton from '../../components/PrimaryButton';
-import { styles } from './createGameStyles';
-import { styleButton } from '../../styles/buttons';
-
 import Circles from '../../../assets/circles.svg';
-import Iphone from '../../../assets/iphone.svg';
-import HomeButton from '../../components/HomeButton';
 
 export default function CreateGame() {
   const [categories, setCategories] = useState([]);
@@ -79,73 +75,49 @@ export default function CreateGame() {
   };
 
   return (
-    <View style={styles.container}>
+    <View style={{ flex: 1 }}>
       <LinearGradient
         colors={['#F1F1F1', '#C9D6FF']}
-        style={{ width: windowWidth, height: windowHeight }}
+        style={{ width: '100%', height: '100%' }}
       />
-      <Circles
-        style={[
-          styles.svgBackground,
-          { width: windowWidth, height: windowHeight },
-        ]}
-      />
-      <BlurView
-        intensity={5}
-        style={[
-          styles.blurContainer,
-          { width: windowWidth, height: windowHeight },
-        ]}
-      >
+      <Circles style={[styles.svgBackground, { width: windowWidth }]} />
+      <View style={[StyleSheet.absoluteFill, { zIndex: 1 }]}>
         <View style={styles.mainContent}>
-          <Iphone
+          <Header />
+          <Form
+            categories={categories}
+            nbQuestions={nbQuestions}
+            handleNbQuestionsChange={handleNbQuestionsChange}
+            difficulties={difficulties}
+            setSelectedCategory={setSelectedCategory}
+            setDifficulty={setDifficulty}
+          />
+          <PrimaryButton
+            text="Play"
+            onPress={() =>
+              fetchAndCreateQuiz(
+                selectedCategory,
+                nbQuestions,
+                difficulty,
+                navigation
+              )
+            }
+            disabled={
+              !nbQuestions ||
+              isNaN(parseInt(nbQuestions, 10)) ||
+              difficulty === '' ||
+              selectedCategory === ''
+            }
             style={[
-              styles.backgroundImage,
-              { width: windowWidth, height: windowHeight },
+              styleButton.button,
+              (!nbQuestions ||
+                isNaN(parseInt(nbQuestions, 10)) ||
+                difficulty === '' ||
+                selectedCategory === '') && { backgroundColor: 'gray' },
             ]}
           />
-          <BlurView intensity={20} style={styles.formContainer}>
-            <View style={styles.homeButton}>
-              <HomeButton text={'Back'} />
-            </View>
-            <Header />
-            <Form
-              categories={categories}
-              nbQuestions={nbQuestions}
-              handleNbQuestionsChange={handleNbQuestionsChange}
-              difficulties={difficulties}
-              setSelectedCategory={setSelectedCategory}
-              setDifficulty={setDifficulty}
-            />
-            <View style={styles.header}>
-              <PrimaryButton
-                text="Play"
-                onPress={() =>
-                  fetchAndCreateQuiz(
-                    selectedCategory,
-                    nbQuestions,
-                    difficulty,
-                    navigation
-                  )
-                }
-                disabled={
-                  !nbQuestions ||
-                  isNaN(parseInt(nbQuestions, 10)) ||
-                  difficulty === '' ||
-                  selectedCategory === ''
-                }
-                style={[
-                  styleButton.button,
-                  (!nbQuestions ||
-                    isNaN(parseInt(nbQuestions, 10)) ||
-                    difficulty === '' ||
-                    selectedCategory === '') && { backgroundColor: 'gray' },
-                ]}
-              />
-            </View>
-          </BlurView>
         </View>
-      </BlurView>
+      </View>
     </View>
   );
 }

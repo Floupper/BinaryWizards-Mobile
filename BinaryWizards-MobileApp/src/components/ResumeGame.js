@@ -70,6 +70,17 @@ export default function ResumeGame() {
         >
           {isLoading && <ActivityIndicator color="#fff" />}
         </PrimaryButton>
+
+        <View style={styleContainer.divider} />
+        <PrimaryButton
+          text="Create quiz"
+          onPress={() => {
+            navigation.navigate('Create');
+            console.log('Create quiz button pressed');
+          }}
+          style={styleButton.enabledButton}
+          isQuestion={false}
+        />
       </View>
     </View>
   );
