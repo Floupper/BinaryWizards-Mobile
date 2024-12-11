@@ -21,7 +21,7 @@ export default function UserHomeComponent() {
     <View style={styles.container}>
       <View style={styles.buttonContainer}>
         <SecondaryButton
-          text="Ongoing games"
+          text="Resume games"
           onPress={() => toggleShowOngoingGames(true)}
           style={showOngoingGames ? styles.buttonSelected : styles.button}
         />

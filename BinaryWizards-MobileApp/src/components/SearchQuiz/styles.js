@@ -37,7 +37,7 @@ export default styles = StyleSheet.create({
     flex: 1,
   },
   label: {
-    color: '#555',
+    color: 'white',
     fontSize: 14,
     marginBottom: 8,
   },
