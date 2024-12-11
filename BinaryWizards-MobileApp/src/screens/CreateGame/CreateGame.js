@@ -1,8 +1,14 @@
 import React, { useEffect, useState, useCallback } from 'react';
-import { View, Text, TextInput, Dimensions, StyleSheet } from 'react-native';
+import {
+  View,
+  Text,
+  TextInput,
+  Dimensions,
+  StyleSheet,
+  ActivityIndicator,
+} from 'react-native';
 import Toast from 'react-native-toast-message';
 import { SelectList } from 'react-native-dropdown-select-list';
-import { BlurView } from 'expo-blur';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import PrimaryButton from '../../components/PrimaryButton';
@@ -21,6 +27,10 @@ export default function CreateGame() {
   const [nbQuestions, setNbQuestions] = useState('10');
   const [difficulty, setDifficulty] = useState('');
   const [difficulties, setDifficulties] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isLoadingCategories, setIsLoadingCategories] = useState(true);
+  const [isLoadingDifficulties, setIsLoadingDifficulties] = useState(true);
+
   const [windowWidth, setWindowWidth] = useState(
     Dimensions.get('window').width
   );
@@ -45,10 +55,50 @@ export default function CreateGame() {
   }, []);
 
   useEffect(() => {
-    (async () => {
-      setCategories(await fetchCategories());
-      setDifficulties(await fetchDifficulties());
-    })();
+    const loadCategories = async () => {
+      setIsLoadingCategories(true);
+      try {
+        const fetchedCategories = await fetchCategories();
+        setCategories(
+          Array.isArray(fetchedCategories) ? fetchedCategories : []
+        );
+      } catch (error) {
+        console.error('Error fetching categories:', error);
+        Toast.show({
+          type: 'error',
+          text1: 'Error fetching categories',
+          text2: 'Please try again later',
+          position: 'bottom',
+        });
+        setCategories([]);
+      } finally {
+        setIsLoadingCategories(false);
+      }
+    };
+
+    const loadDifficulties = async () => {
+      setIsLoadingDifficulties(true);
+      try {
+        const fetchedDifficulties = await fetchDifficulties();
+        setDifficulties(
+          Array.isArray(fetchedDifficulties) ? fetchedDifficulties : []
+        );
+      } catch (error) {
+        console.error('Error fetching difficulties:', error);
+        Toast.show({
+          type: 'error',
+          text1: 'Error fetching difficulties',
+          text2: 'Please try again later',
+          position: 'bottom',
+        });
+        setDifficulties([]);
+      } finally {
+        setIsLoadingDifficulties(false);
+      }
+    };
+
+    loadCategories();
+    loadDifficulties();
   }, []);
 
   useFocusEffect(
@@ -70,7 +120,23 @@ export default function CreateGame() {
         text2: 'Please enter a number between 1 and 50',
         position: 'bottom',
       });
-      setNbQuestions('');
+      setNbQuestions(''); // Reset field if value is not valid
+    }
+  };
+
+  const handleStartPress = async () => {
+    setIsLoading(true);
+    try {
+      await fetchAndCreateQuiz(
+        selectedCategory,
+        nbQuestions,
+        difficulty,
+        navigation
+      );
+    } catch (error) {
+      console.error('Error starting the quiz:', error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -84,38 +150,92 @@ export default function CreateGame() {
       <View style={[StyleSheet.absoluteFill, { zIndex: 1 }]}>
         <View style={styles.mainContent}>
           <Header />
-          <Form
-            categories={categories}
-            nbQuestions={nbQuestions}
-            handleNbQuestionsChange={handleNbQuestionsChange}
-            difficulties={difficulties}
-            setSelectedCategory={setSelectedCategory}
-            setDifficulty={setDifficulty}
-          />
-          <PrimaryButton
-            text="Play"
-            onPress={() =>
-              fetchAndCreateQuiz(
-                selectedCategory,
-                nbQuestions,
-                difficulty,
-                navigation
-              )
-            }
-            disabled={
-              !nbQuestions ||
-              isNaN(parseInt(nbQuestions, 10)) ||
-              difficulty === '' ||
-              selectedCategory === ''
-            }
-            style={[
-              styleButton.button,
-              (!nbQuestions ||
+          <View style={styles.form}>
+            <View style={styles.pickerContainer}>
+              <Text style={styles.label}>Category</Text>
+
+              {isLoadingCategories ? (
+                <ActivityIndicator size="small" color="#0000ff" />
+              ) : (
+                <SelectList
+                  setSelected={(value) => setSelectedCategory(value)}
+                  data={
+                    categories.length > 0
+                      ? categories
+                      : [{ key: '0', value: 'No categories available' }]
+                  }
+                  placeholder="Select a category"
+                  boxStyles={styles.input}
+                  dropdownStyles={styles.selectListDropdown}
+                  defaultOption={
+                    categories.length > 0
+                      ? null
+                      : { key: '0', value: 'No categories available' }
+                  }
+                />
+              )}
+            </View>
+
+            <InputField
+              label="Number of Questions"
+              component={
+                <TextInput
+                  style={styles.input}
+                  keyboardType="numeric"
+                  value={nbQuestions}
+                  onChangeText={handleNbQuestionsChange}
+                  maxLength={2}
+                />
+              }
+            />
+            <View style={styles.pickerContainer}>
+              <Text style={styles.label}>Difficulty</Text>
+              {isLoadingDifficulties ? (
+                <ActivityIndicator size="small" color="#0000ff" />
+              ) : (
+                <SelectList
+                  setSelected={(value) => setDifficulty(value)}
+                  data={
+                    difficulties.length > 0
+                      ? difficulties
+                      : [{ key: '0', value: 'No difficulties available' }]
+                  }
+                  placeholder="Select a difficulty"
+                  boxStyles={styles.input}
+                  dropdownStyles={styles.selectListDropdown}
+                  defaultOption={
+                    difficulties.length > 0
+                      ? null
+                      : { key: '0', value: 'No difficulties available' }
+                  }
+                />
+              )}
+            </View>
+          </View>
+          <View>
+            <PrimaryButton
+              onPress={handleStartPress}
+              text={isLoading ? '' : 'Play'}
+              isQuestion={false}
+              disabled={
+                isLoading ||
+                !nbQuestions ||
                 isNaN(parseInt(nbQuestions, 10)) ||
                 difficulty === '' ||
-                selectedCategory === '') && { backgroundColor: 'gray' },
-            ]}
-          />
+                selectedCategory === ''
+              }
+              style={[
+                styleButton.enabledButton,
+                (isLoading ||
+                  !nbQuestions ||
+                  isNaN(parseInt(nbQuestions, 10)) ||
+                  difficulty === '' ||
+                  selectedCategory === '') && { backgroundColor: 'gray' },
+              ]}
+            >
+              {isLoading && <ActivityIndicator color="#fff" />}
+            </PrimaryButton>
+          </View>
         </View>
       </View>
     </View>
@@ -125,56 +245,6 @@ export default function CreateGame() {
 const Header = () => (
   <View style={styles.header}>
     <Text style={styles.title}>Create Quiz</Text>
-  </View>
-);
-
-const Form = ({
-  categories,
-  nbQuestions,
-  handleNbQuestionsChange,
-  difficulties,
-  setSelectedCategory,
-  setDifficulty,
-}) => (
-  <View style={styles.form}>
-    <InputField
-      label="Category"
-      component={
-        <SelectList
-          setSelected={setSelectedCategory}
-          data={categories}
-          placeholder="Category"
-          search={false}
-          boxStyles={styles.selectListBox}
-          dropdownStyles={styles.selectListDropdown}
-        />
-      }
-    />
-    <InputField
-      label="Number of Questions"
-      component={
-        <TextInput
-          style={styles.input}
-          keyboardType="numeric"
-          value={nbQuestions}
-          onChangeText={handleNbQuestionsChange}
-          maxLength={2}
-        />
-      }
-    />
-    <InputField
-      label="Difficulty"
-      component={
-        <SelectList
-          setSelected={setDifficulty}
-          data={difficulties}
-          placeholder="Difficulty"
-          search={false}
-          boxStyles={styles.selectListBox}
-          dropdownStyles={styles.selectListDropdown}
-        />
-      }
-    />
   </View>
 );
 

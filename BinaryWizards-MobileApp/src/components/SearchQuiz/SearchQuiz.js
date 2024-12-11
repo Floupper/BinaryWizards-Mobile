@@ -105,17 +105,6 @@ export default function SearchQuiz() {
         onChangeText={handleSearchText}
       />
       <View style={styles.pickerContainer}>
-        <Text style={styles.text}>Select Difficulty</Text>
-        <SelectList
-          setSelected={(value) => {
-            setSelectedDifficulty(value.toString().toLowerCase());
-            refetch();
-          }}
-          data={difficulties}
-          placeholder="Select a difficulty"
-          boxStyles={styles.input}
-          dropdownStyles={styles.selectListDropdown}
-        />
         <Text style={styles.text}>Select the number of questions</Text>
         <View style={styles.rangeInputs}>
           <View style={styles.inputGroup}>
@@ -147,6 +136,17 @@ export default function SearchQuiz() {
             />
           </View>
         </View>
+        <Text style={styles.text}>Select Difficulty</Text>
+        <SelectList
+          setSelected={(value) => {
+            setSelectedDifficulty(value.toString().toLowerCase());
+            refetch();
+          }}
+          data={difficulties}
+          placeholder="Select a difficulty"
+          boxStyles={styles.input}
+          dropdownStyles={styles.selectListDropdown}
+        />
       </View>
 
       {isLoading && <ActivityIndicator style={styles.loadingIndicator} />}
