@@ -6,6 +6,7 @@
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
+    "newArchEnabled": true,
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
@@ -18,10 +19,18 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.mathieuackermann.BinaryWizardsMobileApp"
     },
-    "web": {
-      "favicon": "./assets/favicon.png"
+    "package": "com.mathieuackermann.BinaryWizardsMobileApp"
+  },
+  "web": {
+    "favicon": "./assets/favicon.png"
+  },
+  "extra": {
+    "eas": {
+      "projectId": "15079b65-0202-4000-bc2b-61833fb4f2f8"
     }
-  }
+  },
+  "owner": "mathieuackermann"
 }

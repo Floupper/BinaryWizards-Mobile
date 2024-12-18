@@ -1,28 +1,56 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet } from 'react-native';
 
 export const styleButton = StyleSheet.create({
-  textStyle: {
-    color: "white",
-    fontWeight: "bold",
-    textAlign: "center",
-  },
   button: {
-    backgroundColor: "#3552b0",
+    backgroundColor: 'black',
     padding: 10,
+    color: 'white',
     margin: 10,
     borderRadius: 10,
-    alignItems: "center",
+    alignItems: 'center',
+    elevation: 10, // Shadow on android
+    shadowColor: '#000', // on iOS
+    shadowOffset: { width: 0, height: 4 }, // Shadow position on iOS
+    shadowOpacity: 0.3, // on iOS
+    shadowRadius: 4, // on iOS
+  },
+  disabledButton: {
+    backgroundColor: '#050505',
+    opacity: 0.6,
+  },
+  disabledText: {
+    color: 'grey',
+    fontWeight: 'bold',
+    textAlign: 'center',
+  },
+  enabledButton: {
+    backgroundColor: '#000',
+    padding: 10,
+    color: 'white',
+    margin: 10,
+    borderRadius: 10,
+    alignItems: 'center',
+    elevation: 10, // Shadow on android
+    shadowColor: '#000', // on iOS
+    shadowOffset: { width: 0, height: 4 }, // Shadow position on iOS
+    shadowOpacity: 0.3, // on iOS
+    shadowRadius: 4, // on iOS
+    opacity: 1,
+  },
+  homeButton: {
+    alignItems: 'center',
+    alignSelf: 'flex-start',
+    flexDirection: 'row',
+    margin: 10,
+  },
+  textStyle: {
+    color: 'white',
+    fontWeight: 'bold',
+    textAlign: 'center',
+  },
+  textStyleQuestion: {
+    color: 'black',
+    fontWeight: 'bold',
+    textAlign: 'center',
   },
 });
-
-export const determineButtonStyle = (index, userAnswerIndex, correctAnswer) => {
-  if (userAnswerIndex === null) {
-    return "#3552b0"; 
-  } else if (index === correctAnswer?.correct_option_index) {
-    return "green";
-  } else if (index === correctAnswer?.user_answer_index) {
-    return "red";
-  } else {
-    return "gray";
-  }
-};
