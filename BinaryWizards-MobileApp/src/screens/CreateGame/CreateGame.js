@@ -13,7 +13,8 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import PrimaryButton from '../../components/PrimaryButton';
 import { styles } from './createGameStyles';
-import { styleButton } from '../../styles/buttons';
+import { styleButton } from '../../styles/buttons';import BouncyCheckbox from 'react-native-bouncy-checkbox';
+
 import {
   fetchAndCreateQuiz,
   fetchCategories,
@@ -175,67 +176,43 @@ export default function CreateGame() {
                 />
               )}
             </View>
-
-            <InputField
-              label="Number of Questions"
-              component={
-                <TextInput
-                  style={styles.input}
-                  keyboardType="numeric"
-                  value={nbQuestions}
-                  onChangeText={handleNbQuestionsChange}
-                  maxLength={2}
-                />
-              }
+            <Header />
+            <Form
+              categories={categories}
+              nbQuestions={nbQuestions}
+              handleNbQuestionsChange={handleNbQuestionsChange}
+              difficulties={difficulties}
+              setSelectedCategory={setSelectedCategory}
+              setDifficulty={setDifficulty}
             />
-            <View style={styles.pickerContainer}>
-              <Text style={styles.label}>Difficulty</Text>
-              {isLoadingDifficulties ? (
-                <ActivityIndicator size="small" color="#0000ff" />
-              ) : (
-                <SelectList
-                  setSelected={(value) => setDifficulty(value)}
-                  data={
-                    difficulties.length > 0
-                      ? difficulties
-                      : [{ key: '0', value: 'No difficulties available' }]
-                  }
-                  placeholder="Select a difficulty"
-                  boxStyles={styles.input}
-                  dropdownStyles={styles.selectListDropdown}
-                  defaultOption={
-                    difficulties.length > 0
-                      ? null
-                      : { key: '0', value: 'No difficulties available' }
-                  }
-                />
-              )}
-            </View>
-          </View>
-          <View>
-            <PrimaryButton
-              onPress={handleStartPress}
-              text={isLoading ? '' : 'Play'}
-              isQuestion={false}
-              disabled={
-                isLoading ||
-                !nbQuestions ||
-                isNaN(parseInt(nbQuestions, 10)) ||
-                difficulty === '' ||
-                selectedCategory === ''
-              }
-              style={[
-                styleButton.enabledButton,
-                (isLoading ||
+            <TimerModeCheckbox />
+            <View style={styles.header}>
+              <PrimaryButton
+                text="Play"
+                onPress={() =>
+                  fetchAndCreateQuiz(
+                    selectedCategory,
+                    nbQuestions,
+                    difficulty,
+                    navigation
+                  )
+                }
+                disabled={
                   !nbQuestions ||
                   isNaN(parseInt(nbQuestions, 10)) ||
                   difficulty === '' ||
-                  selectedCategory === '') && { backgroundColor: 'gray' },
-              ]}
-            >
-              {isLoading && <ActivityIndicator color="#fff" />}
-            </PrimaryButton>
-          </View>
+                  selectedCategory === ''
+                }
+                style={[
+                  styleButton.button,
+                  (!nbQuestions ||
+                    isNaN(parseInt(nbQuestions, 10)) ||
+                    difficulty === '' ||
+                    selectedCategory === '') && { backgroundColor: 'gray' },
+                ]}
+              />
+            </View>
+          </BlurView>
         </View>
       </View>
     </View>
@@ -254,3 +231,23 @@ const InputField = ({ label, component }) => (
     {component}
   </View>
 );
+
+const TimerModeCheckbox = () => {
+  return (
+    <View style={styles.timerModeCheckbox}>
+      <BouncyCheckbox
+        size={35}
+        iconImageStyle={{ width: 25, height: 25 }}
+        fillColor="#ebebeb"
+        unFillColor="white"
+        onPress={() => {}}
+        text="Enable time mode"
+        textStyle={{
+          color: 'black',
+          textDecorationLine: 'none',
+        }}
+        checkIconImageSource={require('../../../assets/hourglass.png')}
+      />
+    </View>
+  );
+};

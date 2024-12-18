@@ -78,6 +78,10 @@ export const styles = StyleSheet.create({
   svgBackground: {
     position: 'absolute',
   },
+  timerModeCheckbox: {
+    flexDirection: 'row',
+    width: '50%',
+  },
   title: {
     color: 'white',
     fontSize: 32,
