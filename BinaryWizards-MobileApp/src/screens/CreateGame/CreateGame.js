@@ -13,7 +13,8 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import PrimaryButton from '../../components/PrimaryButton';
 import { styles } from './createGameStyles';
-import { styleButton } from '../../styles/buttons';import BouncyCheckbox from 'react-native-bouncy-checkbox';
+import { styleButton } from '../../styles/buttons';
+import BouncyCheckbox from 'react-native-bouncy-checkbox';
 
 import {
   fetchAndCreateQuiz,
@@ -142,79 +143,54 @@ export default function CreateGame() {
   };
 
   return (
-    <View style={{ flex: 1 }}>
-      <LinearGradient
+    <View>
+      {/* <LinearGradient
         colors={['#F1F1F1', '#C9D6FF']}
         style={{ width: '100%', height: '100%' }}
-      />
+      /> */}
       <Circles style={[styles.svgBackground, { width: windowWidth }]} />
-      <View style={[StyleSheet.absoluteFill, { zIndex: 1 }]}>
-        <View style={styles.mainContent}>
-          <Header />
-          <View style={styles.form}>
-            <View style={styles.pickerContainer}>
-              <Text style={styles.label}>Category</Text>
-
-              {isLoadingCategories ? (
-                <ActivityIndicator size="small" color="#0000ff" />
-              ) : (
-                <SelectList
-                  setSelected={(value) => setSelectedCategory(value)}
-                  data={
-                    categories.length > 0
-                      ? categories
-                      : [{ key: '0', value: 'No categories available' }]
-                  }
-                  placeholder="Select a category"
-                  boxStyles={styles.input}
-                  dropdownStyles={styles.selectListDropdown}
-                  defaultOption={
-                    categories.length > 0
-                      ? null
-                      : { key: '0', value: 'No categories available' }
-                  }
-                />
-              )}
-            </View>
-            <Header />
-            <Form
-              categories={categories}
-              nbQuestions={nbQuestions}
-              handleNbQuestionsChange={handleNbQuestionsChange}
-              difficulties={difficulties}
-              setSelectedCategory={setSelectedCategory}
-              setDifficulty={setDifficulty}
-            />
-            <TimerModeCheckbox />
-            <View style={styles.header}>
-              <PrimaryButton
-                text="Play"
-                onPress={() =>
-                  fetchAndCreateQuiz(
-                    selectedCategory,
-                    nbQuestions,
-                    difficulty,
-                    navigation
-                  )
-                }
-                disabled={
-                  !nbQuestions ||
-                  isNaN(parseInt(nbQuestions, 10)) ||
-                  difficulty === '' ||
-                  selectedCategory === ''
-                }
-                style={[
-                  styleButton.button,
-                  (!nbQuestions ||
-                    isNaN(parseInt(nbQuestions, 10)) ||
-                    difficulty === '' ||
-                    selectedCategory === '') && { backgroundColor: 'gray' },
-                ]}
-              />
-            </View>
-          </BlurView>
+      {/* <View style={[StyleSheet.absoluteFill, { zIndex: 1 }]}> */}
+      {/* <View style={styles.mainContent}> */}
+      <Header />
+      <View style={styles.form}>
+        <Form
+          categories={categories}
+          nbQuestions={nbQuestions}
+          handleNbQuestionsChange={handleNbQuestionsChange}
+          difficulties={difficulties}
+          setSelectedCategory={setSelectedCategory}
+          setDifficulty={setDifficulty}
+        />
+        <TimerModeCheckbox />
+        <View style={styles.header}>
+          <PrimaryButton
+            text="Play"
+            onPress={() =>
+              fetchAndCreateQuiz(
+                selectedCategory,
+                nbQuestions,
+                difficulty,
+                navigation
+              )
+            }
+            disabled={
+              !nbQuestions ||
+              isNaN(parseInt(nbQuestions, 10)) ||
+              difficulty === '' ||
+              selectedCategory === ''
+            }
+            style={[
+              styleButton.button,
+              (!nbQuestions ||
+                isNaN(parseInt(nbQuestions, 10)) ||
+                difficulty === '' ||
+                selectedCategory === '') && { backgroundColor: 'gray' },
+            ]}
+          />
         </View>
       </View>
+      {/* </View> */}
+      {/* </View> */}
     </View>
   );
 }
@@ -222,6 +198,56 @@ export default function CreateGame() {
 const Header = () => (
   <View style={styles.header}>
     <Text style={styles.title}>Create Quiz</Text>
+  </View>
+);
+
+const Form = ({
+  categories,
+  nbQuestions,
+  handleNbQuestionsChange,
+  difficulties,
+  setSelectedCategory,
+  setDifficulty,
+}) => (
+  <View style={styles.form}>
+    <InputField
+      label="Category"
+      component={
+        <SelectList
+          setSelected={setSelectedCategory}
+          data={categories}
+          placeholder="Category"
+          search={false}
+          boxStyles={styles.selectListBox}
+          dropdownStyles={styles.selectListDropdown}
+        />
+      }
+    />
+    <InputField
+      label="Number of Questions"
+      component={
+        <TextInput
+          style={styles.input}
+          keyboardType="numeric"
+          value={nbQuestions}
+          onChangeText={handleNbQuestionsChange}
+          maxLength={2}
+        />
+      }
+    />
+    <InputField
+      label="Difficulty"
+      component={
+        <SelectList
+          setSelected={setDifficulty}
+          data={difficulties}
+          placeholder="Difficulty"
+          search={false}
+          boxStyles={styles.selectListBox}
+          dropdownStyles={styles.selectListDropdown}
+        />
+      }
+    />
   </View>
 );
 
