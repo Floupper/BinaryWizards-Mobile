@@ -75,7 +75,6 @@ export default function ResumeGame() {
           text="Create quiz"
           onPress={() => {
             navigation.navigate('Create');
-            console.log('Create quiz button pressed');
           }}
           style={styleButton.enabledButton}
           isQuestion={false}
