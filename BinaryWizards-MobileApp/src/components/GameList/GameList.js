@@ -4,8 +4,13 @@ import { useInfiniteQuery } from '@tanstack/react-query';
 import { getStartedGames } from '../../services/userRequests';
 import GameListItem from '../GameListItem/GameListItem';
 import styles from './styles';
+import PrimaryButton from '../PrimaryButton';
+import { styleButton } from '../../styles/buttons';
+import { styleContainer } from '../../styles/container';
+import { useNavigation } from '@react-navigation/native';
 
 export default function GameList() {
+  const navigation = useNavigation();
   const { data, isLoading, fetchNextPage, hasNextPage, isFetchingNextPage } =
     useInfiniteQuery({
       queryKey: ['unfinished_games'],
@@ -67,6 +72,16 @@ export default function GameList() {
           !isLoading && <Text style={styles.emptyMessage}>No games found.</Text>
         }
         onLayout={handleContentLayout}
+      />
+
+      <View style={styleContainer.divider} />
+      <PrimaryButton
+        isQuestion={false}
+        text="Create quiz"
+        onPress={() => {
+          navigation.navigate('Create');
+        }}
+        style={styleButton.enabledButton}
       />
     </View>
   );

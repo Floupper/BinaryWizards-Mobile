@@ -55,7 +55,7 @@ export default function ResumeGame() {
     <View style={styleContainer.container}>
       <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
         <TextInput
-          style={styles.input}
+          style={[styles.input, { minWidth: 200 }]}
           onChangeText={setGameId}
           placeholder="Enter a game id"
           value={gameId}
@@ -69,6 +69,16 @@ export default function ResumeGame() {
         >
           {isLoading && <ActivityIndicator color="#fff" />}
         </PrimaryButton>
+
+        <View style={styleContainer.divider} />
+        <PrimaryButton
+          text="Create quiz"
+          onPress={() => {
+            navigation.navigate('Create');
+          }}
+          style={styleButton.enabledButton}
+          isQuestion={false}
+        />
       </View>
     </View>
   );

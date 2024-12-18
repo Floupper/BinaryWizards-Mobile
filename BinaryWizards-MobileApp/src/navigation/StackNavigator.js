@@ -23,31 +23,31 @@ export default function StackNavigator() {
         <Stack.Screen
           name="Create"
           component={CreateGame}
-          options={{ headerShown: false, title: 'Create a game' }}
+          options={{ headerShown: true, title: 'Create a game' }}
         />
 
         <Stack.Screen
           name="Questions"
           component={QuestionScreen}
-          options={{ headerShown: false }}
+          options={{ headerShown: true }}
         />
 
         <Stack.Screen
           name="End"
           component={EndScreen}
-          options={{ headerShown: false }}
+          options={{ headerShown: true }}
         />
 
         <Stack.Screen
           name="Signup"
           component={Signup}
-          options={{ headerShown: false, title: 'Sign Up' }}
+          options={{ headerShown: true, title: 'Sign Up' }}
         />
 
         <Stack.Screen
           name="Signin"
           component={Signin}
-          options={{ headerShown: false, title: 'Sign In' }}
+          options={{ headerShown: true, title: 'Sign In' }}
         />
       </Stack.Navigator>
     </>

@@ -70,6 +70,8 @@ export const styleContainer = StyleSheet.create({
   mainContainer: {
     backgroundColor: '#F4F2EE',
     flex: 1,
+    height: '100%',
+    width: '100%',
   },
   middleSection: {
     alignItems: 'center',

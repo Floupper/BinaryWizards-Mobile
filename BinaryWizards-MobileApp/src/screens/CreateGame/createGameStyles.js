@@ -21,9 +21,7 @@ export const styles = StyleSheet.create({
   },
   formContainer: {
     alignItems: 'center',
-    height: '100%',
     justifyContent: 'space-between',
-    width: '100%',
   },
   header: {
     alignItems: 'center',
