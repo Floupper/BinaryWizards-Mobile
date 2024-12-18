@@ -17,8 +17,8 @@ export default function ShareModal({ visible, toggleModal }) {
       <View style={styles.modalOverlay}>
         <View style={styles.modalContent}>
           <Text style={styles.modalTitle}>Share Options</Text>
-          <Text>Link: Your shared link goes here</Text>
-          <Text>QrCode: Your QR code goes here</Text>
+          <Text>Link: {link}</Text>
+          <Text>QrCode: {qrCode}</Text>
           <Button title="Close" onPress={toggleModal} color={'black'} />
         </View>
       </View>
