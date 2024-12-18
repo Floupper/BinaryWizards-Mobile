@@ -1,12 +1,5 @@
 import React, { useEffect, useState, useCallback } from 'react';
-import {
-  View,
-  Text,
-  TextInput,
-  Dimensions,
-  StyleSheet,
-  ActivityIndicator,
-} from 'react-native';
+import { View, Text, TextInput, ActivityIndicator } from 'react-native';
 import Toast from 'react-native-toast-message';
 import { SelectList } from 'react-native-dropdown-select-list';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -21,7 +14,7 @@ import {
   fetchCategories,
   fetchDifficulties,
 } from '../../services/createGame';
-import Circles from '../../../assets/circles.svg';
+import TimerModal from '../../components/TimerModal/TimerModal';
 
 export default function CreateGame() {
   const [categories, setCategories] = useState([]);
@@ -33,28 +26,36 @@ export default function CreateGame() {
   const [isLoadingCategories, setIsLoadingCategories] = useState(true);
   const [isLoadingDifficulties, setIsLoadingDifficulties] = useState(true);
 
-  const [windowWidth, setWindowWidth] = useState(
-    Dimensions.get('window').width
-  );
-  const [windowHeight, setWindowHeight] = useState(
-    Dimensions.get('window').height
-  );
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [isTimeMode, setIsTimeMode] = useState(false);
+  const [choosedTimer, setChoosedTimer] = useState(0);
+
   const navigation = useNavigation();
 
-  const updateDimensions = () => {
-    const { width, height } = Dimensions.get('window');
-    setWindowWidth(width);
-    setWindowHeight(height);
+  const handleTimerChoice = ({ timer }) => {
+    if (timer !== null) {
+      setChoosedTimer(timer);
+      setIsTimeMode(true);
+    } else {
+      setIsTimeMode(false);
+      setChoosedTimer(0);
+    }
+    setIsModalVisible(false);
   };
 
-  useEffect(() => {
-    updateDimensions();
-    const subscription = Dimensions.addEventListener(
-      'change',
-      updateDimensions
-    );
-    return () => subscription?.remove();
-  }, []);
+  const openModal = (checked) => {
+    if (checked) {
+      setIsModalVisible(true);
+    } else {
+      setIsTimeMode(false);
+      setChoosedTimer(0);
+    }
+  };
+
+  const handleModalClose = () => {
+    setIsTimeMode(false);
+    setIsModalVisible(false);
+  };
 
   useEffect(() => {
     const loadCategories = async () => {
@@ -143,55 +144,94 @@ export default function CreateGame() {
   };
 
   return (
-    <View>
-      {/* <LinearGradient
-        colors={['#F1F1F1', '#C9D6FF']}
-        style={{ width: '100%', height: '100%' }}
-      /> */}
-      <Circles style={[styles.svgBackground, { width: windowWidth }]} />
-      {/* <View style={[StyleSheet.absoluteFill, { zIndex: 1 }]}> */}
-      {/* <View style={styles.mainContent}> */}
-      <Header />
-      <View style={styles.form}>
-        <Form
-          categories={categories}
-          nbQuestions={nbQuestions}
-          handleNbQuestionsChange={handleNbQuestionsChange}
-          difficulties={difficulties}
-          setSelectedCategory={setSelectedCategory}
-          setDifficulty={setDifficulty}
-        />
-        <TimerModeCheckbox />
-        <View style={styles.header}>
-          <PrimaryButton
-            text="Play"
-            onPress={() =>
-              fetchAndCreateQuiz(
-                selectedCategory,
-                nbQuestions,
-                difficulty,
-                navigation
-              )
-            }
-            disabled={
-              !nbQuestions ||
-              isNaN(parseInt(nbQuestions, 10)) ||
-              difficulty === '' ||
-              selectedCategory === ''
-            }
-            style={[
-              styleButton.button,
-              (!nbQuestions ||
+    <LinearGradient
+      colors={[
+        'rgba(41, 96, 240, 0.5)',
+        'rgba(138, 43, 242, 0.5)',
+        'rgba(228, 187, 145, 0.5)',
+      ]}
+      style={styles.mainContent}
+    >
+      <View style={{ flex: 1 }}>
+        <View
+          style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
+        >
+          <Header />
+          <Form
+            categories={categories}
+            nbQuestions={nbQuestions}
+            handleNbQuestionsChange={handleNbQuestionsChange}
+            difficulties={difficulties}
+            setSelectedCategory={setSelectedCategory}
+            setDifficulty={setDifficulty}
+          />
+          <View style={styles.checkboxContainer}>
+            <BouncyCheckbox
+              isChecked={isTimeMode}
+              size={35}
+              iconImageStyle={{ width: 25, height: 25 }}
+              fillColor="#ebebeb"
+              unFillColor="white"
+              onPress={(checked) => {
+                openModal(!checked);
+              }}
+              useBuiltInState={false}
+              checkIconImageSource={require('../../../assets/hourglass.png')}
+              text={isTimeMode ? 'Disable time mode' : 'Enable time mode'}
+              textStyle={{
+                textDecorationLine: 'none',
+              }}
+              che
+            />
+            <View>
+              {isTimeMode ? (
+                <View
+                  style={{
+                    color: 'white',
+                    backgroundColor: 'black',
+                    borderRadius: 5,
+                    padding: 5,
+                    height: 50,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                  }}
+                >
+                  <Text style={{ color: 'white' }}>Timer: {choosedTimer}</Text>
+                </View>
+              ) : (
+                ''
+              )}
+            </View>
+          </View>
+          <View style={styles.header}>
+            <PrimaryButton
+              text={isLoading ? '' : 'Play'}
+              onPress={handleStartPress}
+              disabled={
+                !nbQuestions ||
                 isNaN(parseInt(nbQuestions, 10)) ||
                 difficulty === '' ||
-                selectedCategory === '') && { backgroundColor: 'gray' },
-            ]}
-          />
+                selectedCategory === ''
+              }
+              style={[
+                styleButton.button,
+                (!nbQuestions ||
+                  isNaN(parseInt(nbQuestions, 10)) ||
+                  difficulty === '' ||
+                  selectedCategory === '') && { backgroundColor: 'gray' },
+              ]}
+            >
+              {isLoading && <ActivityIndicator color="#fff" />}
+            </PrimaryButton>
+          </View>
         </View>
+        <TimerModal
+          visible={isModalVisible}
+          handleTimerChoice={handleTimerChoice}
+          onClose={handleModalClose} // Gère la fermeture sans sélection.
+        />
       </View>
-      {/* </View> */}
-      {/* </View> */}
-    </View>
+    </LinearGradient>
   );
 }
 
@@ -257,23 +297,3 @@ const InputField = ({ label, component }) => (
     {component}
   </View>
 );
-
-const TimerModeCheckbox = () => {
-  return (
-    <View style={styles.timerModeCheckbox}>
-      <BouncyCheckbox
-        size={35}
-        iconImageStyle={{ width: 25, height: 25 }}
-        fillColor="#ebebeb"
-        unFillColor="white"
-        onPress={() => {}}
-        text="Enable time mode"
-        textStyle={{
-          color: 'black',
-          textDecorationLine: 'none',
-        }}
-        checkIconImageSource={require('../../../assets/hourglass.png')}
-      />
-    </View>
-  );
-};

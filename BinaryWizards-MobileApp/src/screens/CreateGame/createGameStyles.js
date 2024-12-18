@@ -12,20 +12,21 @@ export const styles = StyleSheet.create({
   button: {
     marginTop: 20,
   },
+  checkboxContainer: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: '50%',
+  },
   container: {
     flex: 1,
   },
-  form: {
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
+  form: {},
   formContainer: {
     alignItems: 'center',
     justifyContent: 'space-between',
   },
   header: {
     alignItems: 'center',
-    flex: 0.33,
     justifyContent: 'center',
   },
   homeButton: {
@@ -79,8 +80,9 @@ export const styles = StyleSheet.create({
     position: 'absolute',
   },
   timerModeCheckbox: {
+    alignItems: 'center',
+    border: '1px solid red',
     flexDirection: 'row',
-    width: '50%',
   },
   title: {
     color: 'white',
