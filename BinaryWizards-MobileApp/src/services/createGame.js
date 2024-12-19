@@ -127,7 +127,7 @@ export async function createGameId(quizId, timer, navigation) {
 
     const body = {
       mode: mode,
-      ...(timer !== 'none' && { difficulty_level: timer }), // Inclure seulement si timer n'est pas 'none'
+      ...(timer !== 'none' && { difficulty_level: timer }),
     };
 
     const gameResponse = await axiosInstance.post(`/game/${quizId}/init`, body);
