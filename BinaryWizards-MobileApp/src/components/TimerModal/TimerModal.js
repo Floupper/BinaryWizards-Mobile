@@ -30,7 +30,7 @@ export default function TimerModal({ visible, handleTimerChoice, onClose }) {
           <View style={styles.optionsContainer}>
             <TouchableOpacity
               onPress={() => {
-                handleTimerChoice({ timer: '30s' });
+                handleTimerChoice({ timer: 'easy' });
               }}
               style={[styles.optionBase, styles.optionEasy]}
             >
@@ -38,7 +38,7 @@ export default function TimerModal({ visible, handleTimerChoice, onClose }) {
             </TouchableOpacity>
             <TouchableOpacity
               onPress={() => {
-                handleTimerChoice({ timer: '15s' });
+                handleTimerChoice({ timer: 'medium' });
               }}
               style={[styles.optionBase, styles.optionMedium]}
             >
@@ -46,7 +46,7 @@ export default function TimerModal({ visible, handleTimerChoice, onClose }) {
             </TouchableOpacity>
             <TouchableOpacity
               onPress={() => {
-                handleTimerChoice({ timer: '5s' });
+                handleTimerChoice({ timer: 'hard' });
               }}
               style={[styles.optionBase, styles.optionHard]}
             >
