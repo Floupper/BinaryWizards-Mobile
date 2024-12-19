@@ -28,17 +28,17 @@ export default function CreateGame() {
 
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isTimeMode, setIsTimeMode] = useState(false);
-  const [choosedTimer, setChoosedTimer] = useState(0);
+  const [timeModeDifficulty, setTimeModeDifficulty] = useState('none');
 
   const navigation = useNavigation();
 
   const handleTimerChoice = ({ timer }) => {
     if (timer !== null) {
-      setChoosedTimer(timer);
+      setTimeModeDifficulty(timer);
       setIsTimeMode(true);
     } else {
       setIsTimeMode(false);
-      setChoosedTimer(0);
+      setTimeModeDifficulty(null);
     }
     setIsModalVisible(false);
   };
@@ -48,7 +48,7 @@ export default function CreateGame() {
       setIsModalVisible(true);
     } else {
       setIsTimeMode(false);
-      setChoosedTimer(0);
+      setTimeModeDifficulty(null);
     }
   };
 
@@ -134,6 +134,7 @@ export default function CreateGame() {
         selectedCategory,
         nbQuestions,
         difficulty,
+        timeModeDifficulty,
         navigation
       );
     } catch (error) {
@@ -181,7 +182,6 @@ export default function CreateGame() {
               textStyle={{
                 textDecorationLine: 'none',
               }}
-              che
             />
             <View>
               {isTimeMode ? (
@@ -193,13 +193,15 @@ export default function CreateGame() {
                     flexDirection: 'row',
                   }}
                 >
-                  <Text style={{ color: 'white' }}>Timer: </Text>
+                  <Text style={{ color: 'white' }}>
+                    Time mode difficulty :{' '}
+                  </Text>
                   <Text style={{ color: 'white', fontWeight: 'bold' }}>
-                    {choosedTimer}
+                    {timeModeDifficulty}
                   </Text>
                 </View>
               ) : (
-                ''
+                <Text></Text>
               )}
             </View>
           </View>

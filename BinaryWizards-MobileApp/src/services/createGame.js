@@ -66,6 +66,7 @@ export async function fetchAndCreateQuiz(
   category,
   nbQuestions,
   difficulty,
+  timer,
   navigation
 ) {
   const quizData = {};
@@ -109,7 +110,7 @@ export async function fetchAndCreateQuiz(
       throw new Error('No data returned');
     }
 
-    await createGameId(data.quiz_id, navigation);
+    await createGameId(data.quiz_id, timer, navigation);
   } catch (error) {
     Toast.show({
       type: 'error',
@@ -120,9 +121,16 @@ export async function fetchAndCreateQuiz(
   }
 }
 
-export async function createGameId(quizId, navigation) {
+export async function createGameId(quizId, timer, navigation) {
   try {
-    const gameResponse = await axiosInstance.get(`/game/${quizId}/create`);
+    const mode = timer === 'none' ? 'standard' : 'time';
+
+    const body = {
+      mode: mode,
+      ...(timer !== 'none' && { difficulty_level: timer }), // Inclure seulement si timer n'est pas 'none'
+    };
+
+    const gameResponse = await axiosInstance.post(`/game/${quizId}/init`, body);
     if (gameResponse && gameResponse.data.game_id) {
       navigation.navigate('Questions', { gameId: gameResponse.data.game_id });
       return gameResponse.data.game_id;
