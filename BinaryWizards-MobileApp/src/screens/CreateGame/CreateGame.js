@@ -188,15 +188,15 @@ export default function CreateGame() {
                 <View
                   style={{
                     color: 'white',
-                    backgroundColor: 'black',
-                    borderRadius: 5,
-                    padding: 5,
-                    height: 50,
                     justifyContent: 'center',
                     alignItems: 'center',
+                    flexDirection: 'row',
                   }}
                 >
-                  <Text style={{ color: 'white' }}>Timer: {choosedTimer}</Text>
+                  <Text style={{ color: 'white' }}>Timer: </Text>
+                  <Text style={{ color: 'white', fontWeight: 'bold' }}>
+                    {choosedTimer}
+                  </Text>
                 </View>
               ) : (
                 ''

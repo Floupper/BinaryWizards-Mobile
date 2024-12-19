@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, Modal, Button, TouchableOpacity } from 'react-native';
+import { View, Text, Modal, TouchableOpacity } from 'react-native';
 import Feather from '@expo/vector-icons/Feather';
 
 import { styles } from './styles';
@@ -32,7 +32,7 @@ export default function TimerModal({ visible, handleTimerChoice, onClose }) {
               onPress={() => {
                 handleTimerChoice({ timer: '30s' });
               }}
-              style={styles.optionEasy}
+              style={[styles.optionBase, styles.optionEasy]}
             >
               <Text>30s</Text>
             </TouchableOpacity>
@@ -40,7 +40,7 @@ export default function TimerModal({ visible, handleTimerChoice, onClose }) {
               onPress={() => {
                 handleTimerChoice({ timer: '15s' });
               }}
-              style={styles.optionMedium}
+              style={[styles.optionBase, styles.optionMedium]}
             >
               <Text>15s</Text>
             </TouchableOpacity>
@@ -48,7 +48,7 @@ export default function TimerModal({ visible, handleTimerChoice, onClose }) {
               onPress={() => {
                 handleTimerChoice({ timer: '5s' });
               }}
-              style={styles.optionHard}
+              style={[styles.optionBase, styles.optionHard]}
             >
               <Text>5s</Text>
             </TouchableOpacity>
