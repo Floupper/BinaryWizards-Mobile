@@ -228,7 +228,7 @@ export default function CreateGame() {
         <TimerModal
           visible={isModalVisible}
           handleTimerChoice={handleTimerChoice}
-          onClose={handleModalClose} // Gère la fermeture sans sélection.
+          onClose={handleModalClose}
         />
       </View>
     </LinearGradient>
