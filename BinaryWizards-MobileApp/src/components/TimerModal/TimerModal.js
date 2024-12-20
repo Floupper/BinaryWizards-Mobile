@@ -1,10 +1,17 @@
-import React from 'react';
+import React, { useCallback, useState } from 'react';
 import { View, Text, Modal, TouchableOpacity } from 'react-native';
 import Feather from '@expo/vector-icons/Feather';
+import { _retrieveUserToken } from '../../utils/asyncStorage';
+import { useFocusEffect } from '@react-navigation/native';
 
 import { styles } from './styles';
 
-export default function TimerModal({ visible, handleTimerChoice, onClose }) {
+export default function TimerModal({
+  visible,
+  handleTimerChoice,
+  onClose,
+  isCreateGame,
+}) {
   return (
     <Modal
       transparent={true}
@@ -28,6 +35,16 @@ export default function TimerModal({ visible, handleTimerChoice, onClose }) {
           </View>
           <Text style={styles.modalTitle}>Choose timer</Text>
           <View style={styles.optionsContainer}>
+            {!isCreateGame && (
+              <TouchableOpacity
+                onPress={() => {
+                  handleTimerChoice({ timer: 'none' });
+                }}
+                style={[styles.optionBase, styles.optionNone]}
+              >
+                <Text>None</Text>
+              </TouchableOpacity>
+            )}
             <TouchableOpacity
               onPress={() => {
                 handleTimerChoice({ timer: 'easy' });
