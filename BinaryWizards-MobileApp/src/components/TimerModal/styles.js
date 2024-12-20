@@ -56,6 +56,9 @@ export const styles = StyleSheet.create({
 
     shadowRadius: 3.84,
   },
+  optionNone: {
+    backgroundColor: '#ebebeb',
+  },
   optionEasy: {
     backgroundColor: '#6eff8d',
   },

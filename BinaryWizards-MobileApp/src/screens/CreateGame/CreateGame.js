@@ -231,6 +231,7 @@ export default function CreateGame() {
           visible={isModalVisible}
           handleTimerChoice={handleTimerChoice}
           onClose={handleModalClose}
+          isCreateGame={true}
         />
       </View>
     </LinearGradient>
