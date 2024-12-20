@@ -6,7 +6,6 @@ import {
   StyleSheet,
   ActivityIndicator,
 } from 'react-native';
-import { styleContainer } from '../styles/container';
 import { checkGameExists } from '../services/gamesRequests';
 import Toast from 'react-native-toast-message';
 import { useNavigation } from '@react-navigation/native';
@@ -105,7 +104,8 @@ const styles = StyleSheet.create({
   },
   label: {
     color: 'white',
-    fontSize: 32,
+    fontFamily: 'Mogula',
+    fontSize: 40,
     marginBottom: 5,
     paddingHorizontal: 10,
   },

@@ -42,7 +42,7 @@ export default function TimerModal({
                 }}
                 style={[styles.optionBase, styles.optionNone]}
               >
-                <Text>None</Text>
+                <Text style={styles.text}>None</Text>
               </TouchableOpacity>
             )}
             <TouchableOpacity
@@ -51,7 +51,7 @@ export default function TimerModal({
               }}
               style={[styles.optionBase, styles.optionEasy]}
             >
-              <Text>30s</Text>
+              <Text style={styles.text}>30s</Text>
             </TouchableOpacity>
             <TouchableOpacity
               onPress={() => {
@@ -59,7 +59,7 @@ export default function TimerModal({
               }}
               style={[styles.optionBase, styles.optionMedium]}
             >
-              <Text>15s</Text>
+              <Text style={styles.text}>15s</Text>
             </TouchableOpacity>
             <TouchableOpacity
               onPress={() => {
@@ -67,7 +67,7 @@ export default function TimerModal({
               }}
               style={[styles.optionBase, styles.optionHard]}
             >
-              <Text>5s</Text>
+              <Text style={styles.text}>5s</Text>
             </TouchableOpacity>
           </View>
         </View>
