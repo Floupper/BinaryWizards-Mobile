@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View } from 'react-native';
+import { View, Button } from 'react-native';
 import SecondaryButton from '../SecondaryButton';
 import SearchQuiz from '../SearchQuiz/SearchQuiz';
 import GameList from '../GameList/GameList';
@@ -17,6 +17,10 @@ export default function UserHomeComponent() {
     setShowOngoingGames(value);
   };
 
+  const handlePress = () => {
+    navigation.navigate('ScrumJoin');
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.buttonContainer}>
@@ -32,6 +36,7 @@ export default function UserHomeComponent() {
         />
       </View>
       {showOngoingGames ? <GameList /> : <SearchQuiz />}
+      <Button title="Join a Scrum" onPress={handlePress} />
     </View>
   );
 }

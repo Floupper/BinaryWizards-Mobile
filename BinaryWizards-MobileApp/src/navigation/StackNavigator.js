@@ -6,6 +6,8 @@ import EndScreen from '../screens/EndScreen/EndScreen';
 import CreateGame from '../screens/CreateGame/CreateGame';
 import Signup from '../screens/Signup';
 import Signin from '../screens/Signin';
+import ScrumLobby from '../screens/ScrumLobby/ScrumLobby';
+import ScrumJoin from '../screens/ScrumJoin/ScrumJoin';
 
 const Stack = createNativeStackNavigator();
 
@@ -48,6 +50,18 @@ export default function StackNavigator() {
           name="Signin"
           component={Signin}
           options={{ headerShown: true, title: 'Sign In' }}
+        />
+
+        <Stack.Screen
+          name="ScrumLobby"
+          component={ScrumLobby}
+          options={{ headerShown: true, title: 'Scrum Lobby' }}
+        />
+
+        <Stack.Screen
+          name="ScrumJoin"
+          component={ScrumJoin}
+          options={{ headerShown: true, title: 'Scrum Join' }}
         />
       </Stack.Navigator>
     </>
