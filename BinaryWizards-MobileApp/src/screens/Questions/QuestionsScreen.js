@@ -63,7 +63,6 @@ export default function QuestionScreen({ route }) {
       if (newToken === null) {
         navigation.navigate('Home');
       }
-      console.log('newToken:', newToken);
       setUserToken(newToken);
     };
 
