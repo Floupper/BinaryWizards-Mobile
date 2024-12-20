@@ -1,43 +1,111 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet } from 'react-native';
 
 export const styleContainer = StyleSheet.create({
-  mainContainer: {
-    flex: 1,
-    backgroundColor: "white",
-  },
-  quizIdContainer: {
-    textAlign: "center",
-    padding: 10,
+  bottomSection: {
+    margin: 80,
   },
   container: {
+    alignItems: 'center',
+    backgroundColor: 'transparent',
     flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
+    justifyContent: 'center',
     paddingHorizontal: 10,
   },
   contentContainer: {
+    alignItems: 'center',
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+  },
+  divider: {
+    borderBottomColor: '#8B2DF1',
+    borderBottomWidth: 3,
+    width: '90%',
+  },
+  gameIdContainer: {
+    alignItems: 'center',
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-evenly',
+    padding: 5,
+    textAlign: 'center',
+  },
+  gameList: {
+    alignItems: 'center',
+    border: '0.1rem solid black',
+    borderRadius: 10,
+    flex: 1,
+    margin: 10,
+    padding: 10,
+  },
+  gameListColumns: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    margin: 5,
+    padding: 10,
+  },
+  gameListColumns: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    margin: 5,
+    padding: 10,
+  },
+  gameListItem: {
+    alignItems: 'center',
+    backgroundColor: 'white',
+    borderRadius: 10,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    margin: 5,
+    padding: 10,
+    shadowColor: 'black',
+    shadowOffset: { width: 1, height: 2 },
+    shadowOpacity: 0.25,
   },
   infoContainer: {
-    flexDirection: "row",
-    justifyContent: "space-between",
+    flexDirection: 'row',
+    justifyContent: 'space-between',
     padding: 10,
+  },
+  mainContainer: {
+    backgroundColor: '#F4F2EE',
+    flex: 1,
+  },
+  middleSection: {
+    alignItems: 'center',
+    flex: 1,
+    justifyContent: 'center',
   },
   questionTitleContainer: {
     fontSize: 20,
-    fontWeight: "bold",
-    textAlign: "center",
+    fontWeight: 'bold',
     margin: 20,
+    textAlign: 'center',
   },
-  middleSection: {
+  quizIdContainer: {
+    alignItems: 'center',
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-evenly',
+    padding: 5,
+    textAlign: 'center',
+  },
+  quizListItem: {
+    alignItems: 'center',
+    border: '0.1rem solid lightgray',
+    borderRadius: 10,
+    justifyContent: 'space-between',
+    margin: 5,
+    padding: 10,
+  },
+  scrollView: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
   },
-  bottomSection: {
-    margin:80
+  topBar: {
+    alignItems: 'center',
+    backgroundColor: 'transparent',
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    padding: 10,
   },
 });
