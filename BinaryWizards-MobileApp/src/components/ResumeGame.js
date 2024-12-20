@@ -52,13 +52,16 @@ export default function ResumeGame() {
   };
 
   return (
-    <View style={styleContainer.container}>
-      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+      <View style={{ flex: 2, justifyContent: 'center' }}>
+        <Text style={styles.label}>Resume a game</Text>
+      </View>
+      <View style={{ flex: 3, justifyContent: 'center' }}>
         <TextInput
-          style={[styles.input, { minWidth: 200 }]}
           onChangeText={setGameId}
-          placeholder="Enter a game id"
+          placeholder="Enter a quiz id"
           value={gameId}
+          style={styles.input}
         />
         <PrimaryButton
           isQuestion={false}
@@ -69,15 +72,18 @@ export default function ResumeGame() {
         >
           {isLoading && <ActivityIndicator color="#fff" />}
         </PrimaryButton>
-
-        <View style={styleContainer.divider} />
+      </View>
+      <View style={{ flex: 1, justifyContent: 'center' }}>
+        <View
+          style={{ borderBottomWidth: 2, borderBottomColor: '#9d03fc' }}
+        ></View>
         <PrimaryButton
           text="Create quiz"
           onPress={() => {
             navigation.navigate('Create');
           }}
-          style={styleButton.enabledButton}
           isQuestion={false}
+          style={styleButton.enabledButton}
         />
       </View>
     </View>
@@ -96,10 +102,10 @@ const styles = StyleSheet.create({
     height: 50,
     margin: 12,
     textAlign: 'center',
-    width: '90%',
   },
   label: {
-    fontSize: 16,
+    color: 'white',
+    fontSize: 32,
     marginBottom: 5,
     paddingHorizontal: 10,
   },
