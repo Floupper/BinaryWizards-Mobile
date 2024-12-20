@@ -18,6 +18,7 @@ import styles from './styles';
 import PrimaryButton from '../PrimaryButton';
 import { styleButton } from '../../styles/buttons';
 import { styleContainer } from '../../styles/container';
+import TimerModal from '../TimerModal/TimerModal';
 
 export default function SearchQuiz() {
   const navigation = useNavigation();
@@ -27,6 +28,9 @@ export default function SearchQuiz() {
   const [difficulties, setDifficulties] = useState(['all']);
   const [minQuestions, setMinQuestions] = useState(0);
   const [maxQuestions, setMaxQuestions] = useState(50);
+
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [quizId, setQuizId] = useState(null);
 
   useEffect(() => {
     // Fetch available difficulties
@@ -73,16 +77,34 @@ export default function SearchQuiz() {
     refetch();
   };
 
-  const handlePressCreate = async (quizId) => {
+  const handleTimerChoice = ({ timer }) => {
+    setIsModalVisible(false);
+    handlePressCreate(quizId, timer);
+  };
+
+  const openModal = (quizId) => {
+    setQuizId(quizId);
+    setIsModalVisible(true);
+  };
+
+  const handleModalClose = () => {
+    setIsModalVisible(false);
+  };
+
+  const handlePressCreate = async (quizId, timeModeDifficulty) => {
     try {
-      const gameResponse = await createGameId(quizId, navigation);
+      const gameResponse = await createGameId(
+        quizId,
+        timeModeDifficulty,
+        navigation
+      );
       if (gameResponse) {
         Toast.show({
           type: 'success',
           text1: 'Game Created',
           text2: 'Game was created successfully!',
         });
-        navigation.navigate('GameScreen', { gameId: gameResponse.game_id });
+        navigation.navigate('Questions', { gameId: gameResponse });
       } else {
         throw new Error('Invalid game creation response.');
       }
@@ -154,7 +176,7 @@ export default function SearchQuiz() {
       <FlatList
         data={data?.pages?.flatMap((page) => page?.quizzes || [])}
         renderItem={({ item }) => (
-          <Pressable onPress={() => handlePressCreate(item.quiz_id)}>
+          <Pressable onPress={() => openModal(item.quiz_id)}>
             <QuizListItem
               difficulty={item.difficulty}
               title={item.title}
@@ -186,6 +208,12 @@ export default function SearchQuiz() {
           navigation.navigate('Create');
         }}
         style={styleButton.enabledButton}
+      />
+      <TimerModal
+        visible={isModalVisible}
+        handleTimerChoice={handleTimerChoice}
+        onClose={handleModalClose}
+        isCreateGame={false}
       />
     </View>
   );
