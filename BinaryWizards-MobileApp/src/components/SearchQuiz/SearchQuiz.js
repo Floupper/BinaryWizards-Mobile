@@ -92,7 +92,6 @@ export default function SearchQuiz() {
   };
 
   const handlePressCreate = async (quizId, timeModeDifficulty) => {
-    console.log('QuizId', quizId);
     try {
       const gameResponse = await createGameId(
         quizId,
