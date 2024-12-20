@@ -7,6 +7,7 @@ import PlayersList from '../../components/PlayersList/PlayersList';
 import { styles } from './ScrumLobbyStyle';
 
 export default function ScrumLobby({ route }) {
+  const [gameId, setGameId] = useState(route.params);
   const [isModalVisible, setIsModalVisible] = useState(false);
 
   const toggleModal = () => {
@@ -17,7 +18,7 @@ export default function ScrumLobby({ route }) {
     <>
       <View style={styles.container}>
         <Text style={styles.title}>Players List</Text>
-        <PlayersList />
+        <PlayersList game_id={gameId} />
 
         <TouchableOpacity onPress={toggleModal} style={styles.shareButton}>
           <Text style={styles.shareButtonText}>Show share link</Text>
