@@ -22,7 +22,15 @@
       },
       "package": "com.mathieuackermann.BinaryWizardsMobileApp"
     },
-    "package": "com.mathieuackermann.BinaryWizardsMobileApp"
+    "package": "com.mathieuackermann.BinaryWizardsMobileApp",
+    "plugins": [
+      [
+        "expo-font",
+        {
+          "fonts": ["path/to/file.ttf"]
+        }
+      ]
+    ]
   },
   "web": {
     "favicon": "./assets/favicon.png"
