@@ -10,8 +10,6 @@ export default function TeamLobby({ route }) {
   const [gameMode, setGameMode] = useState(route.params.gameMode);
   const [isModalVisible, setIsModalVisible] = useState(false);
 
-  console.log(gameId, gameMode);
-
   const toggleModal = () => {
     setIsModalVisible(!isModalVisible);
   };
