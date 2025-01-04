@@ -6,15 +6,36 @@ import { View } from 'react-native';
 
 import { styles } from './PlayersListStyle';
 import { REACT_NATIVE_API_URL, REACT_NATIVE_API_PORT } from '@env';
+import axiosInstance from '../../utils/axiosInstance';
 
 const SERVER_URL = `${REACT_NATIVE_API_URL}:${REACT_NATIVE_API_PORT}`;
 
 export default function PlayersList({ game_id, game_mode }) {
   const [players, setPlayers] = useState([]);
   const [socket, setSocket] = useState(null);
-  const [teamName, setTeamName] = useState(teams);
+  const [teamName, setTeamName] = useState([]);
 
-  const teams = ['team de bogoss', 'team de Nullos', 'team de boloss'];
+  useEffect(() => {
+    const getTeamsNames = async () => {
+      try {
+        const response = await axiosInstance.get(`/game/${game_id}/get_teams`);
+
+        if (response.status === 200) {
+          const teams = response.data.teams;
+          setTeamName(teams);
+        } else {
+          console.error('Erreur lors de la récupération des noms des équipes');
+        }
+      } catch (error) {
+        console.error(
+          'Erreur lors de la récupération des noms des équipes :',
+          error
+        );
+      }
+    };
+
+    getTeamsNames();
+  }, [game_id]);
 
   useEffect(() => {
     const connectAndJoinGame = async () => {
@@ -63,11 +84,9 @@ export default function PlayersList({ game_id, game_mode }) {
   return (
     <View style={styles.container}>
       {game_mode === 'team'
-        ? teams.map((team, index) => (
-            <TouchableOpacity>
-              <Text style={styles.username} key={index}>
-                {team}
-              </Text>
+        ? teamName.map((team, index) => (
+            <TouchableOpacity key={index}>
+              <Text style={styles.username}>{team}</Text>
             </TouchableOpacity>
           ))
         : players.map((player, index) => (
