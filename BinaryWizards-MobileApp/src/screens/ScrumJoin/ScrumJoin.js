@@ -6,11 +6,12 @@ import Toast from 'react-native-toast-message';
 
 export default function ScrumJoin() {
   const navigation = useNavigation();
+  const [gameMode, setGameMode] = useState('scrum');
   const [gameId, setGameId] = useState(null);
 
   const handlePress = async () => {
     if (gameId.trim()) {
-      navigation.navigate('ScrumLobby', gameId);
+      navigation.navigate('ScrumLobby', { gameId, gameMode });
     } else {
       Toast.show({
         type: 'error',

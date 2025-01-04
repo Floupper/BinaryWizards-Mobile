@@ -12,6 +12,10 @@ export const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginBottom: 20,
   },
+  playersList: {
+    maxHeight: '80%',
+    overflowY: 'scroll',
+  },
   shareButton: {
     display: 'flex',
     flexDirection: 'row',

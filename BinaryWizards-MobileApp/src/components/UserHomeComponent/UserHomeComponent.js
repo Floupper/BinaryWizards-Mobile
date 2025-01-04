@@ -13,11 +13,15 @@ export default function UserHomeComponent() {
   const [showOngoingGames, setShowOngoingGames] = useState(true);
   const navigation = useNavigation();
 
+  const handlePressTeam = () => {
+    navigation.navigate('TeamJoin');
+  };
+
   const toggleShowOngoingGames = (value) => {
     setShowOngoingGames(value);
   };
 
-  const handlePress = () => {
+  const handlePressScrum = () => {
     navigation.navigate('ScrumJoin');
   };
 
@@ -36,7 +40,8 @@ export default function UserHomeComponent() {
         />
       </View>
       {showOngoingGames ? <GameList /> : <SearchQuiz />}
-      <Button title="Join a Scrum" onPress={handlePress} />
+      <Button title="Join a Scrum" onPress={handlePressScrum} />
+      <Button title="Join Team" onPress={handlePressTeam} />
     </View>
   );
 }
