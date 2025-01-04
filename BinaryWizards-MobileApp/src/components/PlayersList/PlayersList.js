@@ -12,7 +12,7 @@ const SERVER_URL = `${REACT_NATIVE_API_URL}:${REACT_NATIVE_API_PORT}`;
 export default function PlayersList({ game_id, game_mode }) {
   const [players, setPlayers] = useState([]);
   const [socket, setSocket] = useState(null);
-  const [teamName, setTeamName] = useState([]);
+  const [teamName, setTeamName] = useState(teams);
 
   const teams = ['team de bogoss', 'team de Nullos', 'team de boloss'];
 
