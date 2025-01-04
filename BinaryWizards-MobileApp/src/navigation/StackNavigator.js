@@ -6,6 +6,8 @@ import EndScreen from '../screens/EndScreen/EndScreen';
 import CreateGame from '../screens/CreateGame/CreateGame';
 import Signup from '../screens/Signup';
 import Signin from '../screens/Signin';
+import TeamJoin from '../screens/TeamJoin/TeamJoin';
+import TeamLobby from '../screens/TeamLobby/TeamLobby';
 import ScrumLobby from '../screens/ScrumLobby/ScrumLobby';
 import ScrumJoin from '../screens/ScrumJoin/ScrumJoin';
 
@@ -62,6 +64,18 @@ export default function StackNavigator() {
           name="ScrumJoin"
           component={ScrumJoin}
           options={{ headerShown: true, title: 'Scrum Join' }}
+        />
+
+        <Stack.Screen
+          name="TeamJoin"
+          component={TeamJoin}
+          options={{ headerShown: true, title: 'Team Join' }}
+        />
+
+        <Stack.Screen
+          name="TeamLobby"
+          component={TeamLobby}
+          options={{ headerShown: true, title: 'Team Lobby' }}
         />
       </Stack.Navigator>
     </>
