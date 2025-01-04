@@ -24,11 +24,11 @@ export default function PlayersList({ game_id, game_mode }) {
           const teams = response.data.teams;
           setTeamName(teams);
         } else {
-          console.error('Erreur lors de la récupération des noms des équipes');
+          console.error('Error when fetching teams names');
         }
       } catch (error) {
         console.error(
-          'Erreur lors de la récupération des noms des équipes :',
+          'Error when fetching teams names from the server :',
           error
         );
       }
@@ -54,7 +54,7 @@ export default function PlayersList({ game_id, game_mode }) {
         });
 
         newSocket.on('connect', () => {
-          console.log('Connecté au serveur WebSocket');
+          console.log('Connect to WebSocket server');
           newSocket.emit('joinGame', { game_id, teamName: 'team de bogoss' });
         });
 
@@ -63,12 +63,12 @@ export default function PlayersList({ game_id, game_mode }) {
         });
 
         newSocket.on('disconnect', () => {
-          console.log('Déconnecté du serveur WebSocket');
+          console.log('Disconnected from WebSocket server');
         });
 
         setSocket(newSocket);
       } catch (error) {
-        console.error('Erreur lors de la connexion au WebSocket :', error);
+        console.error('Error during connecting to websocket :', error);
       }
     };
 
