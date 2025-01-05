@@ -1,6 +1,6 @@
-import React from "react";
-import { View, Pressable, Text } from "react-native";
-import Icon from "react-native-vector-icons/AntDesign";
+import React from 'react';
+import { View, Pressable, Text } from 'react-native';
+import Icon from 'react-native-vector-icons/AntDesign';
 
 export default function IconButton({ onPress, color, icon, text }) {
   return (
@@ -8,8 +8,8 @@ export default function IconButton({ onPress, color, icon, text }) {
       <Pressable
         onPress={() => onPress()}
         style={{
-          justifyContent: "center",
-          alignItems: "center",
+          justifyContent: 'center',
+          alignItems: 'center',
         }}
       >
         <Icon name={icon} size={30} color={color} />

@@ -1,13 +1,12 @@
 import React from 'react';
 import { Text, View } from 'react-native';
-import { styleContainer } from '../../styles/container';
-import IconButton from '../IconButton';
 import { resetQuiz } from '../../services/endScreenRequests';
 import { checkGameExists } from '../../services/gamesRequests';
 import { useNavigation } from '@react-navigation/native';
 import Toast from 'react-native-toast-message';
 import dayjs from 'dayjs';
 import styles from './styles';
+import Icon from 'react-native-vector-icons/AntDesign';
 
 export default function GameListItem({ item }) {
   const formattedDate = dayjs(item.date_game_creation).format('DD/MM/YYYY');
@@ -15,6 +14,14 @@ export default function GameListItem({ item }) {
 
   const getPlayIcon = () =>
     item.current_question_index > item.nb_questions_total ? 'reload1' : 'play';
+
+  const getQuizTitle = () => {
+    const title = item.title ? item.title : `Untitled quiz`;
+    const maxLength = 20; // Longueur maximale autorisée
+    return title.length > maxLength
+      ? `${title.substring(0, maxLength)}...`
+      : title;
+  };
 
   const handlePress = async () => {
     try {
@@ -46,15 +53,13 @@ export default function GameListItem({ item }) {
   };
 
   return (
-    <View style={[styleContainer.gameListItem, styles.listItem]}>
-      <Text style={styles.text}>{item.title}</Text>
+    <View style={styles.container}>
+      <Text style={styles.text}>{getQuizTitle()}</Text>
       <Text style={styles.text}>{formattedDate}</Text>
       <Text style={styles.text}>
         {item.current_question_index}/{item.nb_questions_total}
       </Text>
-      <View style={styles.iconContainer}>
-        <IconButton icon={getPlayIcon()} onPress={handlePress} />
-      </View>
+      <Icon name={getPlayIcon()} size={30} color="#000" onPress={handlePress} />
     </View>
   );
 }
