@@ -12,19 +12,17 @@ import { useInfiniteQuery } from '@tanstack/react-query';
 import { fetchSearchedQuiz } from '../../services/quizRequests';
 import { fetchDifficulties, createGameId } from '../../services/createGame';
 import { useNavigation } from '@react-navigation/native';
-import QuizListItem from '../QuizListItem';
+import QuizListItem from '../QuizListItem/QuizListItem';
 import { SelectList } from 'react-native-dropdown-select-list';
 import styles from './styles';
-import PrimaryButton from '../PrimaryButton';
-import { styleButton } from '../../styles/buttons';
-import { styleContainer } from '../../styles/container';
 import TimerModal from '../TimerModal/TimerModal';
+import DifficultyPicker from '../DifficultyPicker/DifficultyPicker';
 
 export default function SearchQuiz() {
   const navigation = useNavigation();
 
   const [text, setText] = useState('');
-  const [selectedDifficulty, setSelectedDifficulty] = useState('all');
+  const [selectedDifficulty, setSelectedDifficulty] = useState('All');
   const [difficulties, setDifficulties] = useState(['all']);
   const [minQuestions, setMinQuestions] = useState(0);
   const [maxQuestions, setMaxQuestions] = useState(50);
@@ -49,6 +47,11 @@ export default function SearchQuiz() {
 
     fetchDifficultiesData();
   }, []);
+
+  const setDifficultyAndRefetch = (value) => {
+    setSelectedDifficulty(value);
+    refetch();
+  };
 
   const {
     data,
@@ -119,20 +122,19 @@ export default function SearchQuiz() {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.text}>Search Quiz</Text>
+      <Text style={styles.title}>Browse Quiz</Text>
       <TextInput
-        style={styles.input}
         placeholder="Enter text to search for a quiz"
         value={text}
         onChangeText={handleSearchText}
+        style={styles.input}
       />
-      <View style={styles.pickerContainer}>
+      <View>
         <Text style={styles.text}>Select the number of questions</Text>
-        <View style={styles.rangeInputs}>
-          <View style={styles.inputGroup}>
+        <View style={{ flexDirection: 'row', justifyContent: 'space-around' }}>
+          <View>
             <Text style={styles.label}>Min</Text>
             <TextInput
-              style={styles.input}
               value={minQuestions.toString()}
               keyboardType="numeric"
               placeholder="Min"
@@ -141,12 +143,12 @@ export default function SearchQuiz() {
                 setMinQuestions(newValue || 0);
                 refetch();
               }}
+              style={styles.numericInput}
             />
           </View>
-          <View style={styles.inputGroup}>
+          <View>
             <Text style={styles.label}>Max</Text>
             <TextInput
-              style={styles.input}
               value={maxQuestions.toString()}
               keyboardType="numeric"
               placeholder="Max"
@@ -155,60 +157,49 @@ export default function SearchQuiz() {
                 setMaxQuestions(newValue || 50);
                 refetch();
               }}
+              style={styles.numericInput}
             />
           </View>
         </View>
         <Text style={styles.text}>Select Difficulty</Text>
-        <SelectList
-          setSelected={(value) => {
-            setSelectedDifficulty(value.toString().toLowerCase());
-            refetch();
-          }}
-          data={difficulties}
-          placeholder="Select a difficulty"
-          boxStyles={styles.input}
-          dropdownStyles={styles.selectListDropdown}
-        />
+        <DifficultyPicker setSelectedDifficulty={setDifficultyAndRefetch} />
       </View>
 
       {isLoading && <ActivityIndicator style={styles.loadingIndicator} />}
 
-      <FlatList
-        data={data?.pages?.flatMap((page) => page?.quizzes || [])}
-        renderItem={({ item }) => (
-          <Pressable onPress={() => openModal(item.quiz_id)}>
+      <View style={{ width: '100%', flex: 1 }}>
+        <FlatList
+          data={data?.pages?.flatMap((page) => page?.quizzes || [])}
+          renderItem={({ item }) => (
             <QuizListItem
               difficulty={item.difficulty}
               title={item.title}
               nbQuestions={item.nb_questions}
-              date_game_creation={item.created_at}
+              quiz_id={item.quiz_id}
+              openModal={openModal}
             />
-          </Pressable>
-        )}
-        keyExtractor={(item) => item?.quiz_id.toString()}
-        onEndReached={hasNextPage ? fetchNextPage : null}
-        onEndReachedThreshold={0.5}
-        ListFooterComponent={
-          isFetchingNextPage && (
-            <ActivityIndicator style={styles.loadingIndicator} />
-          )
-        }
-        ListEmptyComponent={
-          !isLoading && (
-            <Text style={styles.emptyMessage}>No quizzes found.</Text>
-          )
-        }
-      />
-
-      <View style={styleContainer.divider} />
-      <PrimaryButton
-        isQuestion={false}
-        text="Create quiz"
-        onPress={() => {
-          navigation.navigate('Create');
-        }}
-        style={styleButton.enabledButton}
-      />
+          )}
+          keyExtractor={(item) => item?.quiz_id.toString()}
+          onEndReached={hasNextPage ? fetchNextPage : null}
+          onEndReachedThreshold={0.5}
+          ListFooterComponent={
+            isFetchingNextPage && (
+              <ActivityIndicator style={styles.loadingIndicator} />
+            )
+          }
+          ListEmptyComponent={
+            !isLoading && (
+              <View style={styles.emptyContainer}>
+                <Text style={styles.noQuizzesFound}>No quizzes found.</Text>
+              </View>
+            )
+          }
+          contentContainerStyle={{
+            alignItems: 'stretch',
+            height: '100%',
+          }}
+        />
+      </View>
       <TimerModal
         visible={isModalVisible}
         handleTimerChoice={handleTimerChoice}
