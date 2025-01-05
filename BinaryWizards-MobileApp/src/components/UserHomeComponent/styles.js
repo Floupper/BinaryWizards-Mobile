@@ -34,13 +34,13 @@ const styles = StyleSheet.create({
   text: {
     color: 'white',
     fontFamily: 'Mogula',
-    fontSize: 16,
+    fontSize: 20,
     fontWeight: '600',
   },
   textSelected: {
     color: '#8B2DF1',
     fontFamily: 'Mogula',
-    fontSize: 16,
+    fontSize: 20,
     fontWeight: '600',
   },
 });
