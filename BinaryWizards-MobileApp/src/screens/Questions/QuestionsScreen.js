@@ -14,7 +14,7 @@ import { questionStyle } from './questionsStyles';
 import { LinearGradient } from 'expo-linear-gradient';
 import ProgressBar from 'react-native-progress/Bar';
 import userTokenEmitter from '../../utils/eventEmitter';
-import HomeButton from '../../components/HomeButton';
+import HomeButton from '../../components/HomeButton/HomeButton';
 
 export default function QuestionScreen({ route }) {
   const [gameId, setGameId] = useState(route.params.gameId);
@@ -102,73 +102,69 @@ export default function QuestionScreen({ route }) {
   };
 
   return (
-    <View style={styleContainer.mainContainer}>
-      <View>
-        <HomeButton text={'Back'} />
+    <View style={questionStyle.mainContainer}>
+      <HomeButton text="Leave game" />
+      <View
+        style={{
+          paddingHorizontal: 20,
+          marginBottom: 20,
+          width: '100%',
+          height: 20,
+        }}
+      >
+        <ProgressBar
+          progress={
+            question.nb_questions_total > 0
+              ? question.question_index / question.nb_questions_total
+              : 0
+          }
+          width={null}
+          height={17}
+          color="#FFA033"
+          unfilledColor="#FFFFFF"
+          borderWidth={0}
+          borderRadius={5}
+        />
       </View>
-      <View style={questionStyle.mainContainer}>
-        <View
-          style={{
-            paddingHorizontal: 20,
-            marginBottom: 20,
-            width: '100%',
-            height: 20,
-          }}
-        >
-          <ProgressBar
-            progress={
-              question.nb_questions_total > 0
-                ? question.question_index / question.nb_questions_total
-                : 0
-            }
-            width={null}
-            height={17}
-            color="#FFA033"
-            unfilledColor="#FFFFFF"
-            borderWidth={0}
-            borderRadius={5}
-          />
-        </View>
 
-        <View style={questionStyle.infoQuestions}>
-          {userToken ? <GenericClipboard text="id" id={gameId} /> : null}
-          <Text style={questionStyle.infoQuestionsText}>
-            {question.question_index}/{question.nb_questions_total}
-          </Text>
-          <Text style={questionStyle.infoQuestionsText}>
-            Score : {question.correct_answers_nb}
-          </Text>
-        </View>
+      <View style={questionStyle.infoQuestions}>
+        {userToken ? <GenericClipboard text="id" id={gameId} /> : null}
+        <Text style={questionStyle.infoQuestionsText}>
+          {question.question_index}/{question.nb_questions_total}
+        </Text>
+        <Text style={questionStyle.infoQuestionsText}>
+          Score : {question.correct_answers_nb}
+        </Text>
+      </View>
 
-        <LinearGradient
-          colors={colorGradient}
-          start={{ x: 0, y: 0 }}
-          end={{ x: 0, y: 1 }}
-          style={questionStyle.gradientContainer}
-        >
-          <View style={questionStyle.questionContainer}>
-            <View
-              style={{
-                flex: 1,
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}
-            >
-              <QuestionComponent
-                question={question ? question : ''}
-                selectedAnswer={onSelectedAnswer}
-                correctAnswer={questionAnswer}
-              />
-              <PrimaryButton
-                onPress={nextQuestion}
-                disabled={questionAnswer === null}
-                text={'Next question'}
-                style={[styleButton.button, { marginBottom: 20 }]}
-              />
-            </View>
+      <LinearGradient
+        colors={colorGradient}
+        start={{ x: 0, y: 0 }}
+        end={{ x: 0, y: 1 }}
+        style={questionStyle.gradientContainer}
+      >
+        <View style={questionStyle.questionContainer}>
+          <View
+            style={{
+              flex: 1,
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+          >
+            <QuestionComponent
+              question={question ? question : ''}
+              selectedAnswer={onSelectedAnswer}
+              correctAnswer={questionAnswer}
+            />
+            <PrimaryButton
+              onPress={nextQuestion}
+              disabled={questionAnswer === null}
+              text={'Next question'}
+              style={[styleButton.button, { marginBottom: 20 }]}
+            />
           </View>
-        </LinearGradient>
-      </View>
+        </View>
+      </LinearGradient>
     </View>
   );
 }
