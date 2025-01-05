@@ -85,14 +85,14 @@ export default function DifficultyPicker({ setSelectedDifficulty }) {
           <Icon name="star" size={30} color={getStarColor(index)} />
         </Pressable>
       ))}
-      <Pressable onPress={resetDifficulty}>
+      <Pressable onPress={resetDifficulty} style={styles.resetButton}>
         <Animated.View
           style={[
             styles.resetButtonBackground,
             { backgroundColor, transform: [{ rotate: rotateInterpolation }] },
           ]}
         >
-          <Icon name="back" size={24} color="gray" />
+          <Icon name="back" size={19} color="gray" />
         </Animated.View>
       </Pressable>
     </View>

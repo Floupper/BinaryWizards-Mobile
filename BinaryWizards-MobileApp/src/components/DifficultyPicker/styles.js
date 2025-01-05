@@ -9,7 +9,7 @@ const styles = StyleSheet.create({
   resetButton: {
     backgroundColor: 'white',
     borderRadius: 50,
-    padding: 5,
+    marginLeft: 20,
   },
   resetButtonBackground: {
     padding: 5,
