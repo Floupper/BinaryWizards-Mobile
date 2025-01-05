@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native';
 
-export default styles = StyleSheet.create({
+const styles = StyleSheet.create({
   button: {
     backgroundColor: 'transparent',
     paddingHorizontal: 20,
@@ -31,4 +31,18 @@ export default styles = StyleSheet.create({
     justifyContent: 'flex-start',
     padding: 16,
   },
+  text: {
+    color: 'white',
+    fontFamily: 'Mogula',
+    fontSize: 16,
+    fontWeight: '600',
+  },
+  textSelected: {
+    color: '#8B2DF1',
+    fontFamily: 'Mogula',
+    fontSize: 16,
+    fontWeight: '600',
+  },
 });
+
+export default styles;
