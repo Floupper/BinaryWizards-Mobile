@@ -16,4 +16,11 @@ export const styles = StyleSheet.create({
     borderRadius: 5,
     boxShadow: '0 0 1rem rgba(0, 0, 0, 0.1)',
   },
+  selectedButton: {
+    backgroundColor: '#28a745',
+  },
+  disabledButton: {
+    backgroundColor: '#ccc',
+    opacity: 0.6,
+  },
 });

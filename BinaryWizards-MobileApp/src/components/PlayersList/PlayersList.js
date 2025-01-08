@@ -14,6 +14,7 @@ export default function PlayersList({ game_id, game_mode }) {
   const [players, setPlayers] = useState([]);
   const [socket, setSocket] = useState(null);
   const [teamName, setTeamName] = useState([]);
+  const [selectedTeam, setSelectedTeam] = useState(null);
 
   useEffect(() => {
     const getTeamsNames = async () => {
@@ -38,7 +39,7 @@ export default function PlayersList({ game_id, game_mode }) {
   }, [game_id]);
 
   useEffect(() => {
-    const connectAndJoinGame = async () => {
+    const connectAndJoinGame = async (team_name) => {
       try {
         const userToken = await AsyncStorage.getItem('userToken');
 
@@ -51,11 +52,6 @@ export default function PlayersList({ game_id, game_mode }) {
           extraHeaders: {
             Authorization: `Bearer ${userToken}`,
           },
-        });
-
-        newSocket.on('connect', () => {
-          console.log('Connect to WebSocket server');
-          newSocket.emit('joinGame', { game_id, teamName: 'team de bogoss' });
         });
 
         newSocket.on('playerJoined', (updatedPlayerList) => {
@@ -81,11 +77,42 @@ export default function PlayersList({ game_id, game_mode }) {
     };
   }, [game_id]);
 
+  const joinTeam = async (team_name) => {
+    try {
+      const userToken = await AsyncStorage.getItem('userToken');
+
+      const newSocket = io(SERVER_URL, {
+        transports: ['websocket'],
+        extraHeaders: {
+          Authorization: `Bearer ${userToken}`,
+        },
+      });
+
+      if (newSocket) {
+        newSocket.emit('joinGame', { game_id, team_name });
+        setSelectedTeam(team_name);
+      }
+    } catch (error) {
+      console.error('Error during joining team :', error);
+    }
+  };
+
   return (
     <View style={styles.container}>
       {game_mode === 'team'
         ? teamName.map((team, index) => (
-            <TouchableOpacity key={index}>
+            <TouchableOpacity
+              key={index}
+              onPress={() => joinTeam(team)}
+              disabled={!!selectedTeam}
+              style={[
+                styles.teamButton,
+                selectedTeam === team && styles.selectedButton,
+                !!selectedTeam &&
+                  selectedTeam !== team &&
+                  styles.disabledButton,
+              ]}
+            >
               <Text style={styles.username}>{team}</Text>
             </TouchableOpacity>
           ))
