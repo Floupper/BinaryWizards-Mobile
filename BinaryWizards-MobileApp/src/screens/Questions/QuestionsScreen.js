@@ -46,7 +46,7 @@ export default function QuestionScreen({ route }) {
         },
       });
 
-      socket.on('answerResult', () => {
+      socket.on('newQuestion', () => {
         nextQuestion();
       });
 
