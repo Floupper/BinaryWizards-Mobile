@@ -1,5 +1,6 @@
 {
   "expo": {
+    "scheme": "mogula",
     "name": "BinaryWizards-MobileApp",
     "slug": "BinaryWizards-MobileApp",
     "version": "1.0.0",
@@ -22,7 +23,12 @@
       },
       "package": "com.mathieuackermann.BinaryWizardsMobileApp"
     },
-    "package": "com.mathieuackermann.BinaryWizardsMobileApp"
+    "package": "com.mathieuackermann.BinaryWizardsMobileApp",
+    "extra": {
+      "eas": {
+        "projectId": "15079b65-0202-4000-bc2b-61833fb4f2f8"
+      }
+    }
   },
   "web": {
     "favicon": "./assets/favicon.png"

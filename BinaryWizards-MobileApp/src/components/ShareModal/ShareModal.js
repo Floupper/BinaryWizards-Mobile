@@ -3,16 +3,14 @@ import { View, Text, Modal, Button } from 'react-native';
 import QRCode from 'react-native-qrcode-svg';
 
 import { styles } from './ShareModelStyle';
-import { REACT_NATIVE_API_URL, REACT_NATIVE_API_PORT } from '@env';
+import { REACT_NATIVE_URL } from '@env';
 
 export default function ShareModal({ visible, toggleModal, gameId }) {
   const [link, setLink] = useState('');
   const [qrCode, setQrCode] = useState('');
 
   useEffect(() => {
-    setLink(
-      `${process.env.REACT_NATIVE_API_URL}:${REACT_NATIVE_API_PORT}/join/${gameId}`
-    );
+    setLink(`${process.env.REACT_NATIVE_URL}/game/join/${gameId}`);
   }, [gameId]);
 
   return (

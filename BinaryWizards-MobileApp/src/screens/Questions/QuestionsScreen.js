@@ -15,6 +15,11 @@ import { LinearGradient } from 'expo-linear-gradient';
 import ProgressBar from 'react-native-progress/Bar';
 import userTokenEmitter from '../../utils/eventEmitter';
 import HomeButton from '../../components/HomeButton';
+import { REACT_NATIVE_API_URL, REACT_NATIVE_API_PORT } from '@env';
+import { io } from 'socket.io-client';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+const SERVER_URL = `${REACT_NATIVE_API_URL}:${REACT_NATIVE_API_PORT}`;
 
 export default function QuestionScreen({ route }) {
   const [gameId, setGameId] = useState(route.params.gameId);
@@ -29,6 +34,29 @@ export default function QuestionScreen({ route }) {
   ]);
 
   const navigation = useNavigation();
+
+  useEffect(async () => {
+    try {
+      const userToken = await AsyncStorage.getItem('userToken');
+
+      const socket = io(SERVER_URL, {
+        transports: ['websocket'],
+        extraHeaders: {
+          Authorization: `Bearer ${userToken}`,
+        },
+      });
+
+      socket.on('newQuestion', () => {
+        nextQuestion();
+      });
+
+      newSocket.on('disconnect', () => {
+        console.log('Disconnected from WebSocket server');
+      });
+    } catch (error) {
+      console.error('Error during connecting to websocket :', error);
+    }
+  }, [gameId]);
 
   const nextQuestion = () => {
     setQuestionAnswer(null);
