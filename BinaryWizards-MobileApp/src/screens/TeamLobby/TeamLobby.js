@@ -9,6 +9,8 @@ import ShareModal from '../../components/ShareModal/ShareModal';
 import PlayersList from '../../components/PlayersList/PlayersList';
 import { REACT_NATIVE_API_URL, REACT_NATIVE_API_PORT } from '@env';
 
+import { styles } from './TeamLobbyStyle';
+
 const SERVER_URL = `${REACT_NATIVE_API_URL}:${REACT_NATIVE_API_PORT}`;
 
 export default function TeamLobby({ route }) {
@@ -41,8 +43,6 @@ export default function TeamLobby({ route }) {
         newSocket.on('disconnect', () => {
           console.log('Disconnected from WebSocket server');
         });
-
-        setSocket(newSocket);
       } catch (error) {
         console.error('Error during connecting to websocket :', error);
       }
