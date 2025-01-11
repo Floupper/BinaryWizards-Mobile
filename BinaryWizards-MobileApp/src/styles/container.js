@@ -75,7 +75,6 @@ export const styleContainer = StyleSheet.create({
   },
   middleSection: {
     alignItems: 'center',
-    flex: 1,
     justifyContent: 'center',
   },
   questionTitleContainer: {

@@ -24,11 +24,15 @@
       "package": "com.mathieuackermann.BinaryWizardsMobileApp"
     },
     "package": "com.mathieuackermann.BinaryWizardsMobileApp",
-    "extra": {
-      "eas": {
-        "projectId": "15079b65-0202-4000-bc2b-61833fb4f2f8"
-      }
-    }
+    "plugins": [
+      [
+        "expo-font",
+        {
+          "fonts": ["path/to/file.ttf"]
+        }
+      ],
+      "expo-asset"
+    ]
   },
   "web": {
     "favicon": "./assets/favicon.png"

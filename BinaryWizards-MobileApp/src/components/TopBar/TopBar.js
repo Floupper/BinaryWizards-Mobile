@@ -1,15 +1,17 @@
 import React, { useCallback, useState, useEffect } from 'react';
-import { View, Text, StyleSheet, Button } from 'react-native';
-import { styleContainer } from '../styles/container';
-import { styleButton } from '../styles/buttons';
-import SecondaryButton from './SecondaryButton';
-import { styleText } from '../styles/text';
+import { View, Text, StyleSheet, Button, Pressable } from 'react-native';
+import { styleContainer } from '../../styles/container';
+import { styleButton } from '../../styles/buttons';
+import SecondaryButton from '../SecondaryButton';
+import { styleText } from '../../styles/text';
 import { useNavigation, useFocusEffect } from '@react-navigation/native';
-import { _retrieveUserToken } from '../utils/asyncStorage';
-import IconButton from './IconButton';
-import { logout } from '../utils/asyncStorage';
+import { _retrieveUserToken } from '../../utils/asyncStorage';
+import IconButton from '../IconButton';
+import { logout } from '../../utils/asyncStorage';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import userTokenEmitter from '../utils/eventEmitter';
+import userTokenEmitter from '../../utils/eventEmitter';
+import Icon from 'react-native-vector-icons/FontAwesome';
+import { styles } from './styles';
 
 export default function TopBar({ setHomeScreenUserToken }) {
   const [userToken, setUserToken] = useState(null);
@@ -68,17 +70,23 @@ export default function TopBar({ setHomeScreenUserToken }) {
     <View style={styleContainer.topBar}>
       {userToken ? (
         <>
-          <View style={style.topBar}>
-            <IconButton
-              icon="logout"
-              color="black"
-              onPress={handlePress}
-              text="Logout"
-            />
-            <View>
-              <Text style={style.topBarText}>Hey👋</Text>
-              <Text style={style.topBarText}>{username}</Text>
+          <View style={styles.container}>
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+              <Icon
+                name="user-circle"
+                size={30}
+                color="black"
+                style={{ marginRight: 10 }}
+              />
+              <Text
+                style={[styles.topBarText, { fontSize: 20, color: 'black' }]}
+              >
+                Hey {username} 👋
+              </Text>
             </View>
+            <Pressable onPress={handlePress} style={styles.topBar}>
+              <Text style={styles.topBarText}>Logout</Text>
+            </Pressable>
           </View>
         </>
       ) : (
@@ -87,30 +95,16 @@ export default function TopBar({ setHomeScreenUserToken }) {
             text="Sign up"
             onPress={() => navigation.navigate('Signup')}
             style={styleButton.enabledButton}
-            textStyle={styleText.topBarText}
+            textStyle={styles.topBarText}
           />
           <SecondaryButton
             text="Sign in"
             onPress={() => navigation.navigate('Signin')}
             style={styleButton.enabledButton}
-            textStyle={styleText.topBarText}
+            textStyle={styles.topBarText}
           />
         </>
       )}
     </View>
   );
 }
-
-const style = StyleSheet.create({
-  topBar: {
-    alignItems: 'center',
-    flexDirection: 'row',
-    flex: 1,
-    justifyContent: 'space-between',
-  },
-  topBarText: {
-    color: 'black',
-    fontSize: 20,
-    marginRight: 10,
-  },
-});

@@ -50,7 +50,10 @@
     "react-native-web": "~0.19.10",
     "react-query": "^3.39.3",
     "socket.io-client": "^4.8.1",
-    "expo-linking": "~7.0.3"
+    "expo-linking": "~7.0.3",
+    "expo-font": "~13.0.2",
+    "expo-haptics": "~14.0.0",
+    "expo-asset": "~11.0.2"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",

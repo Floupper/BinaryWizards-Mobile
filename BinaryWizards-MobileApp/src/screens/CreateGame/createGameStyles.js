@@ -86,7 +86,9 @@ export const styles = StyleSheet.create({
   },
   title: {
     color: 'white',
-    fontSize: 32,
-    fontWeight: 'bold',
+    fontFamily: 'Mogula',
+    fontSize: 40,
+    marginBottom: 5,
+    paddingHorizontal: 10,
   },
 });

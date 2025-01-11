@@ -67,13 +67,13 @@ export default function StackNavigator() {
           <Stack.Screen
             name="Create"
             component={CreateGame}
-            options={{ headerShown: true, title: 'Create a game' }}
+            options={{ headerShown: false, title: 'Create a game' }}
           />
 
           <Stack.Screen
             name="Questions"
             component={QuestionScreen}
-            options={{ headerShown: true }}
+            options={{ headerShown: false }}
           />
 
           <Stack.Screen
@@ -85,19 +85,19 @@ export default function StackNavigator() {
           <Stack.Screen
             name="End"
             component={EndScreen}
-            options={{ headerShown: true }}
+            options={{ headerShown: false }}
           />
 
           <Stack.Screen
             name="Signup"
             component={Signup}
-            options={{ headerShown: true, title: 'Sign Up' }}
+            options={{ headerShown: false, title: 'Sign Up' }}
           />
 
           <Stack.Screen
             name="Signin"
             component={Signin}
-            options={{ headerShown: true, title: 'Sign In' }}
+            options={{ headerShown: false, title: 'Sign In' }}
           />
 
           <Stack.Screen

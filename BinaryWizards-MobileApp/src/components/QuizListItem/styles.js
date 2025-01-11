@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native';
 
-const styles = StyleSheet.create({
+export const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
     alignSelf: 'center',
@@ -17,7 +17,4 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.3, // on iOS
     shadowRadius: 4, // on iOS
   },
-  text: {},
 });
-
-export default styles;

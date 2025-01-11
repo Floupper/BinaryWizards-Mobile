@@ -14,6 +14,7 @@ import { _storeUserToken } from '../utils/asyncStorage';
 import { LinearGradient } from 'expo-linear-gradient';
 import SigninSvg from '../../assets/signin.svg';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import HomeButton from '../components/HomeButton/HomeButton';
 
 export default function Signin({ route }) {
   const [username, setUsername] = useState('');
@@ -42,58 +43,61 @@ export default function Signin({ route }) {
   };
 
   return (
-    <View style={signStyles.container}>
+    <View style={{ flex: 1 }}>
       <LinearGradient
         colors={signBackgroundColors}
         style={signStyles.container}
       >
-        <View style={signStyles.inputsContainer}>
-          <SigninSvg style={signStyles.svgContainer} />
-          <View>
-            <View style={signStyles.textContainer}>
-              <Text style={signStyles.title}>Welcome to Quiz App</Text>
-              <Text style={signStyles.subtitle}>Please sign in below.</Text>
+        <HomeButton text="Home" />
+        <View style={signStyles.container}>
+          <View style={signStyles.inputsContainer}>
+            <SigninSvg style={signStyles.svgContainer} />
+            <View>
+              <View style={signStyles.textContainer}>
+                <Text style={signStyles.title}>Welcome to Quiz App</Text>
+                <Text style={signStyles.subtitle}>Please sign in below.</Text>
+              </View>
+              <View style={signStyles.inputContainer}>
+                <Text style={signStyles.inputLabel}>Username</Text>
+                <TextInput
+                  style={signStyles.input}
+                  placeholder="Username"
+                  onChangeText={setUsername}
+                  value={username}
+                />
+              </View>
+              <View style={signStyles.inputContainer}>
+                <Text style={signStyles.inputLabel}>Password</Text>
+                <TextInput
+                  style={signStyles.input}
+                  placeholder="Password"
+                  secureTextEntry={true}
+                  onChangeText={setPassword}
+                  value={password}
+                />
+              </View>
+              <PrimaryButton
+                isQuestion={false}
+                onPress={handlePress}
+                style={signStyles.buttonPrimary}
+                disabled={isLoading}
+                text={isLoading ? '' : 'Sign in'}
+              >
+                {isLoading && <ActivityIndicator color="#fff" />}
+              </PrimaryButton>
             </View>
-            <View style={signStyles.inputContainer}>
-              <Text style={signStyles.inputLabel}>Username</Text>
-              <TextInput
-                style={signStyles.input}
-                placeholder="Username"
-                onChangeText={setUsername}
-                value={username}
-              />
-            </View>
-            <View style={signStyles.inputContainer}>
-              <Text style={signStyles.inputLabel}>Password</Text>
-              <TextInput
-                style={signStyles.input}
-                placeholder="Password"
-                secureTextEntry={true}
-                onChangeText={setPassword}
-                value={password}
-              />
-            </View>
-            <PrimaryButton
-              isQuestion={false}
-              onPress={handlePress}
-              style={signStyles.buttonPrimary}
-              disabled={isLoading}
-              text={isLoading ? '' : 'Sign in'}
-            >
-              {isLoading && <ActivityIndicator color="#fff" />}
-            </PrimaryButton>
           </View>
-        </View>
-        <View style={signStyles.outerContainer}>
-          <View style={[signStyles.line, { marginRight: 10 }]} />
-          <Text>OR</Text>
-          <View style={[signStyles.line, { marginLeft: 10 }]} />
-        </View>
-        <Pressable onPress={() => navigation.navigate('Signup')}>
-          <View style={signStyles.leaveScreenContainer}>
-            <Text style={signStyles.navigateLink}>Sign up</Text>
+          <View style={signStyles.outerContainer}>
+            <View style={[signStyles.line, { marginRight: 10 }]} />
+            <Text>OR</Text>
+            <View style={[signStyles.line, { marginLeft: 10 }]} />
           </View>
-        </Pressable>
+          <Pressable onPress={() => navigation.navigate('Signup')}>
+            <View style={signStyles.leaveScreenContainer}>
+              <Text style={signStyles.navigateLink}>Sign up</Text>
+            </View>
+          </Pressable>
+        </View>
       </LinearGradient>
     </View>
   );

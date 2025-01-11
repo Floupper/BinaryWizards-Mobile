@@ -1,5 +1,11 @@
 import React, { useEffect, useState, useCallback } from 'react';
-import { View, Text, TextInput, ActivityIndicator } from 'react-native';
+import {
+  View,
+  Text,
+  TextInput,
+  ActivityIndicator,
+  ImageBackground,
+} from 'react-native';
 import Toast from 'react-native-toast-message';
 import { SelectList } from 'react-native-dropdown-select-list';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -8,6 +14,7 @@ import PrimaryButton from '../../components/PrimaryButton';
 import { styles } from './createGameStyles';
 import { styleButton } from '../../styles/buttons';
 import BouncyCheckbox from 'react-native-bouncy-checkbox';
+import background from '../../../assets/mainBackground.png';
 
 import {
   fetchAndCreateQuiz,
@@ -15,6 +22,7 @@ import {
   fetchDifficulties,
 } from '../../services/createGame';
 import TimerModal from '../../components/TimerModal/TimerModal';
+import HomeButton from '../../components/HomeButton/HomeButton';
 
 export default function CreateGame() {
   const [categories, setCategories] = useState([]);
@@ -145,14 +153,11 @@ export default function CreateGame() {
   };
 
   return (
-    <LinearGradient
-      colors={[
-        'rgba(41, 96, 240, 0.5)',
-        'rgba(138, 43, 242, 0.5)',
-        'rgba(228, 187, 145, 0.5)',
-      ]}
-      style={styles.mainContent}
+    <ImageBackground
+      source={background}
+      style={{ width: '100%', height: '100%' }}
     >
+      <HomeButton text="Home" />
       <View style={{ flex: 1 }}>
         <View
           style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
@@ -234,7 +239,7 @@ export default function CreateGame() {
           isCreateGame={true}
         />
       </View>
-    </LinearGradient>
+    </ImageBackground>
   );
 }
 
