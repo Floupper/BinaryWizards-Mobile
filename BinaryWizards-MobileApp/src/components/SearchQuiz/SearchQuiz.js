@@ -5,7 +5,6 @@ import {
   TextInput,
   FlatList,
   ActivityIndicator,
-  Pressable,
 } from 'react-native';
 import Toast from 'react-native-toast-message';
 import { useInfiniteQuery } from '@tanstack/react-query';
@@ -13,7 +12,6 @@ import { fetchSearchedQuiz } from '../../services/quizRequests';
 import { fetchDifficulties, createGameId } from '../../services/createGame';
 import { useNavigation } from '@react-navigation/native';
 import QuizListItem from '../QuizListItem/QuizListItem';
-import { SelectList } from 'react-native-dropdown-select-list';
 import styles from './styles';
 import TimerModal from '../TimerModal/TimerModal';
 import DifficultyPicker from '../DifficultyPicker/DifficultyPicker';
@@ -129,9 +127,9 @@ export default function SearchQuiz() {
         onChangeText={handleSearchText}
         style={styles.input}
       />
-      <View>
+      <View style={styles.form}>
         <Text style={styles.text}>Select the number of questions</Text>
-        <View style={{ flexDirection: 'row', justifyContent: 'space-around' }}>
+        <View style={styles.inputGroup}>
           <View>
             <Text style={styles.label}>Min</Text>
             <TextInput

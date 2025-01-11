@@ -31,6 +31,7 @@ const styles = StyleSheet.create({
     marginTop: 20,
     textAlign: 'center',
   },
+  form: { marginBottom: 16, width: '80%' },
   input: {
     borderRadius: 8,
     borderWidth: 1,
@@ -47,16 +48,18 @@ const styles = StyleSheet.create({
     fontSize: 16,
     height: 50,
     paddingHorizontal: 12,
-    width: '100%',
+    width: '80%',
   },
   inputGroup: {
     alignItems: 'center',
     flex: 1,
   },
+  inputGroup: { flexDirection: 'row', justifyContent: 'space-between' },
   label: {
     color: 'white',
     fontSize: 14,
     marginBottom: 8,
+    textAlign: 'center',
   },
   loadingIndicator: {
     marginVertical: 16,
