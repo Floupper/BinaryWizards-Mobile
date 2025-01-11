@@ -26,15 +26,6 @@ export default function StackNavigator() {
     prefixes: [prefix],
     config: {
       screens: {
-        Home: 'home',
-        Create: 'create',
-        Questions: 'questions',
-        Questions: 'questions/:gameId/',
-        End: 'end',
-        ScrumJoin: 'scrumjoin',
-        TeamJoin: 'teamjoin',
-        Signup: 'signup',
-        Signin: 'signin',
         SetGameMode: 'game/join/:gameId/',
       },
     },
