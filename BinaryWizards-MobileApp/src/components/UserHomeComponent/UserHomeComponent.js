@@ -1,12 +1,9 @@
 import React, { useState } from 'react';
-import { View } from 'react-native';
+import { View, Button, Text } from 'react-native';
 import SecondaryButton from '../SecondaryButton';
 import SearchQuiz from '../SearchQuiz/SearchQuiz';
 import GameList from '../GameList/GameList';
 import styles from './styles';
-import PrimaryButton from '../PrimaryButton';
-import { styleButton } from '../../styles/buttons';
-import { styleContainer } from '../../styles/container';
 import { useNavigation } from '@react-navigation/native';
 
 export default function UserHomeComponent() {
@@ -18,20 +15,50 @@ export default function UserHomeComponent() {
   };
 
   return (
-    <View style={styles.container}>
-      <View style={styles.buttonContainer}>
+    <View style={{ flex: 1, width: '100%', alignItems: 'center' }}>
+      <View
+        style={{
+          flexDirection: 'row',
+          justifyContent: 'space-around',
+          width: '100%',
+        }}
+      >
         <SecondaryButton
           text="Resume games"
           onPress={() => toggleShowOngoingGames(true)}
           style={showOngoingGames ? styles.buttonSelected : styles.button}
+          textStyle={showOngoingGames ? styles.textSelected : styles.text}
         />
         <SecondaryButton
           text="Search quiz"
           onPress={() => toggleShowOngoingGames(false)}
           style={showOngoingGames ? styles.button : styles.buttonSelected}
+          textStyle={showOngoingGames ? styles.text : styles.textSelected}
         />
       </View>
-      {showOngoingGames ? <GameList /> : <SearchQuiz />}
+
+      <View style={{ flex: 1, width: '100%' }}>
+        {showOngoingGames ? <GameList /> : <SearchQuiz />}
+      </View>
+
+      <View
+        style={{
+          width: '80%',
+          justifyContent: 'center',
+        }}
+      >
+        <View
+          style={{ borderBottomWidth: 2, borderBottomColor: '#9d03fc' }}
+        ></View>
+        <PrimaryButton
+          isQuestion={false}
+          text="Create quiz"
+          onPress={() => {
+            navigation.navigate('Create');
+          }}
+          style={styleButton.enabledButton}
+        />
+      </View>
     </View>
   );
 }

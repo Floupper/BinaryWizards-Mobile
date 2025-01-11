@@ -1,12 +1,29 @@
 import { StyleSheet } from 'react-native';
 
-export default styles = StyleSheet.create({
+const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
     flex: 1,
-    justifyContent: 'center',
     padding: 16,
     width: '100%',
+  },
+  dropdown: {
+    alignItems: 'center',
+    alignSelf: 'center',
+    backgroundColor: '#f8f8f8',
+    borderColor: '#ccc',
+    borderRadius: 8,
+    borderWidth: 1,
+    fontSize: 16,
+    height: 50,
+    justifyContent: 'space-around',
+    paddingHorizontal: 12,
+    width: '70%',
+  },
+  emptyContainer: {
+    flex: 1, // This ensures that the container takes up the full available space
+    justifyContent: 'center', // Centers content vertically
+    alignItems: 'center', // Centers content horizontally
   },
   emptyMessage: {
     color: 'gray',
@@ -14,6 +31,7 @@ export default styles = StyleSheet.create({
     marginTop: 20,
     textAlign: 'center',
   },
+  form: { marginBottom: 16, width: '80%' },
   input: {
     borderRadius: 8,
     borderWidth: 1,
@@ -30,19 +48,37 @@ export default styles = StyleSheet.create({
     fontSize: 16,
     height: 50,
     paddingHorizontal: 12,
-    width: '100%',
+    width: '80%',
   },
   inputGroup: {
     alignItems: 'center',
     flex: 1,
   },
+  inputGroup: { flexDirection: 'row', justifyContent: 'space-between' },
   label: {
     color: 'white',
     fontSize: 14,
     marginBottom: 8,
+    textAlign: 'center',
   },
   loadingIndicator: {
     marginVertical: 16,
+  },
+  noQuizzesFound: {
+    color: '#fff',
+    fontFamily: 'Mogula',
+    fontSize: 18,
+    textAlign: 'center',
+  },
+  numericInput: {
+    backgroundColor: '#f8f8f8',
+    borderColor: '#ccc',
+    borderRadius: 8,
+    borderWidth: 1,
+    fontSize: 16,
+    height: 50,
+    paddingHorizontal: 12,
+    width: 100,
   },
   pickerContainer: {
     marginBottom: 12,
@@ -61,15 +97,18 @@ export default styles = StyleSheet.create({
     width: '100%',
   },
   text: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    marginBottom: 12,
-    textAlign: 'center',
-  },
-  text: {
     color: 'white',
     fontSize: 16,
     fontWeight: 'bold',
-    marginBottom: 12,
+    margin: 12,
+    textAlign: 'center',
+  },
+  title: {
+    color: 'white',
+    fontFamily: 'Mogula',
+    fontSize: 30,
+    marginBottom: 16,
   },
 });
+
+export default styles;

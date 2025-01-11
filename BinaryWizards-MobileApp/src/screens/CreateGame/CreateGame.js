@@ -22,6 +22,7 @@ import {
   fetchDifficulties,
 } from '../../services/createGame';
 import TimerModal from '../../components/TimerModal/TimerModal';
+import HomeButton from '../../components/HomeButton/HomeButton';
 
 export default function CreateGame() {
   const [categories, setCategories] = useState([]);
@@ -156,6 +157,7 @@ export default function CreateGame() {
       source={background}
       style={{ width: '100%', height: '100%' }}
     >
+      <HomeButton text="Home" />
       <View style={{ flex: 1 }}>
         <View
           style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}

@@ -29,8 +29,8 @@ export const styles = StyleSheet.create({
     top: 10,
   },
   modalTitle: {
+    fontFamily: 'Mogula',
     fontSize: 18,
-    fontWeight: 'bold',
     marginBottom: 10,
   },
 
@@ -67,5 +67,8 @@ export const styles = StyleSheet.create({
   },
   optionHard: {
     backgroundColor: '#ff6e6e',
+  },
+  text: {
+    fontFamily: 'Mogula',
   },
 });
