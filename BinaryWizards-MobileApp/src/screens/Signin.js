@@ -1,5 +1,11 @@
 import React, { useState } from 'react';
-import { View, TextInput, Text, Pressable, ActivityIndicator } from 'react-native';
+import {
+  View,
+  TextInput,
+  Text,
+  Pressable,
+  ActivityIndicator,
+} from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { signStyles, signBackgroundColors } from '../styles/sign';
 import PrimaryButton from '../components/PrimaryButton';
@@ -9,7 +15,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import SigninSvg from '../../assets/signin.svg';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-export default function Signin() {
+export default function Signin({ route }) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -22,7 +28,9 @@ export default function Signin() {
       if (data) {
         await _storeUserToken(data.token);
         await AsyncStorage.setItem('username', username);
-        navigation.navigate('Home');
+        const redirectTo = route.params?.redirectTo || 'Home';
+        const params = route.params?.params || {};
+        navigation.replace(redirectTo, params);
       } else {
         setPassword('');
       }
@@ -70,11 +78,9 @@ export default function Signin() {
               onPress={handlePress}
               style={signStyles.buttonPrimary}
               disabled={isLoading}
-              text={isLoading ? "" : "Sign in"}
+              text={isLoading ? '' : 'Sign in'}
             >
-              {isLoading &&
-                <ActivityIndicator color="#fff" />
-              }
+              {isLoading && <ActivityIndicator color="#fff" />}
             </PrimaryButton>
           </View>
         </View>
