@@ -3,7 +3,7 @@ import { View, StatusBar, ImageBackground } from 'react-native';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import userTokenEmitter from '../../utils/eventEmitter';
 
-import TopBar from '../../components/TopBar';
+import TopBar from '../../components/TopBar/TopBar';
 import UserHomeComponent from '../../components/UserHomeComponent/UserHomeComponent';
 import { styles } from './homeScreenStyles';
 import background from '../../../assets/mainBackground.png';

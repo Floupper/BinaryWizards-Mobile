@@ -1,44 +1,52 @@
 import { StyleSheet } from 'react-native';
 
 export const endStyle = StyleSheet.create({
-  endInformation: {
+  background: {
+    alignItems: 'center',
+    flex: 1,
     justifyContent: 'center',
+  },
+  endInformation: {
     alignItems: 'center',
     backgroundColor: 'white',
     borderRadius: 30,
-    width: '80%',
+    elevation: 5,
     height: '50%',
+    justifyContent: 'space-between',
     padding: 20,
-    elevation: 10,
     shadowOffset: { width: 0, height: 10 },
-    shadowOpacity: 0.5,
-    shadowRadius: 4,
+    shadowOpacity: 0.2,
+    shadowRadius: 6,
+    width: '80%',
   },
-  background: {
-    flex: 1,
-    justifyContent: 'center',
+  imageBackground: {
     alignItems: 'center',
+    flex: 1,
+    height: '100%',
+    justifyContent: 'center',
+    width: '100%',
   },
 });
 
 export const endStyleText = StyleSheet.create({
-  title: {
-    fontSize: 28,
-    fontWeight: 'bold',
-    color: '#7A00FF',
-    textAlign: 'center',
-    marginBottom: 10,
-  },
-  secondary: {
-    fontSize: 22,
-    fontWeight: 'bold',
-    color: '#333',
-    textAlign: 'center',
-    marginVertical: 10,
-  },
   emoji: {
     fontSize: 36,
-    textAlign: 'top',
     marginVertical: 10,
+    textAlign: 'top',
+  },
+  secondary: {
+    color: '#333',
+    fontSize: 22,
+    fontWeight: 'bold',
+    marginVertical: 10,
+    textAlign: 'center',
+  },
+  title: {
+    color: '#7A00FF',
+    fontFamily: 'Mogula',
+    fontSize: 28,
+    fontWeight: 'bold',
+    marginBottom: 10,
+    textAlign: 'center',
   },
 });

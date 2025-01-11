@@ -35,7 +35,7 @@ export default function StackNavigator() {
         <Stack.Screen
           name="End"
           component={EndScreen}
-          options={{ headerShown: true }}
+          options={{ headerShown: false }}
         />
 
         <Stack.Screen
