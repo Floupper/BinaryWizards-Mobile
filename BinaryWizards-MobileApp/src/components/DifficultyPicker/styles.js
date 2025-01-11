@@ -12,10 +12,10 @@ const styles = StyleSheet.create({
     marginLeft: 20,
   },
   resetButtonBackground: {
-    padding: 5,
-    borderRadius: 50, // Bouton rond
     alignItems: 'center',
+    borderRadius: 50,
     justifyContent: 'center',
+    padding: 5,
   },
   starContainer: {
     marginHorizontal: 5,

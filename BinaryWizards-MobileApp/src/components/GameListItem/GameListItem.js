@@ -17,7 +17,7 @@ export default function GameListItem({ item }) {
 
   const getQuizTitle = () => {
     const title = item.title ? item.title : `Untitled quiz`;
-    const maxLength = 20; // Longueur maximale autorisée
+    const maxLength = 20;
     return title.length > maxLength
       ? `${title.substring(0, maxLength)}...`
       : title;

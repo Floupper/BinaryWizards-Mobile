@@ -8,7 +8,7 @@ import { SafeAreaView, StatusBar, useColorScheme } from 'react-native';
 import StackNavigator from './src/navigation/StackNavigator';
 
 export default function App() {
-  const colorScheme = useColorScheme(); // Détecte le thème clair ou sombre
+  const colorScheme = useColorScheme();
   const [fontsLoaded] = Font.useFonts({
     Mogula: require('./assets/fonts/mogula.otf'),
   });
