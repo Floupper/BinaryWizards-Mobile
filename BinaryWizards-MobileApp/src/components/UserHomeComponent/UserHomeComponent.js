@@ -1,12 +1,9 @@
 import React, { useState } from 'react';
-import { View, Text } from 'react-native';
+import { View, Button, Text } from 'react-native';
 import SecondaryButton from '../SecondaryButton';
 import SearchQuiz from '../SearchQuiz/SearchQuiz';
 import GameList from '../GameList/GameList';
 import styles from './styles';
-import PrimaryButton from '../PrimaryButton';
-import { styleButton } from '../../styles/buttons';
-import { styleContainer } from '../../styles/container';
 import { useNavigation } from '@react-navigation/native';
 
 export default function UserHomeComponent() {

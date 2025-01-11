@@ -1,7 +1,6 @@
 /* eslint-disable prettier/prettier */
 import React from 'react';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import { NavigationContainer } from '@react-navigation/native';
 import Toast from 'react-native-toast-message';
 import * as Font from 'expo-font';
 import { SafeAreaView, StatusBar, useColorScheme } from 'react-native';

@@ -16,7 +16,7 @@ import SigninSvg from '../../assets/signin.svg';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import HomeButton from '../components/HomeButton/HomeButton';
 
-export default function Signin() {
+export default function Signin({ route }) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -29,7 +29,9 @@ export default function Signin() {
       if (data) {
         await _storeUserToken(data.token);
         await AsyncStorage.setItem('username', username);
-        navigation.navigate('Home');
+        const redirectTo = route.params?.redirectTo || 'Home';
+        const params = route.params?.params || {};
+        navigation.replace(redirectTo, params);
       } else {
         setPassword('');
       }
