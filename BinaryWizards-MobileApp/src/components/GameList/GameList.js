@@ -23,6 +23,14 @@ export default function GameList() {
   const [containerHeight, setContainerHeight] = useState(0);
   const [contentHeight, setContentHeight] = useState(0);
 
+  const [isRefreshing, setIsRefreshing] = useState(false);
+
+  const onRefresh = async () => {
+    setIsRefreshing(true);
+    await refetch();
+    setIsRefreshing(false);
+  };
+
   const handleContainerLayout = (e) => {
     const { height } = e.nativeEvent.layout;
     setContainerHeight(height);
@@ -46,8 +54,7 @@ export default function GameList() {
   useFocusEffect(
     useCallback(() => {
       refetch();
-      console.log('GameList refetched');
-    }, [refetch])
+    })
   );
 
   const handleEndReached = () => {
@@ -86,6 +93,8 @@ export default function GameList() {
         onLayout={handleContentLayout}
         style={{ width: '100%' }}
         contentContainerStyle={{ alignItems: 'stretch' }}
+        refreshing={isRefreshing}
+        onRefresh={onRefresh}
       />
     </View>
   );
