@@ -5,6 +5,7 @@ import SearchQuiz from '../SearchQuiz/SearchQuiz';
 import GameList from '../GameList/GameList';
 import styles from './styles';
 import { useNavigation } from '@react-navigation/native';
+import PrimaryButton from '../PrimaryButton';
 
 export default function UserHomeComponent() {
   const [showOngoingGames, setShowOngoingGames] = useState(true);
@@ -56,7 +57,7 @@ export default function UserHomeComponent() {
           onPress={() => {
             navigation.navigate('Create');
           }}
-          style={styleButton.enabledButton}
+          style={styles.button}
         />
       </View>
     </View>
