@@ -7,13 +7,13 @@ import EndScreen from '../screens/EndScreen/EndScreen';
 import CreateGame from '../screens/CreateGame/CreateGame';
 import Signup from '../screens/Signup';
 import Signin from '../screens/Signin';
-import TeamJoin from '../screens/TeamJoin/TeamJoin';
 import TeamLobby from '../screens/TeamLobby/TeamLobby';
 import ScrumLobby from '../screens/ScrumLobby/ScrumLobby';
-import ScrumJoin from '../screens/ScrumJoin/ScrumJoin';
 import { NavigationContainer } from '@react-navigation/native';
 import * as Linking from 'expo-linking';
 import SetGameMode from '../components/SetGameMode/SetGameMode';
+import TeamQuestionScreen from '../screens/TeamQuestionScreen/TeamQuestionScreen';
+import TeamEndScreen from '../screens/TeamEndScreen/TeamEndScreen';
 
 const prefix = Linking.createURL('/');
 
@@ -107,21 +107,21 @@ export default function StackNavigator() {
           />
 
           <Stack.Screen
-            name="ScrumJoin"
-            component={ScrumJoin}
-            options={{ headerShown: true, title: 'Scrum Join' }}
-          />
-
-          <Stack.Screen
-            name="TeamJoin"
-            component={TeamJoin}
-            options={{ headerShown: true, title: 'Team Join' }}
-          />
-
-          <Stack.Screen
             name="TeamLobby"
             component={TeamLobby}
             options={{ headerShown: false, title: 'Team Lobby' }}
+          />
+
+          <Stack.Screen
+            name="TeamQuestionScreen"
+            component={TeamQuestionScreen}
+            options={{ headerShown: false, title: 'Team Question Screen' }}
+          />
+
+          <Stack.Screen
+            name="TeamEndScreen"
+            component={TeamEndScreen}
+            options={{ headerShown: false, title: 'Team End Screen' }}
           />
         </Stack.Navigator>
       </NavigationContainer>
