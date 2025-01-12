@@ -4,39 +4,68 @@ import { styleContainer } from '../../styles/container';
 import { styleButton } from '../../styles/buttons';
 import PrimaryButton from '../PrimaryButton';
 import { styles } from './styles';
-import { sendAnswer } from '../../services/questionScreenRequests';
+import { questionContext } from '../../utils/questionContext.enum';
 import { Asset } from 'expo-asset';
 import PropTypes from 'prop-types';
 
 // Props validation
 QuestionComponent.propTypes = {
-  question: PropTypes.object,
-  correctAnswer: PropTypes.object,
-  nextQuestion: PropTypes.func,
-  gameId: PropTypes.string,
-  questionIndex: PropTypes.number,
-  setColorGradient: PropTypes.func,
-  setQuestion: PropTypes.func,
-  setQuestionAnswer: PropTypes.func,
-  endGame: PropTypes.func,
+  question: PropTypes.object.isRequired,
+  nextQuestion: PropTypes.func.isRequired,
+  onSelectedAnswer: PropTypes.func.isRequired,
+  setColorGradient: PropTypes.func.isRequired,
+  isTimeUp: PropTypes.bool.isRequired,
+  correctAnswerIndex: PropTypes.number,
+  userAnswerIndex: PropTypes.number,
 };
 
 export default function QuestionComponent({
   question,
-  correctAnswer,
   nextQuestion,
-  gameId,
-  questionIndex,
+  onSelectedAnswer,
   setColorGradient,
-  setQuestion,
-  setQuestionAnswer,
-  endGame,
+  isTimeUp,
+  correctAnswerIndex,
+  userAnswerIndex,
 }) {
-  const [userAnswerIndex, setUserAnswerIndex] = useState(null);
-  const [background, setBackground] = useState('idle');
-  const [isCorrect, setIsCorrect] = useState(false);
+  const [background, setBackground] = useState(questionContext.IDLE);
 
-  const updateColors = (context, index = null) => {
+  const backgroundAssets = {
+    idle: require('../../../assets/questions/idle.png'),
+    correct: require('../../../assets/questions/correct.png'),
+    wrong: require('../../../assets/questions/wrong.png'),
+  };
+
+  const determineButtonStyle = (buttonIndex) => {
+    const COLORS = {
+      default: 'white',
+      correct: 'green',
+      incorrect: 'red',
+      unanswered: 'white',
+      timeUp: 'orange',
+    };
+
+    if (userAnswerIndex === null || correctAnswerIndex === null) {
+      return { backgroundColor: COLORS.default };
+    }
+
+    if (isTimeUp) {
+      if (buttonIndex === correctAnswerIndex) {
+        return { backgroundColor: COLORS.correct };
+      }
+      return { backgroundColor: COLORS.incorrect };
+    }
+
+    if (buttonIndex === correctAnswerIndex) {
+      return { backgroundColor: COLORS.correct };
+    }
+    if (buttonIndex === userAnswerIndex && buttonIndex !== correctAnswerIndex) {
+      return { backgroundColor: COLORS.incorrect };
+    }
+    return { backgroundColor: COLORS.default };
+  };
+
+  const updateColors = (context) => {
     const BACKGROUND_COLORS = {
       idle: ['#FFA033', '#DBC0A2', '#779D25'],
       correct: ['#417336', '#417336', '#417336'],
@@ -44,24 +73,17 @@ export default function QuestionComponent({
     };
 
     const BACKGROUNDS = {
-      idle: 'idle',
-      correct: 'correct',
-      wrong: 'wrong',
+      idle: questionContext.IDLE,
+      correct: questionContext.CORRECT,
+      wrong: questionContext.WRONG,
     };
 
     setColorGradient(BACKGROUND_COLORS[context]);
     setBackground(BACKGROUNDS[context]);
-
-    if (context === 'correct' || context === 'wrong') {
-      setUserAnswerIndex(index);
-    } else if (context === 'idle') {
-      setUserAnswerIndex(null);
-    }
   };
 
   const handleNextQuestion = () => {
     nextQuestion();
-    updateColors('idle');
   };
 
   useEffect(() => {
@@ -75,58 +97,31 @@ export default function QuestionComponent({
     preloadAssets();
   }, []);
 
-  const onSelectedAnswer = async (index) => {
-    if (userAnswerIndex !== null) return;
-
-    try {
-      const result = await sendAnswer({
-        gameId: gameId,
-        question_index: questionIndex,
-        option_index: index,
-      });
-
-      if (!result) return;
-
-      if (result.resynchronize) {
-        if (result.data.game_finished) {
-          endGame(result.data);
-          return;
-        }
-        setQuestion(result.data);
-        setQuestionAnswer(null);
-        updateColors('idle');
-        return;
-      }
-      const context = result.is_correct ? 'correct' : 'wrong';
-      setIsCorrect(result.is_correct);
-
-      updateColors(context, index);
-    } catch (error) {
-      console.error('Error:', error);
+  useEffect(() => {
+    if (userAnswerIndex === null && correctAnswerIndex === null) {
+      updateColors(questionContext.IDLE);
+      return;
     }
-  };
-
-  const backgroundAssets = {
-    idle: require('../../../assets/questions/idle.png'),
-    correct: require('../../../assets/questions/correct.png'),
-    wrong: require('../../../assets/questions/wrong.png'),
-  };
-
-  const determineButtonStyle = (index) => {
-    const COLORS = {
-      default: 'white',
-      correct: 'green',
-      incorrect: 'red',
-      unanswered: 'white',
-    };
-
-    if (index === userAnswerIndex && isCorrect) {
-      return { backgroundColor: COLORS.correct };
-    } else if (index === userAnswerIndex && !isCorrect) {
-      return { backgroundColor: COLORS.incorrect };
-    } else {
-      return { backgroundColor: COLORS.default };
+    if (
+      userAnswerIndex !== null &&
+      correctAnswerIndex !== null &&
+      userAnswerIndex !== correctAnswerIndex
+    ) {
+      updateColors(questionContext.WRONG);
+      return;
     }
+    if (
+      userAnswerIndex !== null &&
+      correctAnswerIndex !== null &&
+      userAnswerIndex === correctAnswerIndex
+    ) {
+      updateColors(questionContext.CORRECT);
+      return;
+    }
+  }, [isTimeUp, correctAnswerIndex, userAnswerIndex]); // If userAnswerIndex is modified, correctAnswerIndex is modified, and the useEffect is triggered
+
+  const handleSelectedAnswer = async (answerIndex) => {
+    await onSelectedAnswer(answerIndex);
   };
 
   return (
@@ -150,7 +145,7 @@ export default function QuestionComponent({
               <PrimaryButton
                 key={option_index}
                 text={option_content.content}
-                onPress={() => onSelectedAnswer(option_index)}
+                onPress={() => handleSelectedAnswer(option_index)}
                 isQuestion={true}
                 style={[
                   styles.answerButtonBaseStyle,
