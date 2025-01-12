@@ -7,6 +7,7 @@ import { styles } from './styles';
 import { questionContext } from '../../utils/questionContext.enum';
 import { Asset } from 'expo-asset';
 import PropTypes from 'prop-types';
+import ImageContainer from '../ImageContainer/ImageContainer';
 
 // Props validation
 QuestionComponent.propTypes = {
@@ -141,18 +142,28 @@ export default function QuestionComponent({
         </Text>
         <View>
           {question.options && Array.isArray(question.options) ? (
-            question.options.map(({ option_content, option_index }) => (
-              <PrimaryButton
-                key={option_index}
-                text={option_content.content}
-                onPress={() => handleSelectedAnswer(option_index)}
-                isQuestion={true}
-                style={[
-                  styles.answerButtonBaseStyle,
-                  determineButtonStyle(option_index),
-                ]}
+            question.options.some(
+              ({ option_content }) => option_content.type === 'image'
+            ) ? (
+              <ImageContainer
+                options={question.options}
+                onPress={handleSelectedAnswer}
+                determineButtonStyle={determineButtonStyle}
               />
-            ))
+            ) : (
+              question.options.map(({ option_content, option_index }) => (
+                <PrimaryButton
+                  key={option_index}
+                  text={option_content.content}
+                  onPress={() => handleSelectedAnswer(option_index)}
+                  isQuestion={true}
+                  style={[
+                    styles.answerButtonBaseStyle,
+                    determineButtonStyle(option_index),
+                  ]}
+                />
+              ))
+            )
           ) : (
             <Text>No question available</Text>
           )}
