@@ -7,6 +7,7 @@ import Toast from 'react-native-toast-message';
 import dayjs from 'dayjs';
 import styles from './styles';
 import Icon from 'react-native-vector-icons/AntDesign';
+import { timerModes } from '../../utils/timer';
 
 export default function GameListItem({ item }) {
   const formattedDate = dayjs(item.date_game_creation).format('DD/MM/YYYY');
@@ -40,6 +41,7 @@ export default function GameListItem({ item }) {
             gameId: item.game_id,
             question: response,
             quizId: response.quiz_id,
+            timer: timerModes.NONE,
           });
         }
       }
