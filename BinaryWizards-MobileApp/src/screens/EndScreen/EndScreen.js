@@ -4,12 +4,14 @@ import PrimaryButton from '../../components/PrimaryButton';
 import { useNavigation } from '@react-navigation/native';
 import { styleContainer } from '../../styles/container';
 import { styleButton } from '../../styles/buttons';
-import { resetQuiz } from '../../services/endScreenRequests';
+import { createGameId } from '../../services/createGame';
 import { endStyle, endStyleText } from './endStyle';
 import background from '../../../assets/endBackground.png';
+import { getModeFromTimer } from '../../utils/timer';
 
 export default function EndScreen({ route }) {
-  const { quizId, correct_answers_nb, nb_questions_total } = route.params;
+  const { quizId, correct_answers_nb, nb_questions_total, timer } =
+    route.params;
   const navigation = useNavigation();
 
   const [isLoadingHome, setIsLoadingHome] = useState(false);
@@ -29,7 +31,8 @@ export default function EndScreen({ route }) {
   const playAgain = async () => {
     setIsLoadingPlayAgain(true);
     try {
-      await resetQuiz(quizId, navigation);
+      const difficulty = getModeFromTimer(timer);
+      await createGameId(quizId, difficulty, navigation);
     } catch (error) {
       console.error('Error restarting quiz:', error);
     } finally {

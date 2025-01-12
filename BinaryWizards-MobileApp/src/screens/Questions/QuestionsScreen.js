@@ -90,7 +90,9 @@ export default function QuestionScreen({ route }) {
       chronoRef.current.stopTimer();
     }
 
-    const question_result = await fetchQuestion({ gameId: gameId });
+    const question_result = await fetchQuestion({
+      gameId: route.params.gameId,
+    });
     questionIndexRef.current = question_result.question_index;
 
     if (question_result.game_finished) {
@@ -170,6 +172,7 @@ export default function QuestionScreen({ route }) {
       gameId: gameId,
       correct_answers_nb: question_result.correct_answers_nb,
       nb_questions_total: question_result.nb_questions_total,
+      timer: question.time_limit,
     });
     setTimeAvailable(-1);
   };
