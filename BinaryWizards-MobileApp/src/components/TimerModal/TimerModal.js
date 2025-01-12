@@ -1,8 +1,7 @@
-import React, { useCallback, useState } from 'react';
+import React from 'react';
 import { View, Text, Modal, TouchableOpacity } from 'react-native';
+import { timerModes } from '../../utils/timer';
 import Feather from '@expo/vector-icons/Feather';
-import { _retrieveUserToken } from '../../utils/asyncStorage';
-import { useFocusEffect } from '@react-navigation/native';
 
 import { styles } from './styles';
 
@@ -38,7 +37,7 @@ export default function TimerModal({
             {!isCreateGame && (
               <TouchableOpacity
                 onPress={() => {
-                  handleTimerChoice({ timer: 'none' });
+                  handleTimerChoice({ timer: timerModes.NONE });
                 }}
                 style={[styles.optionBase, styles.optionNone]}
               >
@@ -47,7 +46,7 @@ export default function TimerModal({
             )}
             <TouchableOpacity
               onPress={() => {
-                handleTimerChoice({ timer: 'easy' });
+                handleTimerChoice({ timer: timerModes.EASY });
               }}
               style={[styles.optionBase, styles.optionEasy]}
             >
@@ -55,7 +54,7 @@ export default function TimerModal({
             </TouchableOpacity>
             <TouchableOpacity
               onPress={() => {
-                handleTimerChoice({ timer: 'medium' });
+                handleTimerChoice({ timer: timerModes.MEDIUM });
               }}
               style={[styles.optionBase, styles.optionMedium]}
             >
@@ -63,7 +62,7 @@ export default function TimerModal({
             </TouchableOpacity>
             <TouchableOpacity
               onPress={() => {
-                handleTimerChoice({ timer: 'hard' });
+                handleTimerChoice({ timer: timerModes.HARD });
               }}
               style={[styles.optionBase, styles.optionHard]}
             >
