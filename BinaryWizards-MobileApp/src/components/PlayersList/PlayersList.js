@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Text, TouchableOpacity, View, Alert } from 'react-native';
 import { io } from 'socket.io-client';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -11,41 +11,13 @@ import axiosInstance from '../../utils/axiosInstance';
 const SERVER_URL = `${REACT_NATIVE_API_URL}:${REACT_NATIVE_API_PORT}`;
 
 export default function PlayersList({ game_id, game_mode }) {
+  const [gameId, setGameId] = useState(game_id);
+  const [gameMode, setGameMode] = useState(game_mode);
   const [players, setPlayers] = useState([]);
   const [socket, setSocket] = useState(null);
-  const [teamName, setTeamName] = useState([]);
+  const [teams, setTeams] = useState([]);
   const [selectedTeam, setSelectedTeam] = useState(null);
   const navigation = useNavigation();
-
-  if (game_mode === 'team') {
-    useEffect(() => {
-      const getTeamsNames = async () => {
-        try {
-          const response = await axiosInstance.get(
-            `/game/${game_id}/get_teams`,
-            {
-              headers: {
-                'Cache-Control': 'no-cache',
-              },
-            }
-          );
-
-          if (response.status === 200) {
-            setTeamName(response.data.teams);
-          } else {
-            console.error('Error when fetching teams names');
-          }
-        } catch (error) {
-          console.error(
-            'Error when fetching teams names from the server :',
-            error
-          );
-        }
-      };
-
-      getTeamsNames();
-    }, [game_id]);
-  }
 
   useEffect(() => {
     const connectAndJoinGame = async () => {
@@ -55,7 +27,7 @@ export default function PlayersList({ game_id, game_mode }) {
         if (!userToken) {
           // Redirect if no token is found
           navigation.navigate('Signin', {
-            redirectTo: 'PlayersList',
+            redirectTo: 'TeamLobby',
             params: { game_id },
           });
           return;
@@ -88,7 +60,7 @@ export default function PlayersList({ game_id, game_mode }) {
                 text: 'Go to Login',
                 onPress: () =>
                   navigation.navigate('Signin', {
-                    redirectTo: 'PlayersList',
+                    redirectTo: 'TeamLobby',
                     params: { game_id },
                   }),
               },
@@ -109,22 +81,51 @@ export default function PlayersList({ game_id, game_mode }) {
         socket.disconnect();
       }
     };
-  }, [game_id]);
+  }, [gameId]);
+
+  if (gameMode === 'team') {
+    useEffect(() => {
+      const getTeamsNames = async () => {
+        try {
+          const response = await axiosInstance.get(
+            `/game/${game_id}/get_teams`,
+            {
+              headers: {
+                'Cache-Control': 'no-cache',
+              },
+            }
+          );
+
+          if (response.status === 200) {
+            setTeams(response.data.teams);
+          } else {
+            console.error('Error when fetching teams names');
+          }
+        } catch (error) {
+          console.error(
+            'Error when fetching teams names from the server :',
+            error
+          );
+        }
+      };
+
+      getTeamsNames();
+    }, [game_id]);
+  }
 
   const joinTeam = async (team_name) => {
     try {
-      const userToken = await AsyncStorage.getItem('userToken');
-
-      const newSocket = io(SERVER_URL, {
-        transports: ['websocket'],
-        extraHeaders: {
-          Authorization: `Bearer ${userToken}`,
-        },
-      });
-
-      if (newSocket) {
-        newSocket.emit('joinGame', { game_id, team_name });
+      if (socket) {
+        socket.emit('joinGame', { game_id, team_name });
         setSelectedTeam(team_name);
+
+        socket.on('gameStarted', () => {
+          console.log(game_id);
+          navigation.navigate('TeamQuestionScreen', {
+            gameId: game_id,
+            gameMode: game_mode,
+          });
+        });
       }
     } catch (error) {
       console.error('Error during joining team :', error);
@@ -133,8 +134,8 @@ export default function PlayersList({ game_id, game_mode }) {
 
   return (
     <View style={styles.container}>
-      {game_mode === 'team'
-        ? teamName.map((team, index) => (
+      {gameMode === 'team'
+        ? teams.map((team, index) => (
             <TouchableOpacity
               key={index}
               onPress={() => joinTeam(team)}
