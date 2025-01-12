@@ -7,10 +7,8 @@ import EndScreen from '../screens/EndScreen/EndScreen';
 import CreateGame from '../screens/CreateGame/CreateGame';
 import Signup from '../screens/Signup';
 import Signin from '../screens/Signin';
-import TeamJoin from '../screens/TeamJoin/TeamJoin';
 import TeamLobby from '../screens/TeamLobby/TeamLobby';
 import ScrumLobby from '../screens/ScrumLobby/ScrumLobby';
-import ScrumJoin from '../screens/ScrumJoin/ScrumJoin';
 import { NavigationContainer } from '@react-navigation/native';
 import * as Linking from 'expo-linking';
 import SetGameMode from '../components/SetGameMode/SetGameMode';
@@ -104,18 +102,6 @@ export default function StackNavigator() {
             name="ScrumLobby"
             component={ScrumLobby}
             options={{ headerShown: false, title: 'Scrum Lobby' }}
-          />
-
-          <Stack.Screen
-            name="ScrumJoin"
-            component={ScrumJoin}
-            options={{ headerShown: true, title: 'Scrum Join' }}
-          />
-
-          <Stack.Screen
-            name="TeamJoin"
-            component={TeamJoin}
-            options={{ headerShown: true, title: 'Team Join' }}
           />
 
           <Stack.Screen

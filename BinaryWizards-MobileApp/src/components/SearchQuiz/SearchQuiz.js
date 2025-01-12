@@ -105,7 +105,10 @@ export default function SearchQuiz() {
           text1: 'Game Created',
           text2: 'Game was created successfully!',
         });
-        navigation.navigate('Questions', { gameId: gameResponse });
+        navigation.navigate('Questions', {
+          gameId: gameResponse,
+          timer: timeModeDifficulty,
+        });
       } else {
         throw new Error('Invalid game creation response.');
       }

@@ -21,10 +21,8 @@ export default function App() {
         style={{ flex: 1, backgroundColor: statusBarBackgroundColor }}
       >
         <StatusBar backgroundColor={statusBarBackgroundColor} />
-        <NavigationContainer>
-          <StackNavigator />
-          <Toast />
-        </NavigationContainer>
+        <StackNavigator />
+        <Toast />
       </SafeAreaView>
     </SafeAreaProvider>
   );
