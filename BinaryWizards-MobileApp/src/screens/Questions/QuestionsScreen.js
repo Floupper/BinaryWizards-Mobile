@@ -34,49 +34,10 @@ export default function QuestionScreen({ route }) {
   const chronoRef = useRef();
   const questionIndexRef = useRef(null);
 
-  useEffect(async () => {
-    try {
-      const userToken = await AsyncStorage.getItem('userToken');
-
-      const socket = io(SERVER_URL, {
-        transports: ['websocket'],
-        extraHeaders: {
-          Authorization: `Bearer ${userToken}`,
-        },
-      });
-
-      socket.on('newQuestion', () => {
-        nextQuestion();
-      });
-
-      newSocket.on('disconnect', () => {
-        console.log('Disconnected from WebSocket server');
-      });
-    } catch (error) {
-      console.error('Error during connecting to websocket :', error);
-    }
-  }, [gameId]);
-
   useEffect(() => {
     setGameId(route.params.gameId);
     fetchAndSetQuestion();
   }, [route.params.gameId]);
-
-  useEffect(() => {
-    const listener = (newToken) => {
-      //Disconnect the user if the token is invalid
-      if (newToken === null) {
-        navigation.navigate('Home');
-      }
-      setUserToken(newToken);
-    };
-
-    userTokenEmitter.on('userToken', listener);
-
-    return () => {
-      userTokenEmitter.off('userToken', listener);
-    };
-  }, []);
 
   const nextQuestion = () => {
     setIsTimeUp(false);

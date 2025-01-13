@@ -195,10 +195,6 @@ export default function SearchQuiz() {
               </View>
             )
           }
-          contentContainerStyle={{
-            alignItems: 'stretch',
-            height: '100%',
-          }}
         />
       </View>
       <TimerModal
