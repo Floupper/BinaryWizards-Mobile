@@ -9,6 +9,8 @@ import Signup from '../screens/Signup';
 import Signin from '../screens/Signin';
 import TeamLobby from '../screens/TeamLobby/TeamLobby';
 import ScrumLobby from '../screens/ScrumLobby/ScrumLobby';
+import ScrumQuestionScreen from '../screens/ScrumQuestionScreen/ScrumQuestionScreen';
+import ScrumEndScreen from '../screens/ScrumEndScreen/ScrumEndScreen';
 import { NavigationContainer } from '@react-navigation/native';
 import * as Linking from 'expo-linking';
 import SetGameMode from '../components/SetGameMode/SetGameMode';
@@ -104,6 +106,18 @@ export default function StackNavigator() {
             name="ScrumLobby"
             component={ScrumLobby}
             options={{ headerShown: false, title: 'Scrum Lobby' }}
+          />
+
+          <Stack.Screen
+            name="ScrumQuestionScreen"
+            component={ScrumQuestionScreen}
+            options={{ headerShown: false, title: 'Team Question Screen' }}
+          />
+
+          <Stack.Screen
+            name="ScrumEndScreen"
+            component={ScrumEndScreen}
+            options={{ headerShown: false, title: 'Team End Screen' }}
           />
 
           <Stack.Screen
