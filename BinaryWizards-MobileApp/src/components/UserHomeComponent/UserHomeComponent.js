@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { View } from 'react-native';
 import SecondaryButton from '../SecondaryButton';
-import PrimaryButton from '../PrimaryButton';
 import { styleButton } from '../../styles/buttons';
 import SearchQuiz from '../SearchQuiz/SearchQuiz';
 import GameList from '../GameList/GameList';
