@@ -120,7 +120,6 @@ export default function PlayersList({ game_id, game_mode }) {
         setSelectedTeam(team_name);
 
         socket.on('gameStarted', () => {
-          console.log(game_id);
           navigation.navigate('TeamQuestionScreen', {
             gameId: game_id,
             gameMode: game_mode,
@@ -131,6 +130,23 @@ export default function PlayersList({ game_id, game_mode }) {
       console.error('Error during joining team :', error);
     }
   };
+
+  useEffect(() => {
+    if (socket && gameMode === 'scrum') {
+      socket.emit('joinGame', { game_id });
+
+      socket.on('gameStarted', () => {
+        navigation.navigate('ScrumQuestionScreen', {
+          gameId: game_id,
+          gameMode: game_mode,
+        });
+      });
+
+      return () => {
+        socket.off('gameStarted');
+      };
+    }
+  }, [socket, gameMode]);
 
   return (
     <View style={styles.container}>
