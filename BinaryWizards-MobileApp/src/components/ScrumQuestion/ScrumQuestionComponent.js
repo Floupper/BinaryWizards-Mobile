@@ -1,10 +1,8 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { View, Text, ImageBackground } from 'react-native';
 import { styleContainer } from '../../styles/container';
-import { styleButton } from '../../styles/buttons';
 import PrimaryButton from '../PrimaryButton';
 import { styles } from '../Question/styles';
-import { sendAnswer } from '../../services/questionScreenRequests';
 import { Asset } from 'expo-asset';
 import PropTypes from 'prop-types';
 import { useNavigation } from '@react-navigation/native';
@@ -29,30 +27,17 @@ ScrumQuestionComponent.propTypes = {
 
 export default function ScrumQuestionComponent({
   question,
-  correctAnswer,
-  nextQuestion,
   gameId,
-  questionIndex,
   setColorGradient,
-  setQuestion,
-  setQuestionAnswer,
-  endGame,
 }) {
   const [userAnswerIndex, setUserAnswerIndex] = useState(null);
   const [background, setBackground] = useState('idle');
   const [isCorrect, setIsCorrect] = useState(false);
   const socketRef = useRef(null);
   const navigation = useNavigation();
-
-  const [questionText, setQuestionText] = useState('');
-  const [options, setOptions] = useState([]);
   const [nbQuestionsTotal, setNbQuestionsTotal] = useState(null);
   const [score, setScore] = useState(null);
   const [quizId, setQuizId] = useState(null);
-  const [questionType, setQuestionType] = useState('');
-  const [questionDifficulty, setQuestionDifficulty] = useState('');
-  const [questionCategory, setQuestionCategory] = useState('');
-  const [loading, setLoading] = useState(true);
   const [selectedQuestionId, setSelectedQuestionId] = useState(null);
   const [isAnswered, setIsAnswered] = useState(false);
   const [idCorrectAnswers, setIdCorrectAnswers] = useState(null);
@@ -125,12 +110,8 @@ export default function ScrumQuestionComponent({
       });
 
       newSocket.on('gameFinished', (data) => {
-        const { ranking } = data;
-        navigation.navigate('TeamEndScreen', {
-          ranking,
-          nbQuestionsTotal,
-          quizId,
-          score,
+        navigation.navigate('ScrumEndScreen', {
+          data,
         });
       });
 
