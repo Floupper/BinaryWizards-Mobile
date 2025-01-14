@@ -1,56 +1,39 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { View, Text, ImageBackground } from 'react-native';
 import { styleContainer } from '../../styles/container';
-import { styleButton } from '../../styles/buttons';
 import PrimaryButton from '../PrimaryButton';
 import { styles } from '../Question/styles';
-import { sendAnswer } from '../../services/questionScreenRequests';
 import { Asset } from 'expo-asset';
 import PropTypes from 'prop-types';
 import { useNavigation } from '@react-navigation/native';
+import { io } from 'socket.io-client';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { REACT_NATIVE_API_URL, REACT_NATIVE_API_PORT } from '@env';
+
+const SERVER_URL = `${REACT_NATIVE_API_URL}:${REACT_NATIVE_API_PORT}`;
+
 // Props validation
 TeamQuestionComponent.propTypes = {
   question: PropTypes.object,
-  correctAnswer: PropTypes.object,
-  nextQuestion: PropTypes.func,
   gameId: PropTypes.string,
-  questionIndex: PropTypes.number,
   setColorGradient: PropTypes.func,
-  setQuestion: PropTypes.func,
-  setQuestionAnswer: PropTypes.func,
-  endGame: PropTypes.func,
 };
 
 export default function TeamQuestionComponent({
   question,
-  correctAnswer,
-  nextQuestion,
   gameId,
-  questionIndex,
   setColorGradient,
-  onQuestionSelect,
-  setQuestion,
-  setQuestionAnswer,
-  endGame,
 }) {
   const [userAnswerIndex, setUserAnswerIndex] = useState(null);
   const [background, setBackground] = useState('idle');
   const [isCorrect, setIsCorrect] = useState(false);
-  const [socket, setSocket] = useState(null);
+  const socketRef = useRef(null);
   const navigation = useNavigation();
 
-  const [questionText, setQuestionText] = useState('');
-  const [options, setOptions] = useState([]);
-  const [nbQuestionsTotal, setNbQuestionsTotal] = useState(null);
-  const [score, setScore] = useState(null);
-  const [quizId, setQuizId] = useState(null);
-  const [questionType, setQuestionType] = useState('');
-  const [questionDifficulty, setQuestionDifficulty] = useState('');
-  const [questionCategory, setQuestionCategory] = useState('');
-  const [loading, setLoading] = useState(true);
   const [selectedQuestionId, setSelectedQuestionId] = useState(null);
   const [isAnswered, setIsAnswered] = useState(false);
   const [idCorrectAnswers, setIdCorrectAnswers] = useState(null);
+  const [showAnswer, setShowAnswer] = useState(false);
 
   const updateColors = (context, index = null) => {
     const BACKGROUND_COLORS = {
@@ -85,6 +68,7 @@ export default function TeamQuestionComponent({
     };
     preloadAssets();
   }, []);
+
   useEffect(() => {
     const connectToSocket = async () => {
       const userToken = await AsyncStorage.getItem('userToken');
@@ -102,6 +86,8 @@ export default function TeamQuestionComponent({
         },
       });
 
+      socketRef.current = newSocket;
+
       newSocket.on('connect', () => {
         newSocket.emit('getQuestionInformations', { game_id: gameId });
       });
@@ -115,32 +101,54 @@ export default function TeamQuestionComponent({
       });
 
       newSocket.on('gameFinished', (data) => {
-        const { ranking } = data;
         navigation.navigate('TeamEndScreen', {
-          ranking,
-          nbQuestionsTotal,
-          quizId,
-          score,
+          data,
         });
       });
+
       newSocket.on('answerResult', (data) => {
         console.log('TeamQuestionComponent -> data', data);
         setIdCorrectAnswers(data.correct_option_index);
         setIsAnswered(true);
-        updateColors('idle');
+        setShowAnswer(true);
+
+        setTimeout(() => {
+          setShowAnswer(true);
+        }, 5000);
       });
 
-      setSocket(newSocket);
+      newSocket.on('isCorrectAnswer', (data) => {
+        setIsCorrect(data);
+      });
     };
 
     connectToSocket();
 
     return () => {
-      if (socket) {
-        so.disconnect();
+      if (socketRef) {
+        socketRef.current.disconnect();
       }
     };
   }, [gameId, navigation]);
+
+  useEffect(() => {
+    setShowAnswer(false);
+    setUserAnswerIndex(null);
+    setIdCorrectAnswers(null);
+    setIsAnswered(false);
+    setBackground('idle');
+  }, [question]);
+
+  const handleQuestionSelect = (selectedId) => {
+    setSelectedQuestionId(selectedId);
+    setIsAnswered(true);
+
+    socketRef.current.emit('sendAnswer', {
+      game_id: gameId,
+      question_id: question.question_index,
+      option_index: selectedId,
+    });
+  };
 
   const backgroundAssets = {
     idle: require('../../../assets/questions/idle.png'),
@@ -149,14 +157,19 @@ export default function TeamQuestionComponent({
   };
 
   const determineButtonStyle = (index) => {
-    if (userAnswerIndex !== null) {
+    if (showAnswer) {
       if (index === idCorrectAnswers) {
         return { backgroundColor: 'green' };
       }
-      if (index === userAnswerIndex) {
+
+      if (
+        index === selectedQuestionId &&
+        selectedQuestionId !== idCorrectAnswers
+      ) {
         return { backgroundColor: 'red' };
       }
     }
+
     return { backgroundColor: 'white' };
   };
 
@@ -182,8 +195,7 @@ export default function TeamQuestionComponent({
                 key={option_index}
                 text={option_content.content}
                 onPress={() => {
-                  onQuestionSelect(option_index);
-                  setUserAnswerIndex(option_index);
+                  handleQuestionSelect(option_index);
                 }}
                 isQuestion={true}
                 style={[
