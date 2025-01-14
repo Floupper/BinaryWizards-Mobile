@@ -96,7 +96,6 @@ export default function ScrumQuestionComponent({
     const connectToSocket = async () => {
       const userToken = await AsyncStorage.getItem('userToken');
       if (!userToken) {
-        console.log('userToken', userToken);
         navigation.navigate('Signin', {
           redirectTo: 'ScrumLobby',
           params: { gameId },
@@ -136,7 +135,6 @@ export default function ScrumQuestionComponent({
       });
 
       newSocket.on('answerResult', (data) => {
-        console.log('ScrumQuestionComponent -> data', data);
         setIdCorrectAnswers(data.correct_option_index);
         setIsAnswered(true);
         setShowAnswer(true);
@@ -161,7 +159,6 @@ export default function ScrumQuestionComponent({
   }, [gameId, navigation]);
 
   const handleQuestionSelect = (selectedId) => {
-    console.log('Selected question:', selectedId);
     setSelectedQuestionId(selectedId);
     setIsAnswered(true);
 
@@ -170,8 +167,6 @@ export default function ScrumQuestionComponent({
       question_index: question.question_index,
       option_index: selectedId,
     });
-
-    console.log('userSend');
   };
 
   const backgroundAssets = {

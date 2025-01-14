@@ -70,7 +70,6 @@ export default function ScrumQuestionScreen({ route }) {
       newSocket.on('currentQuestion', handleNewQuestion);
 
       newSocket.on('answerResult', (data) => {
-        console.log('Answer result:', data);
         setIdCorrectAnswers(data.correct_option_index);
         setIsAnswered(true);
       });
