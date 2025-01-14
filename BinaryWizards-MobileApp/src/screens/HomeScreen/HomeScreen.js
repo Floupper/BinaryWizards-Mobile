@@ -6,13 +6,15 @@ import userTokenEmitter from '../../utils/eventEmitter';
 import TopBar from '../../components/TopBar/TopBar';
 import UserHomeComponent from '../../components/UserHomeComponent/UserHomeComponent';
 import { styles } from './homeScreenStyles';
-import background from '../../../assets/mainBackground.png';
+import mainBackground from '../../../assets/backgrounds/mainBackground.png';
+import userBackground from '../../../assets/backgrounds/userBackground.png';
 import ResumeGame from '../../components/ResumeGame';
 
 const queryClient = new QueryClient();
 
 export default function HomeScreen() {
   const [userToken, setUserToken] = useState(null);
+  const [background, setBackground] = useState(mainBackground);
 
   useEffect(() => {
     const listener = (newToken) => {
@@ -25,6 +27,10 @@ export default function HomeScreen() {
       userTokenEmitter.off('userToken', listener);
     };
   }, []);
+
+  useEffect(() => {
+    setBackground(userToken ? userBackground : mainBackground);
+  }, [userToken]);
 
   return (
     <QueryClientProvider client={queryClient}>

@@ -8,13 +8,12 @@ import {
 } from 'react-native';
 import Toast from 'react-native-toast-message';
 import { SelectList } from 'react-native-dropdown-select-list';
-import { LinearGradient } from 'expo-linear-gradient';
 import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import PrimaryButton from '../../components/PrimaryButton';
 import { styles } from './createGameStyles';
 import { styleButton } from '../../styles/buttons';
 import BouncyCheckbox from 'react-native-bouncy-checkbox';
-import background from '../../../assets/mainBackground.png';
+import background from '../../../assets/backgrounds/mainBackground.png';
 
 import {
   fetchAndCreateQuiz,
