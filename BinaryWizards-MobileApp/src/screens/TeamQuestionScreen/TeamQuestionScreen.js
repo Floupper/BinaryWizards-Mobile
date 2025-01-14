@@ -1,13 +1,11 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState } from 'react';
 import TeamQuestionComponent from '../../components/TeamQuestion/TeamQuestionComponent';
 import { Text, View, ActivityIndicator } from 'react-native';
-import { fetchQuestion } from '../../services/questionScreenRequests';
 import { useNavigation } from '@react-navigation/native';
 import GenericClipboard from '../../components/GenericClipboard';
 import { questionStyle } from '../Questions/questionsStyles';
 import { LinearGradient } from 'expo-linear-gradient';
 import ProgressBar from 'react-native-progress/Bar';
-import userTokenEmitter from '../../utils/eventEmitter';
 import HomeButton from '../../components/HomeButton/HomeButton';
 import { REACT_NATIVE_API_URL, REACT_NATIVE_API_PORT } from '@env';
 import { io } from 'socket.io-client';
@@ -21,23 +19,18 @@ export default function TeamQuestionScreen({ route }) {
   const [questionText, setQuestionText] = useState('');
   const [options, setOptions] = useState([]);
   const [questionIndex, setQuestionIndex] = useState(null);
-  const [nbQuestionsTotal, setNbQuestionsTotal] = useState(null);
-  const [score, setScore] = useState(null);
   const [quizId, setQuizId] = useState(null);
   const [questionType, setQuestionType] = useState('');
   const [questionDifficulty, setQuestionDifficulty] = useState('');
   const [questionCategory, setQuestionCategory] = useState('');
-  const [loading, setLoading] = useState(true);
   const [selectedQuestionId, setSelectedQuestionId] = useState(null);
   const [isAnswered, setIsAnswered] = useState(false);
   const [idCorrectAnswers, setIdCorrectAnswers] = useState(null);
   const [timeAvailable, setTimeAvailable] = useState(null);
-  const chronoRef = useRef();
   const [socket, setSocket] = useState(null);
 
   const [userToken, setUserToken] = useState(null);
   const [question, setQuestion] = useState({});
-  const [questionAnswer, setQuestionAnswer] = useState(null);
   const [colorGradient, setColorGradient] = useState([
     '#FFA033',
     '#DBC0A2',
@@ -67,28 +60,11 @@ export default function TeamQuestionScreen({ route }) {
         newSocket.emit('getQuestionInformations', { game_id: gameId });
       });
 
-      newSocket.on('currentQuestion', (data) => {
-        console.log('currentQuestion', data);
-        handleNewQuestion(data);
-      });
+      newSocket.on('currentQuestion', handleNewQuestion);
 
-      newSocket.on('newQuestion', (data) => {
-        console.log('newQuestion', data);
-        handleNewQuestion(data);
-      });
-
-      newSocket.on('gameFinished', (data) => {
-        const { ranking } = data;
-        navigation.navigate('TeamEndScreen', {
-          ranking,
-          nbQuestionsTotal,
-          quizId,
-          score,
-        });
-      });
+      newSocket.on('newQuestion', handleNewQuestion);
 
       newSocket.on('answerResult', (data) => {
-        console.log('TeamQuestionScreen -> data', data);
         setIdCorrectAnswers(data.correct_option_index);
         setIsAnswered(true);
       });
@@ -110,27 +86,13 @@ export default function TeamQuestionScreen({ route }) {
     setQuestionText(data.question_text);
     setOptions(data.options);
     setQuestionIndex(data.question_index);
-    setNbQuestionsTotal(data.nb_questions_total);
-    setScore(data.correct_answers_nb);
     setQuestionType(data.question_type);
     setQuestionDifficulty(data.question_difficulty);
     setQuestionCategory(data.question_category);
     setQuizId(data.quiz_id);
     setTimeAvailable(data.time_available);
+    setIsAnswered(false);
     setIdCorrectAnswers(null);
-  };
-
-  const handleQuestionSelect = (selectedId) => {
-    if (!socket || isAnswered) return;
-
-    setSelectedQuestionId(selectedId);
-    setIsAnswered(true);
-
-    socket.emit('sendAnswer', {
-      game_id: gameId,
-      question_index: questionIndex,
-      option_index: selectedId,
-    });
   };
 
   if (!question) {
@@ -184,14 +146,7 @@ export default function TeamQuestionScreen({ route }) {
         style={questionStyle.gradientContainer}
       >
         <View style={questionStyle.container}>
-          <TeamQuestionComponent
-            question={question}
-            question_choices={options}
-            correctOptionsIndex={idCorrectAnswers}
-            onQuestionSelect={handleQuestionSelect}
-            selectedQuestionId={selectedQuestionId}
-            isAnswered={isAnswered}
-          />
+          <TeamQuestionComponent gameId={gameId} question={question} />
         </View>
       </LinearGradient>
     </View>
