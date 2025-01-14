@@ -1,10 +1,8 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { View, Text, ImageBackground } from 'react-native';
 import { styleContainer } from '../../styles/container';
-import { styleButton } from '../../styles/buttons';
 import PrimaryButton from '../PrimaryButton';
 import { styles } from '../Question/styles';
-import { sendAnswer } from '../../services/questionScreenRequests';
 import { Asset } from 'expo-asset';
 import PropTypes from 'prop-types';
 import { useNavigation } from '@react-navigation/native';
@@ -29,33 +27,21 @@ ScrumQuestionComponent.propTypes = {
 
 export default function ScrumQuestionComponent({
   question,
-  correctAnswer,
-  nextQuestion,
   gameId,
-  questionIndex,
   setColorGradient,
-  setQuestion,
-  setQuestionAnswer,
-  endGame,
 }) {
   const [userAnswerIndex, setUserAnswerIndex] = useState(null);
   const [background, setBackground] = useState('idle');
   const [isCorrect, setIsCorrect] = useState(false);
   const socketRef = useRef(null);
   const navigation = useNavigation();
-
-  const [questionText, setQuestionText] = useState('');
-  const [options, setOptions] = useState([]);
   const [nbQuestionsTotal, setNbQuestionsTotal] = useState(null);
   const [score, setScore] = useState(null);
   const [quizId, setQuizId] = useState(null);
-  const [questionType, setQuestionType] = useState('');
-  const [questionDifficulty, setQuestionDifficulty] = useState('');
-  const [questionCategory, setQuestionCategory] = useState('');
-  const [loading, setLoading] = useState(true);
   const [selectedQuestionId, setSelectedQuestionId] = useState(null);
   const [isAnswered, setIsAnswered] = useState(false);
   const [idCorrectAnswers, setIdCorrectAnswers] = useState(null);
+  const [showAnswer, setShowAnswer] = useState(false);
 
   const updateColors = (context, index = null) => {
     const BACKGROUND_COLORS = {
@@ -95,7 +81,6 @@ export default function ScrumQuestionComponent({
     const connectToSocket = async () => {
       const userToken = await AsyncStorage.getItem('userToken');
       if (!userToken) {
-        console.log('userToken', userToken);
         navigation.navigate('Signin', {
           redirectTo: 'ScrumLobby',
           params: { gameId },
@@ -125,19 +110,19 @@ export default function ScrumQuestionComponent({
       });
 
       newSocket.on('gameFinished', (data) => {
-        const { ranking } = data;
-        navigation.navigate('TeamEndScreen', {
-          ranking,
-          nbQuestionsTotal,
-          quizId,
-          score,
+        navigation.navigate('ScrumEndScreen', {
+          data,
         });
       });
 
       newSocket.on('answerResult', (data) => {
-        console.log('ScrumQuestionComponent -> data', data);
         setIdCorrectAnswers(data.correct_option_index);
         setIsAnswered(true);
+        setShowAnswer(true);
+
+        setTimeout(() => {
+          setShowAnswer(false);
+        }, 5000);
       });
 
       newSocket.on('isCorrectAnswer', (data) => {
@@ -155,7 +140,6 @@ export default function ScrumQuestionComponent({
   }, [gameId, navigation]);
 
   const handleQuestionSelect = (selectedId) => {
-    console.log('Selected question:', selectedId);
     setSelectedQuestionId(selectedId);
     setIsAnswered(true);
 
@@ -164,8 +148,6 @@ export default function ScrumQuestionComponent({
       question_index: question.question_index,
       option_index: selectedId,
     });
-
-    console.log('userSend');
   };
 
   const backgroundAssets = {
@@ -175,14 +157,19 @@ export default function ScrumQuestionComponent({
   };
 
   const determineButtonStyle = (index) => {
-    if (userAnswerIndex !== null) {
+    if (showAnswer) {
       if (index === idCorrectAnswers) {
         return { backgroundColor: 'green' };
       }
-      if (index === userAnswerIndex) {
+
+      if (
+        index === selectedQuestionId &&
+        selectedQuestionId !== idCorrectAnswers
+      ) {
         return { backgroundColor: 'red' };
       }
     }
+
     return { backgroundColor: 'white' };
   };
 
