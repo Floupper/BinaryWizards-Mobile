@@ -17,7 +17,6 @@ import background from '../../../assets/endBackground.png';
 export default function TeamEndScreen() {
   const route = useRoute();
   const { data } = route.params || {};
-  console.log('Data ranking', data);
   const navigation = useNavigation();
   const [isLoadingHome, setIsLoadingHome] = useState(false);
 

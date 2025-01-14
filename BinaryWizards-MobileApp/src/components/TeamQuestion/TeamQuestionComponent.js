@@ -107,7 +107,6 @@ export default function TeamQuestionComponent({
       });
 
       newSocket.on('answerResult', (data) => {
-        console.log('TeamQuestionComponent -> data', data);
         setIdCorrectAnswers(data.correct_option_index);
         setIsAnswered(true);
         setShowAnswer(true);
