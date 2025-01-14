@@ -40,7 +40,9 @@ export default function PlayersList({ game_id, game_mode }) {
           },
         });
 
-        newSocket.emit('joinGame', { game_id: game_id });
+        if (gameMode === 'scrum') {
+          newSocket.emit('joinGame', { game_id: gameId });
+        }
 
         newSocket.on('playerJoined', (updatedPlayerList) => {
           setPlayers(updatedPlayerList.playerList);
@@ -116,7 +118,7 @@ export default function PlayersList({ game_id, game_mode }) {
   const joinTeam = async (team_name) => {
     try {
       if (socket) {
-        socket.emit('joinGame', { game_id, team_name });
+        socket.emit('joinGame', { game_id: gameId, team_name });
         setSelectedTeam(team_name);
 
         socket.on('gameStarted', () => {
