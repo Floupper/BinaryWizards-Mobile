@@ -54,9 +54,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     flex: 1,
   },
-  inputGroup: { flexDirection: 'row', justifyContent: 'space-between' },
+  inputGroup: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
   label: {
-    color: 'white',
+    color: 'black',
     fontSize: 14,
     marginBottom: 8,
     textAlign: 'center',
@@ -97,14 +100,14 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   text: {
-    color: 'white',
+    color: 'black',
     fontSize: 16,
     fontWeight: 'bold',
     margin: 12,
     textAlign: 'center',
   },
   title: {
-    color: 'white',
+    color: 'black',
     fontFamily: 'Mogula',
     fontSize: 30,
     marginBottom: 16,

@@ -32,7 +32,7 @@ const styles = StyleSheet.create({
     padding: 16,
   },
   text: {
-    color: 'white',
+    color: 'black',
     fontFamily: 'Mogula',
     fontSize: 20,
     fontWeight: '600',
