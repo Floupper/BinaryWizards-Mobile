@@ -15,14 +15,8 @@ const SERVER_URL = `${REACT_NATIVE_API_URL}:${REACT_NATIVE_API_PORT}`;
 // Props validation
 ScrumQuestionComponent.propTypes = {
   question: PropTypes.object,
-  correctAnswer: PropTypes.object,
-  nextQuestion: PropTypes.func,
   gameId: PropTypes.string,
-  questionIndex: PropTypes.number,
   setColorGradient: PropTypes.func,
-  setQuestion: PropTypes.func,
-  setQuestionAnswer: PropTypes.func,
-  endGame: PropTypes.func,
 };
 
 export default function ScrumQuestionComponent({
@@ -35,9 +29,6 @@ export default function ScrumQuestionComponent({
   const [isCorrect, setIsCorrect] = useState(false);
   const socketRef = useRef(null);
   const navigation = useNavigation();
-  const [nbQuestionsTotal, setNbQuestionsTotal] = useState(null);
-  const [score, setScore] = useState(null);
-  const [quizId, setQuizId] = useState(null);
   const [selectedQuestionId, setSelectedQuestionId] = useState(null);
   const [isAnswered, setIsAnswered] = useState(false);
   const [idCorrectAnswers, setIdCorrectAnswers] = useState(null);

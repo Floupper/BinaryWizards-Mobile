@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState } from 'react';
 import ScrumQuestionComponent from '../../components/ScrumQuestion/ScrumQuestionComponent';
 import { Text, View, ActivityIndicator } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
@@ -142,14 +142,7 @@ export default function ScrumQuestionScreen({ route }) {
         style={questionStyle.gradientContainer}
       >
         <View style={questionStyle.container}>
-          <ScrumQuestionComponent
-            gameId={gameId}
-            question={question}
-            question_choices={options}
-            correctOptionsIndex={idCorrectAnswers}
-            selectedQuestionId={selectedQuestionId}
-            isAnswered={isAnswered}
-          />
+          <ScrumQuestionComponent gameId={gameId} question={question} />
         </View>
       </LinearGradient>
     </View>

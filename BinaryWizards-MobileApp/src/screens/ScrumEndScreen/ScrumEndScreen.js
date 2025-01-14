@@ -38,10 +38,7 @@ export default function ScrumEndScreen() {
         <View style={styleContainer.middleSection}>
           <Text style={endStyleText.emoji}>🎉🎉</Text>
           <Text style={endStyleText.title}>Quiz Completed !</Text>
-          {/* <Text style={endStyleText.secondary}>
-            Score : {correct_answers_nb}/{nb_questions_total}
-          </Text> */}
-          <Text style={styles.title}>Classement :</Text>
+          <Text style={styles.title}>Leaderboard :</Text>
           {ranking.length > 0 ? (
             ranking.map((entry, index) => (
               <View key={index} style={styles.row}>
