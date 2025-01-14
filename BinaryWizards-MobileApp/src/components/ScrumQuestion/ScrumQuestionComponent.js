@@ -56,6 +56,7 @@ export default function ScrumQuestionComponent({
   const [selectedQuestionId, setSelectedQuestionId] = useState(null);
   const [isAnswered, setIsAnswered] = useState(false);
   const [idCorrectAnswers, setIdCorrectAnswers] = useState(null);
+  const [showAnswer, setShowAnswer] = useState(false);
 
   const updateColors = (context, index = null) => {
     const BACKGROUND_COLORS = {
@@ -138,6 +139,11 @@ export default function ScrumQuestionComponent({
         console.log('ScrumQuestionComponent -> data', data);
         setIdCorrectAnswers(data.correct_option_index);
         setIsAnswered(true);
+        setShowAnswer(true);
+
+        setTimeout(() => {
+          setShowAnswer(false);
+        }, 5000);
       });
 
       newSocket.on('isCorrectAnswer', (data) => {
@@ -175,14 +181,19 @@ export default function ScrumQuestionComponent({
   };
 
   const determineButtonStyle = (index) => {
-    if (userAnswerIndex !== null) {
+    if (showAnswer) {
       if (index === idCorrectAnswers) {
         return { backgroundColor: 'green' };
       }
-      if (index === userAnswerIndex) {
+
+      if (
+        index === selectedQuestionId &&
+        selectedQuestionId !== idCorrectAnswers
+      ) {
         return { backgroundColor: 'red' };
       }
     }
+
     return { backgroundColor: 'white' };
   };
 
