@@ -21,11 +21,7 @@ export default function ScrumLobby({ route }) {
       style={{ width: '100%', height: '100%' }}
     >
       <View style={styles.container}>
-        <PlayersList
-          style={styles.playersList}
-          gameId={gameId}
-          gameMode={gameMode}
-        />
+        <PlayersList gameId={gameId} gameMode={gameMode} />
 
         <TouchableOpacity onPress={toggleModal} style={styles.shareButton}>
           <Text style={styles.shareButtonText}>Show share link</Text>

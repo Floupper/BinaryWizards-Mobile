@@ -39,10 +39,14 @@ export default function PlayersList({ gameId, gameMode }) {
           },
         });
 
-        newSocket.emit('joinGame', { game_id: gameId });
+        if (gameMode === 'scrum') {
+          newSocket.emit('joinGame', { game_id: gameId });
+        }
 
         newSocket.on('playerJoined', (updatedPlayerList) => {
-          setPlayers(updatedPlayerList.playerList);
+          if (gameMode === 'scrum') {
+            setPlayers(updatedPlayerList.playerList);
+          }
         });
 
         newSocket.on('disconnect', () => {
@@ -74,7 +78,6 @@ export default function PlayersList({ gameId, gameMode }) {
     };
 
     connectAndJoinGame();
-    console.log(players.length);
 
     return () => {
       if (socket) {
@@ -116,7 +119,7 @@ export default function PlayersList({ gameId, gameMode }) {
   const joinTeam = async (team_name) => {
     try {
       if (socket) {
-        socket.emit('joinGame', { gameId, team_name });
+        socket.emit('joinGame', { game_id: gameId, team_name });
         setSelectedTeam(team_name);
 
         socket.on('gameStarted', () => {
