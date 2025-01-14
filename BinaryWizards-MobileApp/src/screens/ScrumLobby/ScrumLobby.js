@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity } from 'react-native';
+import { View, Text, TouchableOpacity, ImageBackground } from 'react-native';
 import Feather from 'react-native-vector-icons/Feather';
 
 import ShareModal from '../../components/ShareModal/ShareModal';
 import PlayersList from '../../components/PlayersList/PlayersList';
 import { styles } from './ScrumLobbyStyle';
+import scrumBackground from '../../../assets/backgrounds/scrumBackground.png';
 
 export default function ScrumLobby({ route }) {
-  const [gameId, setGameId] = useState(route.params.gameId);
-  const [gameMode, setGameMode] = useState(route.params.gameMode);
+  const { gameId, gameMode } = route.params;
   const [isModalVisible, setIsModalVisible] = useState(false);
 
   const toggleModal = () => {
@@ -16,13 +16,15 @@ export default function ScrumLobby({ route }) {
   };
 
   return (
-    <>
+    <ImageBackground
+      source={scrumBackground}
+      style={{ width: '100%', height: '100%' }}
+    >
       <View style={styles.container}>
-        <Text style={styles.title}>Players List</Text>
         <PlayersList
           style={styles.playersList}
-          game_id={gameId}
-          game_mode={gameMode}
+          gameId={gameId}
+          gameMode={gameMode}
         />
 
         <TouchableOpacity onPress={toggleModal} style={styles.shareButton}>
@@ -35,6 +37,6 @@ export default function ScrumLobby({ route }) {
           gameId={gameId}
         />
       </View>
-    </>
+    </ImageBackground>
   );
 }
