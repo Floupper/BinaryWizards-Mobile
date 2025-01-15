@@ -24,11 +24,10 @@ export default function TeamLobby({ route }) {
       style={{ width: '100%', height: '100%' }}
     >
       <View style={styles.container}>
-        <Text style={styles.title}>Players List</Text>
         <PlayersList gameId={gameId} gameMode={gameMode} />
 
         <TouchableOpacity onPress={toggleModal} style={styles.shareButton}>
-          <Text style={styles.shareButtonText}>Show share link</Text>
+          <Text style={styles.shareButtonText}>Show QR Code</Text>
           <Feather name="eye" size={20} color="#fff" />
         </TouchableOpacity>
         <ShareModal
