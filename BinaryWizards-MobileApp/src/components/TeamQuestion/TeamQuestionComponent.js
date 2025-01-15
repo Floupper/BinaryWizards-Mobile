@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { View, Text, ImageBackground } from 'react-native';
+import { View, Text, ImageBackground, ActivityIndicator } from 'react-native';
 import { styleContainer } from '../../styles/container';
-import PrimaryButton from '../PrimaryButton';
 import { styles } from '../Question/styles';
 import { Asset } from 'expo-asset';
 import PropTypes from 'prop-types';
@@ -9,6 +8,8 @@ import { useNavigation } from '@react-navigation/native';
 import { io } from 'socket.io-client';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { REACT_NATIVE_API_URL, REACT_NATIVE_API_PORT } from '@env';
+import ImageContainer from '../ImageContainer/ImageContainer';
+import SecondaryButton from '../SecondaryButton';
 
 const SERVER_URL = `${REACT_NATIVE_API_URL}:${REACT_NATIVE_API_PORT}`;
 
@@ -139,6 +140,9 @@ export default function TeamQuestionComponent({
   }, [question]);
 
   const handleQuestionSelect = (selectedId) => {
+    if (isAnswered) {
+      return;
+    }
     setSelectedQuestionId(selectedId);
     setIsAnswered(true);
 
@@ -155,21 +159,77 @@ export default function TeamQuestionComponent({
     wrong: require('../../../assets/questions/wrong.png'),
   };
 
-  const determineButtonStyle = (index) => {
-    if (showAnswer) {
-      if (index === idCorrectAnswers) {
-        return { backgroundColor: 'green' };
-      }
-
-      if (
-        index === selectedQuestionId &&
-        selectedQuestionId !== idCorrectAnswers
-      ) {
-        return { backgroundColor: 'red' };
-      }
+  const determineButtonTextStyle = ({
+    buttonIndex,
+    userAnswerIndex,
+    correctAnswerIndex,
+    isTimeUp,
+  }) => {
+    if (!showAnswer) {
+      // Si showAnswer est false, tous les textes des boutons restent noirs
+      return { color: 'black' };
     }
 
-    return { backgroundColor: 'white' };
+    if (userAnswerIndex === null || correctAnswerIndex === null) {
+      return { color: 'black' };
+    }
+
+    if (isTimeUp) {
+      if (buttonIndex === correctAnswerIndex) {
+        return { color: 'green' };
+      }
+      return { color: 'red' };
+    }
+
+    if (buttonIndex === correctAnswerIndex) {
+      return { color: 'green' };
+    }
+    if (buttonIndex === userAnswerIndex && buttonIndex !== correctAnswerIndex) {
+      return { color: 'red' };
+    }
+    return { color: 'black' };
+  };
+
+  const determineButtonStyle = ({
+    buttonIndex,
+    correctAnswerIndex,
+    userAnswerIndex,
+    isTimeUp,
+  }) => {
+    const COLORS = {
+      default: '#e5e7eb', // Gris clair par défaut
+      selected: '#f3f4f6', // Gris plus clair pour le bouton sélectionné
+      correct: 'green', // Vert pour la bonne réponse
+      incorrect: 'red', // Rouge pour la mauvaise réponse
+      unanswered: '#e5e7eb',
+      timeUp: 'orange',
+    };
+
+    if (!showAnswer) {
+      // Si showAnswer est false, affiche le fond gris clair pour le bouton sélectionné
+      return buttonIndex === userAnswerIndex
+        ? { borderColor: COLORS.default, backgroundColor: COLORS.selected }
+        : { borderColor: COLORS.default };
+    }
+
+    if (userAnswerIndex === null || correctAnswerIndex === null) {
+      return { borderColor: COLORS.default };
+    }
+
+    if (isTimeUp) {
+      if (buttonIndex === correctAnswerIndex) {
+        return { borderColor: COLORS.correct };
+      }
+      return { borderColor: COLORS.incorrect };
+    }
+
+    if (buttonIndex === correctAnswerIndex) {
+      return { borderColor: COLORS.correct };
+    }
+    if (buttonIndex === userAnswerIndex && buttonIndex !== correctAnswerIndex) {
+      return { borderColor: COLORS.incorrect };
+    }
+    return { borderColor: COLORS.default };
   };
 
   return (
@@ -188,23 +248,44 @@ export default function TeamQuestionComponent({
           {question.question_text}
         </Text>
         <View>
-          {question.options && Array.isArray(question.options) ? (
-            question.options.map(({ option_content, option_index }) => (
-              <PrimaryButton
-                key={option_index}
-                text={option_content.content}
-                onPress={() => {
-                  handleQuestionSelect(option_index);
-                }}
-                isQuestion={true}
-                style={[
-                  styles.answerButtonBaseStyle,
-                  determineButtonStyle(option_index),
-                ]}
+          {question && Array.isArray(question.options) ? (
+            question.question_type === 'image' ? (
+              <ImageContainer
+                options={question.options}
+                onPress={handleQuestionSelect}
+                determineButtonStyle={determineButtonStyle}
+                userAnswerIndex={selectedQuestionId}
+                correctAnswerIndex={idCorrectAnswers}
               />
-            ))
+            ) : (
+              question.options.map(({ option_content, option_index }) => (
+                <SecondaryButton
+                  key={option_index}
+                  text={option_content}
+                  onPress={() => handleQuestionSelect(option_index)}
+                  style={[
+                    styles.answerButtonBaseStyle,
+                    determineButtonStyle({
+                      buttonIndex: option_index,
+                      userAnswerIndex: selectedQuestionId,
+                      correctAnswerIndex: idCorrectAnswers,
+                      // isTimeUp,
+                    }),
+                  ]}
+                  textStyle={[
+                    styles.answerButtonTextStyle,
+                    determineButtonTextStyle({
+                      buttonIndex: option_index,
+                      userAnswerIndex: selectedQuestionId,
+                      correctAnswerIndex: idCorrectAnswers,
+                      // isTimeUp,
+                    }),
+                  ]}
+                />
+              ))
+            )
           ) : (
-            <Text>No question available</Text>
+            <ActivityIndicator size="large" color="#0000ff" />
           )}
         </View>
       </View>
