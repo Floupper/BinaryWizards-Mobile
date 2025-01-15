@@ -26,7 +26,7 @@ export default function UserHomeScreen() {
         <Text style={styles.text}>Singleplayer</Text>
       </Pressable>
       <Pressable
-        onPress={() => navigation.navigate('MultiplayerScreen')}
+        onPress={() => navigation.navigate('HomeMultiPlayer')}
         style={({ pressed }) => [
           styles.categoryContainer,
           {

@@ -19,6 +19,7 @@ import TeamEndScreen from '../screens/TeamEndScreen/TeamEndScreen';
 import UserHomeScreen from '../screens/UserHomeScreen/UserHomeScreen';
 import SinglePlayerScreen from '../screens/SinglePlayerScreen/SinglePlayerScreen';
 import HomeScreen from '../screens/HomeScreen/HomeScreen';
+import MultiPlayerScreen from '../screens/MultiPlayerScreen/MultiPlayerScreen';
 
 const prefix = Linking.createURL('/');
 
@@ -41,22 +42,22 @@ export default function StackNavigator() {
     setData(data);
   }
 
-  // useEffect(() => {
-  //   async function getInitialURL() {
-  //     const initialURL = await Linking.getInitialURL();
-  //     if (initialURL) {
-  //       let data = Linking.parse(initialURL);
-  //       setData(data);
-  //     }
-  //   }
-  //   Linking.addEventListener('url', handleDeepLink);
-  //   if (!data) {
-  //     getInitialURL();
-  //   }
-  //   return () => {
-  //     Linking.removeEventListener('url');
-  //   };
-  // }, []);
+  useEffect(() => {
+    async function getInitialURL() {
+      const initialURL = await Linking.getInitialURL();
+      if (initialURL) {
+        let data = Linking.parse(initialURL);
+        setData(data);
+      }
+    }
+    Linking.addEventListener('url', handleDeepLink);
+    if (!data) {
+      getInitialURL();
+    }
+    return () => {
+      Linking.removeEventListener('url');
+    };
+  }, []);
 
   return (
     <>
@@ -151,6 +152,12 @@ export default function StackNavigator() {
             name="HomeSingleplayer"
             component={SinglePlayerScreen}
             options={{ headerShown: false, title: 'Home Singleplayer' }}
+          />
+
+          <Stack.Screen
+            name="HomeMultiPlayer"
+            component={MultiPlayerScreen}
+            options={{ headerShown: false, title: 'Home Multiplayer' }}
           />
         </Stack.Navigator>
       </NavigationContainer>
