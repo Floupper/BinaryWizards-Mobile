@@ -244,7 +244,7 @@ export default function CreateGame() {
 
 const Header = () => (
   <View style={styles.header}>
-    <Text style={styles.title}>Create Quiz</Text>
+    <Text style={styles.title}>Quick Quiz</Text>
   </View>
 );
 
@@ -271,7 +271,7 @@ const Form = ({
       }
     />
     <InputField
-      label="Number of Questions"
+      label="Number of questions"
       component={
         <TextInput
           style={styles.input}

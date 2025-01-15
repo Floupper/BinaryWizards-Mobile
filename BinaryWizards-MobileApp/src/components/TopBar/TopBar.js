@@ -85,20 +85,14 @@ export default function TopBar({ setHomeScreenUserToken }) {
               </Text>
             </View>
             <Pressable onPress={handlePress} style={styles.topBar}>
-              <Text style={styles.topBarText}>Logout</Text>
+              <Text style={styles.topBarText}>Sign Out</Text>
             </Pressable>
           </View>
         </>
       ) : (
         <>
           <SecondaryButton
-            text="Sign up"
-            onPress={() => navigation.navigate('Signup')}
-            style={styleButton.enabledButton}
-            textStyle={styles.topBarText}
-          />
-          <SecondaryButton
-            text="Sign in"
+            text="Sign In"
             onPress={() => navigation.navigate('Signin')}
             style={styleButton.enabledButton}
             textStyle={styles.topBarText}
