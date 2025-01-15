@@ -9,7 +9,7 @@ export default function HomeButton({ text }) {
   const navigation = useNavigation();
   return (
     <Pressable
-      onPress={() => navigation.navigate('HomeAnonymous')}
+      onPress={() => navigation.navigate('Home')}
       style={styleButton.homeButton}
     >
       <Icon name="arrowleft" size={30} color="#000" />

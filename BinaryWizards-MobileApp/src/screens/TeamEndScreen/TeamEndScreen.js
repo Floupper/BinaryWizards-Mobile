@@ -49,7 +49,7 @@ export default function TeamEndScreen() {
   const backToHome = async () => {
     setIsLoadingHome(true);
     try {
-      navigation.navigate('HomeAnonymous');
+      navigation.navigate('Home');
     } catch (error) {
       console.error('Error navigating to home:', error);
     } finally {
