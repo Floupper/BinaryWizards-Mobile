@@ -2,6 +2,7 @@ import { StyleSheet } from 'react-native';
 
 export const styleButton = StyleSheet.create({
   button: {
+    fontFamily: 'Mogula',
     backgroundColor: 'black',
     padding: 10,
     color: 'white',
@@ -45,7 +46,8 @@ export const styleButton = StyleSheet.create({
   },
   textStyle: {
     color: 'white',
-    fontWeight: 'bold',
+    fontFamily: 'Mogula',
+    fontSize: 20,
     textAlign: 'center',
   },
   textStyleQuestion: {
