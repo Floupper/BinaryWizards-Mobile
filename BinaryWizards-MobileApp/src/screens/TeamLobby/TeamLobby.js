@@ -12,7 +12,6 @@ import teamBackground from '../../../assets/backgrounds/teamBackground.png';
 export default function TeamLobby({ route }) {
   const [gameId, setGameId] = useState(route.params.teamCode);
   const [gameMode, setGameMode] = useState(route.params.gameMode);
-  console.log(gameId, gameMode);
   const [isModalVisible, setIsModalVisible] = useState(false);
 
   const toggleModal = () => {
