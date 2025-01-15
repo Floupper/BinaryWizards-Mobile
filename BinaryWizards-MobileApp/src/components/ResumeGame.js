@@ -53,7 +53,7 @@ export default function ResumeGame() {
   return (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
       <View style={{ flex: 2, justifyContent: 'center' }}>
-        <Text style={styles.label}>Resume a game</Text>
+        <Text style={styles.label}>Resume Game</Text>
         <TextInput
           onChangeText={setGameId}
           placeholder="Enter a game id"
@@ -75,7 +75,7 @@ export default function ResumeGame() {
           style={{ borderBottomWidth: 2, borderBottomColor: '#9d03fc' }}
         ></View>
         <PrimaryButton
-          text="Create quiz"
+          text="Quick quiz"
           onPress={() => {
             navigation.navigate('Create');
           }}
