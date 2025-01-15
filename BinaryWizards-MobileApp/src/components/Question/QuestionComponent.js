@@ -120,6 +120,8 @@ export default function QuestionComponent({
               options={question.options}
               onPress={handleSelectedAnswer}
               determineButtonStyle={determineButtonStyle}
+              userAnswerIndex={userAnswerIndex}
+              correctAnswerIndex={correctAnswerIndex}
             />
           ) : (
             question.options.map(({ option_content, option_index }) => (

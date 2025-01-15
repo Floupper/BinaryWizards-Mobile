@@ -30,7 +30,6 @@ export const determineButtonStyle = ({
   userAnswerIndex,
   isTimeUp,
 }) => {
-  console.log(buttonIndex, userAnswerIndex, correctAnswerIndex, isTimeUp);
   const COLORS = {
     default: '#e5e7eb',
     correct: 'green',
