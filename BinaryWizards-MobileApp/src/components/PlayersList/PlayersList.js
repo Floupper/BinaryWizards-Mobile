@@ -49,6 +49,19 @@ export default function PlayersList({ gameId, gameMode }) {
           }
         });
 
+        newSocket.on('teamSwitch', (new_team_name) => {
+          setPlayers((prevState) => {
+            const updatedPlayers = prevState.map((player) => {
+              if (player.username === new_team_name) {
+                player.team = new_team_name;
+              }
+              return player;
+            });
+
+            return updatedPlayers;
+          });
+        });
+
         newSocket.on('disconnect', () => {
           console.log('Disconnected from WebSocket server');
         });
@@ -119,8 +132,16 @@ export default function PlayersList({ gameId, gameMode }) {
   const joinTeam = async (team_name) => {
     try {
       if (socket) {
-        socket.emit('joinGame', { game_id: gameId, team_name });
-        setSelectedTeam(team_name);
+        if (selectedTeam === null) {
+          socket.emit('joinGame', { game_id: gameId, team_name });
+          setSelectedTeam(team_name);
+        } else {
+          socket.emit('switchTeam', {
+            game_id: gameId,
+            new_team_name: team_name,
+          });
+          setSelectedTeam(team_name);
+        }
 
         socket.on('gameStarted', () => {
           navigation.navigate('TeamQuestionScreen', {
@@ -177,7 +198,6 @@ export default function PlayersList({ gameId, gameMode }) {
               <TouchableOpacity
                 key={index}
                 onPress={() => joinTeam(team)}
-                disabled={!!selectedTeam}
                 style={[
                   styles.teamButton,
                   selectedTeam === team && styles.selectedButton,
