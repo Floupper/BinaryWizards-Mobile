@@ -6,7 +6,7 @@ import {
   Pressable,
   ActivityIndicator,
 } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 import { signStyles, signBackgroundColors } from '../styles/sign';
 import { LinearGradient } from 'expo-linear-gradient';
 import SigninSvg from '../../assets/signin.svg';
@@ -15,6 +15,8 @@ import {
   createUser,
   checkUsernameAvailability,
 } from '../services/SignUpRequests';
+import { _storeUserToken } from '../utils/asyncStorage';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import Toast from 'react-native-toast-message';
 import debounce from 'lodash.debounce';
 import HomeButton from '../components/HomeButton/HomeButton';
@@ -29,6 +31,7 @@ export default function Signup() {
   const [confirmPasswordError, setConfirmPasswordError] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const navigation = useNavigation();
+  const route = useRoute();
 
   const debouncedFetchUsernameAvailability = useCallback(
     debounce(async (text) => {
@@ -76,7 +79,7 @@ export default function Signup() {
 
       const response = await createUser({ username, password });
       if (response) {
-        await _storeUserToken(data.token);
+        await _storeUserToken(response.token);
         await AsyncStorage.setItem('username', username);
         const redirectTo = route.params?.redirectTo || 'Home';
         const params = route.params?.params || {};
