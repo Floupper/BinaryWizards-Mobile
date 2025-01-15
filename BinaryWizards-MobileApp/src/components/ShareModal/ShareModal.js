@@ -3,11 +3,9 @@ import { View, Text, Modal, Button } from 'react-native';
 import QRCode from 'react-native-qrcode-svg';
 
 import { styles } from './ShareModelStyle';
-import { REACT_NATIVE_URL } from '@env';
 
 export default function ShareModal({ visible, toggleModal, gameId }) {
   const [link, setLink] = useState('');
-  const [qrCode, setQrCode] = useState('');
 
   useEffect(() => {
     setLink(`${process.env.REACT_NATIVE_URL}/game/join/${gameId}`);
@@ -22,12 +20,10 @@ export default function ShareModal({ visible, toggleModal, gameId }) {
     >
       <View style={styles.modalOverlay}>
         <View style={styles.modalContent}>
-          <Text style={styles.modalTitle}>Share Options</Text>
-          <Text>Link: {link}</Text>
           <View style={{ marginVertical: 15 }}>
             <QRCode value={link} />
           </View>
-          <Button title="Close" onPress={toggleModal} color={'black'} />
+          <Button title="Close" onPress={toggleModal} color={'#8B2DF1'} />
         </View>
       </View>
     </Modal>
