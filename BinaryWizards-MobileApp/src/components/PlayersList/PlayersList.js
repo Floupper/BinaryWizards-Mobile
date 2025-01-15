@@ -74,11 +74,19 @@ export default function PlayersList({ gameId, gameMode }) {
             [
               {
                 text: 'Go to Login',
-                onPress: () =>
-                  navigation.navigate('Signin', {
-                    redirectTo: 'TeamLobby',
-                    params: { gameId },
-                  }),
+                onPress: () => {
+                  if (gameMode === 'team') {
+                    navigation.navigate('Signin', {
+                      redirectTo: 'TeamLobby',
+                      params: { gameId },
+                    });
+                  } else {
+                    navigation.navigate('Signin', {
+                      redirectTo: 'ScrumLobby',
+                      params: { gameId },
+                    });
+                  }
+                },
               },
             ]
           );
@@ -174,24 +182,43 @@ export default function PlayersList({ gameId, gameMode }) {
 
   return (
     <View style={{ flex: 1 }}>
-      <View style={styles.top}>
-        <Text style={styles.title}>Players</Text>
-        {gameMode === 'team' ? (
-          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+      {gameMode === 'team' ? (
+        <View
+          style={[styles.top, { flexDirection: 'row', alignItems: 'center' }]}
+        >
+          <Text style={styles.title}>Teams</Text>
+          <View
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+          >
             <Text style={{ fontWeight: 'bold', paddingRight: 5 }}>
               {players.length}
             </Text>
             <Image source={users} style={styles.image} />
           </View>
-        ) : (
-          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+        </View>
+      ) : (
+        <View
+          style={[styles.top, { flexDirection: 'row', alignItems: 'center' }]}
+        >
+          <Text style={styles.title}>Players</Text>
+          <View
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+          >
             <Text style={{ fontWeight: 'bold', paddingRight: 5 }}>
               {players.length}
             </Text>
             <Image source={user} style={styles.image} />
           </View>
-        )}
-      </View>
+        </View>
+      )}
       <View style={styles.container}>
         {gameMode === 'team'
           ? teams.map((team, index) => (
