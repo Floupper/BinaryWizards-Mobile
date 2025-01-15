@@ -142,7 +142,11 @@ export default function ScrumQuestionScreen({ route }) {
         style={questionStyle.gradientContainer}
       >
         <View style={questionStyle.container}>
-          <ScrumQuestionComponent gameId={gameId} question={question} />
+          <ScrumQuestionComponent
+            gameId={gameId}
+            question={question}
+            handleNewQuestion={handleNewQuestion}
+          />
         </View>
       </LinearGradient>
     </View>

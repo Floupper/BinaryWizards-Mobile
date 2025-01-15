@@ -13,19 +13,26 @@ export default function ImageContainer({
   options,
   onPress,
   determineButtonStyle,
+  userAnswerIndex,
+  correctAnswerIndex,
 }) {
   return (
     <View style={styles.container}>
       {options.map(({ option_content, option_index }) => (
         <Pressable
           key={option_index}
-          style={[styles.imageContainer, determineButtonStyle(option_index)]}
+          style={[
+            styles.imageContainer,
+            determineButtonStyle({
+              buttonIndex: option_index,
+              userAnswerIndex,
+              correctAnswerIndex,
+              // isTimeUp,
+            }),
+          ]}
           onPress={() => onPress(option_index)}
         >
-          <Image
-            source={{ uri: option_content.content }}
-            style={styles.image}
-          />
+          <Image source={{ uri: option_content }} style={styles.image} />
         </Pressable>
       ))}
     </View>
@@ -46,9 +53,12 @@ const styles = StyleSheet.create({
     width: 100,
   },
   imageContainer: {
-    borderRadius: 8,
+    alignItems: 'center',
+    backgroundColor: 'white',
+    borderRadius: 10,
+    borderWidth: 3,
+    color: 'black',
     margin: 10,
-    overflow: 'hidden',
-    padding: 5,
+    padding: 10,
   },
 });

@@ -78,8 +78,8 @@ export const styleContainer = StyleSheet.create({
     justifyContent: 'center',
   },
   questionTitleContainer: {
+    fontFamily: 'Mogula',
     fontSize: 20,
-    fontWeight: 'bold',
     margin: 20,
     textAlign: 'center',
   },
