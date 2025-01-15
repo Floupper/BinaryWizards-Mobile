@@ -19,7 +19,7 @@ export const styles = StyleSheet.create({
   shareButton: {
     display: 'flex',
     flexDirection: 'row',
-    backgroundColor: 'black',
+    backgroundColor: '#8B2DF1',
     padding: 10,
     marginTop: 20,
     borderRadius: 5,
