@@ -7,6 +7,11 @@ export const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'space-between',
   },
+  logo: {
+    height: 35,
+    marginRight: 10,
+    width: 32,
+  },
   topBar: {
     backgroundColor: 'black',
     borderRadius: 50,

@@ -1,17 +1,15 @@
 import React, { useCallback, useState, useEffect } from 'react';
-import { View, Text, StyleSheet, Button, Pressable } from 'react-native';
+import { View, Text, Pressable, Image } from 'react-native';
 import { styleContainer } from '../../styles/container';
 import { styleButton } from '../../styles/buttons';
 import SecondaryButton from '../SecondaryButton';
-import { styleText } from '../../styles/text';
 import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import { _retrieveUserToken } from '../../utils/asyncStorage';
-import IconButton from '../IconButton';
 import { logout } from '../../utils/asyncStorage';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import userTokenEmitter from '../../utils/eventEmitter';
-import Icon from 'react-native-vector-icons/FontAwesome';
 import { styles } from './styles';
+import userIcon from '../../../assets/images/user.png';
 
 export default function TopBar({ setHomeScreenUserToken }) {
   const [userToken, setUserToken] = useState(null);
@@ -72,12 +70,7 @@ export default function TopBar({ setHomeScreenUserToken }) {
         <>
           <View style={styles.container}>
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-              <Icon
-                name="user-circle"
-                size={30}
-                color="black"
-                style={{ marginRight: 10 }}
-              />
+              <Image source={userIcon} style={styles.logo} />
               <Text
                 style={[styles.topBarText, { fontSize: 20, color: 'black' }]}
               >
