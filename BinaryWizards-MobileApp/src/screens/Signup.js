@@ -76,7 +76,11 @@ export default function Signup() {
 
       const response = await createUser({ username, password });
       if (response) {
-        navigation.navigate('Signin');
+        await _storeUserToken(data.token);
+        await AsyncStorage.setItem('username', username);
+        const redirectTo = route.params?.redirectTo || 'Home';
+        const params = route.params?.params || {};
+        navigation.replace(redirectTo, params);
         Toast.show({
           type: 'success',
           text1: 'Success',
