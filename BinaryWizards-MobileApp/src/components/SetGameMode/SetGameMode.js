@@ -4,7 +4,6 @@ import axiosInstance from '../../utils/axiosInstance';
 
 export default function SetGameMode({ route }) {
   const [gameId] = useState(route.params.gameId);
-  const [gameMode, setGameMode] = useState(null);
   const navigation = useNavigation();
 
   useEffect(() => {
@@ -13,7 +12,6 @@ export default function SetGameMode({ route }) {
         const response = await axiosInstance.get(`/game/${gameId}/get_mode`);
         if (response.status === 200) {
           const fetchedGameMode = response.data.game_mode;
-          setGameMode(fetchedGameMode);
 
           if (fetchedGameMode === 'team') {
             navigation.navigate('TeamLobby', {

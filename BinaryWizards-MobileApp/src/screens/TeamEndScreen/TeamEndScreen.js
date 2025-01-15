@@ -91,24 +91,24 @@ export default function TeamEndScreen() {
 }
 
 const styles = StyleSheet.create({
-  teamContainer: {
-    marginBottom: 16,
-    padding: 12,
-    backgroundColor: '#f0f0f0',
-    borderRadius: 8,
-  },
-  teamName: {
-    fontSize: 16,
-    fontWeight: 'bold',
-    marginBottom: 8,
+  memberName: {
+    fontSize: 14,
   },
   memberRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginBottom: 4,
   },
-  memberName: {
-    fontSize: 14,
+  teamContainer: {
+    backgroundColor: '#f0f0f0',
+    borderRadius: 8,
+    marginBottom: 16,
+    padding: 12,
+  },
+  teamName: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    marginBottom: 8,
   },
   title: {
     fontSize: 20,
