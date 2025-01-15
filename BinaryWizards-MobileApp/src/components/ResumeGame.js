@@ -54,11 +54,9 @@ export default function ResumeGame() {
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
       <View style={{ flex: 2, justifyContent: 'center' }}>
         <Text style={styles.label}>Resume a game</Text>
-      </View>
-      <View style={{ flex: 3, justifyContent: 'center' }}>
         <TextInput
           onChangeText={setGameId}
-          placeholder="Enter a quiz id"
+          placeholder="Enter a game id"
           value={gameId}
           style={styles.input}
         />
@@ -72,7 +70,7 @@ export default function ResumeGame() {
           {isLoading && <ActivityIndicator color="#fff" />}
         </PrimaryButton>
       </View>
-      <View style={{ flex: 1, justifyContent: 'center' }}>
+      <View style={{ justifyContent: 'center' }}>
         <View
           style={{ borderBottomWidth: 2, borderBottomColor: '#9d03fc' }}
         ></View>
