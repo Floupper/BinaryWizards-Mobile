@@ -69,30 +69,30 @@ export default function ScrumEndScreen() {
 
 const styles = StyleSheet.create({
   container: {
-    padding: 16,
     backgroundColor: '#f9f9f9',
+    padding: 16,
+  },
+  rank: {
+    fontWeight: 'bold',
+    width: 30,
+  },
+  row: {
+    borderBottomColor: '#ccc',
+    borderBottomWidth: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingVertical: 8,
+  },
+  score: {
+    textAlign: 'right',
+    width: 100,
   },
   title: {
     fontSize: 20,
     fontWeight: 'bold',
     marginBottom: 8,
   },
-  row: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    paddingVertical: 8,
-    borderBottomWidth: 1,
-    borderBottomColor: '#ccc',
-  },
-  rank: {
-    width: 30,
-    fontWeight: 'bold',
-  },
   username: {
     flex: 1,
-  },
-  score: {
-    width: 100,
-    textAlign: 'right',
   },
 });
