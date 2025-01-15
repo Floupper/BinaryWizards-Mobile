@@ -17,7 +17,7 @@ export async function _retrieveUserToken(navigation) {
 
     console.error('Error retrieving user token:', error);
 
-    navigation.navigate('HomeAnonymous');
+    navigation.navigate('Home');
   }
 }
 
@@ -55,7 +55,7 @@ export async function _storeUserToken(token) {
 export const logout = async (navigation) => {
   try {
     await _removeUserToken();
-    navigation.navigate('HomeAnonymous');
+    navigation.navigate('Home');
   } catch (error) {
     console.error('Error logging out:', error);
 
