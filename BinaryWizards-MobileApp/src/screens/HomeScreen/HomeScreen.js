@@ -1,8 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import { View, StatusBar, ImageBackground } from 'react-native';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import React, { useEffect, useState } from 'react';
+import { View, Text, ImageBackground } from 'react-native';
 import userTokenEmitter from '../../utils/eventEmitter';
-
 import TopBar from '../../components/TopBar/TopBar';
 import UserHomeComponent from '../../components/UserHomeComponent/UserHomeComponent';
 import { styles } from './homeScreenStyles';
@@ -33,27 +31,9 @@ export default function HomeScreen() {
   }, [userToken]);
 
   return (
-    <QueryClientProvider client={queryClient}>
-      <StatusBar />
-      <ImageBackground
-        source={background}
-        style={{ width: '100%', height: '100%' }}
-      >
-        <View style={styles.container}>
-          <View style={styles.homeButton}>
-            <TopBar setHomeScreenUserToken={setUserToken} />
-          </View>
-          {userToken ? (
-            <View style={{ flex: 1, alignItems: 'center', width: '100%' }}>
-              <UserHomeComponent />
-            </View>
-          ) : (
-            <View style={{ flex: 1, width: '100%' }}>
-              <ResumeGame />
-            </View>
-          )}
-        </View>
-      </ImageBackground>
-    </QueryClientProvider>
+    <ImageBackground style={{ flex: 1 }} source={background}>
+      <TopBar setHomeScreenUserToken={setUserToken} />
+      {userToken ? <UserHomeScreen /> : <ResumeGame />}
+    </ImageBackground>
   );
 }

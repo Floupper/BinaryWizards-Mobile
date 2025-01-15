@@ -1,7 +1,7 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import HomeScreen from '../screens/HomeScreen/HomeScreen';
+import AnonymousHomeScreen from '../screens/AnonymousHomeScreen/AnonymousHomeScreen';
 import QuestionScreen from '../screens/Questions/QuestionsScreen';
 import EndScreen from '../screens/EndScreen/EndScreen';
 import CreateGame from '../screens/CreateGame/CreateGame';
@@ -16,6 +16,9 @@ import * as Linking from 'expo-linking';
 import SetGameMode from '../components/SetGameMode/SetGameMode';
 import TeamQuestionScreen from '../screens/TeamQuestionScreen/TeamQuestionScreen';
 import TeamEndScreen from '../screens/TeamEndScreen/TeamEndScreen';
+import UserHomeScreen from '../screens/UserHomeScreen/UserHomeScreen';
+import SinglePlayerScreen from '../screens/SinglePlayerScreen/SinglePlayerScreen';
+import HomeScreen from '../screens/HomeScreen/HomeScreen';
 
 const prefix = Linking.createURL('/');
 
@@ -38,22 +41,22 @@ export default function StackNavigator() {
     setData(data);
   }
 
-  useEffect(() => {
-    async function getInitialURL() {
-      const initialURL = await Linking.getInitialURL();
-      if (initialURL) {
-        let data = Linking.parse(initialURL);
-        setData(data);
-      }
-    }
-    Linking.addEventListener('url', handleDeepLink);
-    if (!data) {
-      getInitialURL();
-    }
-    return () => {
-      Linking.removeEventListener('url');
-    };
-  }, []);
+  // useEffect(() => {
+  //   async function getInitialURL() {
+  //     const initialURL = await Linking.getInitialURL();
+  //     if (initialURL) {
+  //       let data = Linking.parse(initialURL);
+  //       setData(data);
+  //     }
+  //   }
+  //   Linking.addEventListener('url', handleDeepLink);
+  //   if (!data) {
+  //     getInitialURL();
+  //   }
+  //   return () => {
+  //     Linking.removeEventListener('url');
+  //   };
+  // }, []);
 
   return (
     <>
@@ -136,6 +139,18 @@ export default function StackNavigator() {
             name="TeamEndScreen"
             component={TeamEndScreen}
             options={{ headerShown: false, title: 'Team End Screen' }}
+          />
+
+          <Stack.Screen
+            name="UserHome"
+            component={UserHomeScreen}
+            options={{ headerShown: false, title: 'User Home' }}
+          />
+
+          <Stack.Screen
+            name="HomeSingleplayer"
+            component={SinglePlayerScreen}
+            options={{ headerShown: false, title: 'Home Singleplayer' }}
           />
         </Stack.Navigator>
       </NavigationContainer>
