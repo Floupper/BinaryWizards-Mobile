@@ -13,6 +13,7 @@ import { styleContainer } from '../../styles/container';
 import { styleButton } from '../../styles/buttons';
 import { endStyle, endStyleText } from '../EndScreen/endStyle';
 import background from '../../../assets/endBackground.png';
+import ConfettiCannon from 'react-native-confetti-cannon';
 
 export default function TeamEndScreen() {
   const route = useRoute();
@@ -92,6 +93,7 @@ export default function TeamEndScreen() {
           </PrimaryButton>
         </View>
       </View>
+      <ConfettiCannon count={200} origin={{ x: -10, y: 0 }} />
     </ImageBackground>
   );
 }
