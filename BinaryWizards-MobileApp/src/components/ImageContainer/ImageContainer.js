@@ -40,10 +40,14 @@ export default function ImageContainer({
 
 const styles = StyleSheet.create({
   container: {
+    alignContent: 'center',
     alignItems: 'center',
+    flex: 1,
     flexDirection: 'row',
     flexWrap: 'wrap',
+    gap: 10,
     justifyContent: 'center',
+    padding: 10,
   },
   image: {
     borderRadius: 8,

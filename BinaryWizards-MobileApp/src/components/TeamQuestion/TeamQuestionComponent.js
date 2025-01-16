@@ -234,9 +234,8 @@ export default function TeamQuestionComponent({
       >
         <Text style={styleContainer.questionTitleContainer}>
           {question.question_text}
-          {selectedQuestionId}
         </Text>
-        <View>
+        <View style={{ flex: 1 }}>
           {question && Array.isArray(question.options) ? (
             question.question_type === 'image' ? (
               <ImageContainer
@@ -255,29 +254,31 @@ export default function TeamQuestionComponent({
                 correctAnswerIndex={idCorrectAnswers}
               />
             ) : (
-              question.options.map(({ option_content, option_index }) => (
-                <SecondaryButton
-                  key={option_index}
-                  text={option_content}
-                  onPress={() => handleQuestionSelect(option_index)}
-                  style={[
-                    styles.answerButtonBaseStyle,
-                    determineButtonStyle({
-                      buttonIndex: option_index,
-                      userAnswerIndex: selectedQuestionId,
-                      correctAnswerIndex: idCorrectAnswers,
-                    }),
-                  ]}
-                  textStyle={[
-                    styles.answerButtonTextStyle,
-                    determineButtonTextStyle({
-                      buttonIndex: option_index,
-                      userAnswerIndex: selectedQuestionId,
-                      correctAnswerIndex: idCorrectAnswers,
-                    }),
-                  ]}
-                />
-              ))
+              <View style={styles.choicesContainer}>
+                {question.options.map(({ option_content, option_index }) => (
+                  <SecondaryButton
+                    key={option_index}
+                    text={option_content}
+                    onPress={() => handleQuestionSelect(option_index)}
+                    style={[
+                      styles.answerButtonBaseStyle,
+                      determineButtonStyle({
+                        buttonIndex: option_index,
+                        userAnswerIndex: selectedQuestionId,
+                        correctAnswerIndex: idCorrectAnswers,
+                      }),
+                    ]}
+                    textStyle={[
+                      styles.answerButtonTextStyle,
+                      determineButtonTextStyle({
+                        buttonIndex: option_index,
+                        userAnswerIndex: selectedQuestionId,
+                        correctAnswerIndex: idCorrectAnswers,
+                      }),
+                    ]}
+                  />
+                ))}
+              </View>
             )
           ) : (
             <ActivityIndicator size="large" color="#0000ff" />

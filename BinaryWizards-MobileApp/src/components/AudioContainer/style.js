@@ -1,51 +1,57 @@
 import { StyleSheet } from 'react-native';
 
 export const styles = StyleSheet.create({
-  container: {
-    alignItems: 'center',
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    justifyContent: 'center',
-  },
-  audioContainer: {
-    alignItems: 'center',
-    backgroundColor: 'white',
-    borderRadius: 10,
-    borderWidth: 3,
-    borderColor: '#ddd',
-    margin: 10,
-    padding: 10,
-    width: 180,
-  },
-  playButton: {
-    backgroundColor: '#007bff',
-    padding: 10,
-    borderRadius: 5,
-    marginBottom: 10,
-    width: '100%',
-    alignItems: 'center',
-  },
-  playButtonText: {
-    color: 'white',
-    fontWeight: 'bold',
-    textAlign: 'center',
-  },
-  playing: {
-    backgroundColor: '#28a745',
-  },
-  notPlaying: {
-    backgroundColor: '#007bff',
-  },
   answerButton: {
-    backgroundColor: '#ffc107',
-    padding: 10,
-    borderRadius: 5,
-    width: '100%',
     alignItems: 'center',
+    backgroundColor: '#8B2DF1',
+    borderRadius: 5,
+    padding: 10,
+    width: '100%',
   },
   answerButtonText: {
     color: 'white',
     fontWeight: 'bold',
     textAlign: 'center',
+  },
+  audioContainer: {
+    alignItems: 'center',
+    backgroundColor: '#1f2937',
+    borderColor: '#ddd',
+    borderRadius: 10,
+    borderWidth: 3,
+    margin: 10,
+    maxWidth: 200,
+    padding: 10,
+    width: '35%',
+  },
+  container: {
+    alignContent: 'center',
+    alignItems: 'center',
+    flex: 1,
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 10,
+    justifyContent: 'center',
+    padding: 10,
+  },
+  notPlaying: {
+    backgroundColor: '#8B2DF1',
+  },
+  playButton: {
+    alignItems: 'center',
+    backgroundColor: '#8B2DF1',
+    borderRadius: 5,
+    marginBottom: 10,
+    padding: 10,
+    width: '100%',
+  },
+  playButtonText: {
+    color: 'white',
+    fontFamily: 'Mogula',
+    fontWeight: 'bold',
+    textAlign: 'center',
+  },
+  playing: {
+    backgroundColor: '#a04ff7',
   },
 });

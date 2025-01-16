@@ -64,7 +64,7 @@ export default function AudioContainer({
 
   return (
     <View style={styles.container}>
-      {options.map(({ option_content, option_index }) => (
+      {options.map(({ option_index }) => (
         <View
           key={option_index}
           style={[
