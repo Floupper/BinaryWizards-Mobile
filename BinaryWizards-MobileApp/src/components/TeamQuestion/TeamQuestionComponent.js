@@ -10,6 +10,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { REACT_NATIVE_API_URL, REACT_NATIVE_API_PORT } from '@env';
 import ImageContainer from '../ImageContainer/ImageContainer';
 import SecondaryButton from '../SecondaryButton';
+import AudioContainer from '../AudioContainer/AudioContainer';
 
 const SERVER_URL = `${REACT_NATIVE_API_URL}:${REACT_NATIVE_API_PORT}`;
 
@@ -239,6 +240,14 @@ export default function TeamQuestionComponent({
           {question && Array.isArray(question.options) ? (
             question.question_type === 'image' ? (
               <ImageContainer
+                options={question.options}
+                onPress={handleQuestionSelect}
+                determineButtonStyle={determineButtonStyle}
+                userAnswerIndex={selectedQuestionId}
+                correctAnswerIndex={idCorrectAnswers}
+              />
+            ) : question.question_type === 'audio' ? (
+              <AudioContainer
                 options={question.options}
                 onPress={handleQuestionSelect}
                 determineButtonStyle={determineButtonStyle}
