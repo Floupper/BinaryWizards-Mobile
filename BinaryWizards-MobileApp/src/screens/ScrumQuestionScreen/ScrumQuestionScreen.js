@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import ScrumQuestionComponent from '../../components/ScrumQuestion/ScrumQuestionComponent';
-import { Text, View, ActivityIndicator } from 'react-native';
+import { Text, View, ActivityIndicator, ImageBackground } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import GenericClipboard from '../../components/GenericClipboard';
 import { questionStyle } from '../Questions/questionsStyles';
@@ -10,6 +10,7 @@ import HomeButton from '../../components/HomeButton/HomeButton';
 import { REACT_NATIVE_API_URL, REACT_NATIVE_API_PORT } from '@env';
 import { io } from 'socket.io-client';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import scrumBackground from '../../../assets/backgrounds/scrumBackground.png';
 
 const SERVER_URL = `${REACT_NATIVE_API_URL}:${REACT_NATIVE_API_PORT}`;
 
@@ -31,9 +32,9 @@ export default function ScrumQuestionScreen({ route }) {
   const [userToken, setUserToken] = useState(null);
   const [question, setQuestion] = useState({});
   const [colorGradient, setColorGradient] = useState([
-    '#FFA033',
-    '#DBC0A2',
-    '#779D25',
+    '#377DC9',
+    '#8A2BF2',
+    '#E7DAB4',
   ]);
 
   const navigation = useNavigation();
@@ -100,55 +101,60 @@ export default function ScrumQuestionScreen({ route }) {
   }
 
   return (
-    <View style={questionStyle.mainContainer}>
-      <HomeButton text="Leave game" />
-      <View
-        style={{
-          paddingHorizontal: 20,
-          marginBottom: 20,
-          width: '100%',
-          height: 20,
-        }}
-      >
-        <ProgressBar
-          progress={
-            question.nb_questions_total > 0
-              ? question.question_index / question.nb_questions_total
-              : 0
-          }
-          width={null}
-          height={17}
-          color="#FFA033"
-          unfilledColor="#FFFFFF"
-          borderWidth={0}
-          borderRadius={5}
-        />
-      </View>
-
-      <View style={questionStyle.infoQuestions}>
-        {userToken ? <GenericClipboard text="id" id={gameId} /> : null}
-        <Text style={questionStyle.infoQuestionsText}>
-          {question.question_index}/{question.nb_questions_total}
-        </Text>
-        <Text style={questionStyle.infoQuestionsText}>
-          Score : {question.correct_answers_nb}
-        </Text>
-      </View>
-
-      <LinearGradient
-        colors={colorGradient}
-        start={{ x: 0, y: 0 }}
-        end={{ x: 0, y: 1 }}
-        style={questionStyle.gradientContainer}
-      >
-        <View style={questionStyle.container}>
-          <ScrumQuestionComponent
-            gameId={gameId}
-            question={question}
-            handleNewQuestion={handleNewQuestion}
+    <ImageBackground
+      source={scrumBackground}
+      style={{ width: '100%', height: '100%' }}
+    >
+      <View style={questionStyle.mainContainer}>
+        <HomeButton text="Leave game" />
+        <View
+          style={{
+            paddingHorizontal: 20,
+            marginBottom: 20,
+            width: '100%',
+            height: 20,
+          }}
+        >
+          <ProgressBar
+            progress={
+              question.nb_questions_total > 0
+                ? question.question_index / question.nb_questions_total
+                : 0
+            }
+            width={null}
+            height={17}
+            color="#8B2DF1"
+            unfilledColor="#FFFFFF"
+            borderWidth={0}
+            borderRadius={5}
           />
         </View>
-      </LinearGradient>
-    </View>
+
+        <View style={questionStyle.infoQuestions}>
+          {userToken ? <GenericClipboard text="id" id={gameId} /> : null}
+          <Text style={questionStyle.infoQuestionsText}>
+            {question.question_index}/{question.nb_questions_total}
+          </Text>
+          <Text style={questionStyle.infoQuestionsText}>
+            Score : {question.correct_answers_nb}
+          </Text>
+        </View>
+
+        <LinearGradient
+          colors={colorGradient}
+          start={{ x: 0, y: 0 }}
+          end={{ x: 0, y: 1 }}
+          style={questionStyle.gradientContainer}
+        >
+          <View style={questionStyle.container}>
+            <ScrumQuestionComponent
+              gameId={gameId}
+              question={question}
+              handleNewQuestion={handleNewQuestion}
+            />
+          </View>
+        </LinearGradient>
+      </View>
+    </ImageBackground>
   );
 }
