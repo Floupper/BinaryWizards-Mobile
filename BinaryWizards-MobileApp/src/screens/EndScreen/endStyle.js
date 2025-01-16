@@ -6,6 +6,9 @@ export const endStyle = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
   },
+  bottomSection: {
+    margin: 80,
+  },
   endInformation: {
     alignItems: 'center',
     backgroundColor: 'white',
@@ -13,7 +16,6 @@ export const endStyle = StyleSheet.create({
     elevation: 5,
     height: '50%',
     justifyContent: 'space-between',
-    padding: 20,
     shadowOffset: { width: 0, height: 10 },
     shadowOpacity: 0.2,
     shadowRadius: 6,
