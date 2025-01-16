@@ -65,7 +65,17 @@ export default function AudioContainer({
   return (
     <View style={styles.container}>
       {options.map(({ option_content, option_index }) => (
-        <View key={option_index} style={styles.audioContainer}>
+        <View
+          key={option_index}
+          style={[
+            styles.audioContainer,
+            determineButtonStyle({
+              buttonIndex: option_index,
+              userAnswerIndex,
+              correctAnswerIndex,
+            }),
+          ]}
+        >
           <Pressable
             style={[
               styles.playButton,
@@ -89,6 +99,7 @@ export default function AudioContainer({
           </Pressable>
 
           <Pressable
+            key={option_index}
             style={[
               styles.answerButton,
               determineButtonStyle({
