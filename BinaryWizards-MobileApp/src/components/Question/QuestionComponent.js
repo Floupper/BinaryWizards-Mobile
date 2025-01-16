@@ -11,6 +11,7 @@ import {
   determineButtonStyle,
   determineButtonTextStyle,
 } from '../../utils/questions.utils';
+import AudioContainer from '../AudioContainer/AudioContainer';
 
 // Props validation
 QuestionComponent.propTypes = {
@@ -115,7 +116,15 @@ export default function QuestionComponent({
           {question.question_text}
         </Text>
         <View>
-          {question.question_type === 'image' ? (
+          {question.question_type === 'audio' ? (
+            <AudioContainer
+              options={question.options}
+              onPress={handleSelectedAnswer}
+              determineButtonStyle={determineButtonStyle}
+              userAnswerIndex={userAnswerIndex}
+              correctAnswerIndex={correctAnswerIndex}
+            />
+          ) : question.question_type === 'image' ? (
             <ImageContainer
               options={question.options}
               onPress={handleSelectedAnswer}
