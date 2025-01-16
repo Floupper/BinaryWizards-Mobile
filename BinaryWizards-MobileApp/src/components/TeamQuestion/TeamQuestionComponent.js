@@ -24,6 +24,7 @@ export default function TeamQuestionComponent({
   question,
   gameId,
   setColorGradient,
+  handleNewQuestion,
 }) {
   const [userAnswerIndex, setUserAnswerIndex] = useState(null);
   const [background, setBackground] = useState('idle');
@@ -99,6 +100,7 @@ export default function TeamQuestionComponent({
 
       newSocket.on('newQuestion', (data) => {
         handleNewQuestion(data);
+        setSelectedQuestionId(null);
       });
 
       newSocket.on('gameFinished', (data) => {
@@ -113,11 +115,12 @@ export default function TeamQuestionComponent({
         setShowAnswer(true);
 
         setTimeout(() => {
-          setShowAnswer(true);
+          setShowAnswer(false);
         }, 5000);
       });
 
       newSocket.on('isCorrectAnswer', (data) => {
+        console.log('Is correct answer:', data);
         setIsCorrect(data);
       });
     };
@@ -126,18 +129,11 @@ export default function TeamQuestionComponent({
 
     return () => {
       if (socketRef) {
+        console.log('Socket disconnected');
         socketRef.current.disconnect();
       }
     };
   }, [gameId, navigation]);
-
-  useEffect(() => {
-    setShowAnswer(false);
-    setUserAnswerIndex(null);
-    setIdCorrectAnswers(null);
-    setIsAnswered(false);
-    setBackground('idle');
-  }, [question]);
 
   const handleQuestionSelect = (selectedId) => {
     if (isAnswered) {
@@ -153,6 +149,14 @@ export default function TeamQuestionComponent({
     });
   };
 
+  useEffect(() => {
+    setShowAnswer(false);
+    setSelectedQuestionId(null);
+    setIdCorrectAnswers(null);
+    setIsAnswered(false);
+    setBackground('idle');
+  }, [question]);
+
   const backgroundAssets = {
     idle: require('../../../assets/questions/idle.png'),
     correct: require('../../../assets/questions/correct.png'),
@@ -163,30 +167,25 @@ export default function TeamQuestionComponent({
     buttonIndex,
     userAnswerIndex,
     correctAnswerIndex,
-    isTimeUp,
   }) => {
+    // Si showAnswer est false, tous les textes des boutons restent noirs
     if (!showAnswer) {
-      // Si showAnswer est false, tous les textes des boutons restent noirs
       return { color: 'black' };
     }
 
-    if (userAnswerIndex === null || correctAnswerIndex === null) {
+    // Si correctAnswerIndex est null, on ne peut pas encore afficher le résultat
+    if (correctAnswerIndex === null) {
       return { color: 'black' };
-    }
-
-    if (isTimeUp) {
-      if (buttonIndex === correctAnswerIndex) {
-        return { color: 'green' };
-      }
-      return { color: 'red' };
     }
 
     if (buttonIndex === correctAnswerIndex) {
       return { color: 'green' };
     }
-    if (buttonIndex === userAnswerIndex && buttonIndex !== correctAnswerIndex) {
+
+    if (userAnswerIndex !== null && buttonIndex === userAnswerIndex) {
       return { color: 'red' };
     }
+
     return { color: 'black' };
   };
 
@@ -194,41 +193,33 @@ export default function TeamQuestionComponent({
     buttonIndex,
     correctAnswerIndex,
     userAnswerIndex,
-    isTimeUp,
   }) => {
     const COLORS = {
-      default: '#e5e7eb', // Gris clair par défaut
-      selected: '#f3f4f6', // Gris plus clair pour le bouton sélectionné
-      correct: 'green', // Vert pour la bonne réponse
-      incorrect: 'red', // Rouge pour la mauvaise réponse
+      default: '#e5e7eb',
+      selected: '#e5e7eb',
+      correct: 'green',
+      incorrect: 'red',
       unanswered: '#e5e7eb',
-      timeUp: 'orange',
     };
 
     if (!showAnswer) {
-      // Si showAnswer est false, affiche le fond gris clair pour le bouton sélectionné
       return buttonIndex === userAnswerIndex
-        ? { borderColor: COLORS.default, backgroundColor: COLORS.selected }
+        ? { borderColor: '#8B2DF1', backgroundColor: COLORS.default }
         : { borderColor: COLORS.default };
     }
 
-    if (userAnswerIndex === null || correctAnswerIndex === null) {
+    if (correctAnswerIndex === null) {
       return { borderColor: COLORS.default };
-    }
-
-    if (isTimeUp) {
-      if (buttonIndex === correctAnswerIndex) {
-        return { borderColor: COLORS.correct };
-      }
-      return { borderColor: COLORS.incorrect };
     }
 
     if (buttonIndex === correctAnswerIndex) {
       return { borderColor: COLORS.correct };
     }
-    if (buttonIndex === userAnswerIndex && buttonIndex !== correctAnswerIndex) {
+
+    if (userAnswerIndex !== null && buttonIndex === userAnswerIndex) {
       return { borderColor: COLORS.incorrect };
     }
+
     return { borderColor: COLORS.default };
   };
 
@@ -246,6 +237,7 @@ export default function TeamQuestionComponent({
       >
         <Text style={styleContainer.questionTitleContainer}>
           {question.question_text}
+          {selectedQuestionId}
         </Text>
         <View>
           {question && Array.isArray(question.options) ? (
@@ -269,7 +261,6 @@ export default function TeamQuestionComponent({
                       buttonIndex: option_index,
                       userAnswerIndex: selectedQuestionId,
                       correctAnswerIndex: idCorrectAnswers,
-                      // isTimeUp,
                     }),
                   ]}
                   textStyle={[
@@ -278,7 +269,6 @@ export default function TeamQuestionComponent({
                       buttonIndex: option_index,
                       userAnswerIndex: selectedQuestionId,
                       correctAnswerIndex: idCorrectAnswers,
-                      // isTimeUp,
                     }),
                   ]}
                 />

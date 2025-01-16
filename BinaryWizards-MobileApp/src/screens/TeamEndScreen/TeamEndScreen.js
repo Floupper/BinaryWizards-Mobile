@@ -32,9 +32,11 @@ export default function TeamEndScreen() {
         {members.length > 0 ? (
           <FlatList
             data={members}
-            renderItem={({ item: memberName }) => (
+            renderItem={({ item }) => (
               <View style={styles.memberRow}>
-                <Text style={styles.memberName}>{memberName}</Text>
+                <Text style={styles.memberName}>
+                  {item.username} - Score: {item.score}
+                </Text>
               </View>
             )}
             keyExtractor={(member, idx) => `${teamName}-member-${idx}`}

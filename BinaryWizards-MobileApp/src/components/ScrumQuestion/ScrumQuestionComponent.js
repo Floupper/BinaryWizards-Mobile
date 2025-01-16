@@ -161,30 +161,23 @@ export default function ScrumQuestionComponent({
     buttonIndex,
     userAnswerIndex,
     correctAnswerIndex,
-    isTimeUp,
   }) => {
     if (!showAnswer) {
-      // Si showAnswer est false, tous les textes des boutons restent noirs
       return { color: 'black' };
     }
 
-    if (userAnswerIndex === null || correctAnswerIndex === null) {
+    if (correctAnswerIndex === null) {
       return { color: 'black' };
-    }
-
-    if (isTimeUp) {
-      if (buttonIndex === correctAnswerIndex) {
-        return { color: 'green' };
-      }
-      return { color: 'red' };
     }
 
     if (buttonIndex === correctAnswerIndex) {
       return { color: 'green' };
     }
-    if (buttonIndex === userAnswerIndex && buttonIndex !== correctAnswerIndex) {
+
+    if (userAnswerIndex !== null && buttonIndex === userAnswerIndex) {
       return { color: 'red' };
     }
+
     return { color: 'black' };
   };
 
@@ -192,41 +185,34 @@ export default function ScrumQuestionComponent({
     buttonIndex,
     correctAnswerIndex,
     userAnswerIndex,
-    isTimeUp,
   }) => {
     const COLORS = {
-      default: '#e5e7eb', // Gris clair par défaut
-      selected: '#f3f4f6', // Gris plus clair pour le bouton sélectionné
-      correct: 'green', // Vert pour la bonne réponse
-      incorrect: 'red', // Rouge pour la mauvaise réponse
+      default: '#e5e7eb',
+      selected: '#e5e7eb',
+      correct: 'green',
+      incorrect: 'red',
       unanswered: '#e5e7eb',
-      timeUp: 'orange',
     };
 
+    // Si showAnswer est false, on montre uniquement la sélection de l'utilisateur
     if (!showAnswer) {
-      // Si showAnswer est false, affiche le fond gris clair pour le bouton sélectionné
       return buttonIndex === userAnswerIndex
-        ? { borderColor: COLORS.default, backgroundColor: COLORS.selected }
+        ? { borderColor: '#8B2DF1', backgroundColor: COLORS.default }
         : { borderColor: COLORS.default };
     }
 
-    if (userAnswerIndex === null || correctAnswerIndex === null) {
+    if (correctAnswerIndex === null) {
       return { borderColor: COLORS.default };
-    }
-
-    if (isTimeUp) {
-      if (buttonIndex === correctAnswerIndex) {
-        return { borderColor: COLORS.correct };
-      }
-      return { borderColor: COLORS.incorrect };
     }
 
     if (buttonIndex === correctAnswerIndex) {
       return { borderColor: COLORS.correct };
     }
-    if (buttonIndex === userAnswerIndex && buttonIndex !== correctAnswerIndex) {
+
+    if (userAnswerIndex !== null && buttonIndex === userAnswerIndex) {
       return { borderColor: COLORS.incorrect };
     }
+
     return { borderColor: COLORS.default };
   };
 

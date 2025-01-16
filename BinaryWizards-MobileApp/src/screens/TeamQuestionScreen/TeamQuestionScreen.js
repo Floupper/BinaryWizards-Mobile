@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import TeamQuestionComponent from '../../components/TeamQuestion/TeamQuestionComponent';
 import { Text, View, ActivityIndicator } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
@@ -10,6 +10,7 @@ import HomeButton from '../../components/HomeButton/HomeButton';
 import { REACT_NATIVE_API_URL, REACT_NATIVE_API_PORT } from '@env';
 import { io } from 'socket.io-client';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import Chrono from '../../components/Chrono/Chrono';
 
 const SERVER_URL = `${REACT_NATIVE_API_URL}:${REACT_NATIVE_API_PORT}`;
 
@@ -28,6 +29,8 @@ export default function TeamQuestionScreen({ route }) {
   const [idCorrectAnswers, setIdCorrectAnswers] = useState(null);
   const [timeAvailable, setTimeAvailable] = useState(null);
   const [socket, setSocket] = useState(null);
+
+  const socketRef = useRef(null);
 
   const [userToken, setUserToken] = useState(null);
   const [question, setQuestion] = useState({});
@@ -70,6 +73,7 @@ export default function TeamQuestionScreen({ route }) {
       });
 
       setSocket(newSocket);
+      socketRef.current = newSocket;
     };
 
     connectToSocket();
@@ -93,6 +97,11 @@ export default function TeamQuestionScreen({ route }) {
     setTimeAvailable(data.time_available);
     setIsAnswered(false);
     setIdCorrectAnswers(null);
+  };
+
+  const onTimerEnd = () => {
+    setTimeAvailable(null);
+    setIsAnswered(true);
   };
 
   if (!question) {
@@ -130,11 +139,13 @@ export default function TeamQuestionScreen({ route }) {
       </View>
 
       <View style={questionStyle.infoQuestions}>
-        {userToken ? <GenericClipboard text="id" id={gameId} /> : null}
-        <Text style={questionStyle.infoQuestionsText}>
+        <Text style={[questionStyle.infoQuestionsText, { flex: 0.33 }]}>
           {question.question_index}/{question.nb_questions_total}
         </Text>
-        <Text style={questionStyle.infoQuestionsText}>
+        {timeAvailable ? (
+          <Chrono timeAvailable={timeAvailable} onTimerEnd={onTimerEnd} />
+        ) : null}
+        <Text style={[questionStyle.infoQuestionsText, { flex: 0.33 }]}>
           Score : {question.correct_answers_nb}
         </Text>
       </View>
@@ -146,7 +157,11 @@ export default function TeamQuestionScreen({ route }) {
         style={questionStyle.gradientContainer}
       >
         <View style={questionStyle.container}>
-          <TeamQuestionComponent gameId={gameId} question={question} />
+          <TeamQuestionComponent
+            gameId={gameId}
+            question={question}
+            handleNewQuestion={handleNewQuestion}
+          />
         </View>
       </LinearGradient>
     </View>
