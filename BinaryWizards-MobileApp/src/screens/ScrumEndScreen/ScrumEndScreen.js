@@ -88,9 +88,10 @@ const styles = StyleSheet.create({
     width: 100,
   },
   title: {
-    fontSize: 20,
+    fontFamily: 'Mogula',
+    fontSize: 30,
     fontWeight: 'bold',
-    marginBottom: 8,
+    marginBottom: 12,
   },
   username: {
     flex: 1,
