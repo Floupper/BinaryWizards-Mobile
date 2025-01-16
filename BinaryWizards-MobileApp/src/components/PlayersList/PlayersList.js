@@ -195,7 +195,7 @@ export default function PlayersList({ gameId, gameMode }) {
             }}
           >
             <Text style={{ fontWeight: 'bold', paddingRight: 5 }}>
-              {players.length}
+              {teams ? teams.length : 0}
             </Text>
             <Image source={users} style={styles.image} />
           </View>

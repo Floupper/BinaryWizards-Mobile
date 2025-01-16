@@ -59,7 +59,8 @@ export const signStyles = StyleSheet.create({
 
   // Text styles
   title: {
-    fontSize: 20,
+    fontFamily: 'Mogula',
+    fontSize: 26,
     fontWeight: 'bold',
   },
   subtitle: {

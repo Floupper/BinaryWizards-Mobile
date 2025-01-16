@@ -143,7 +143,7 @@ export default function TeamQuestionComponent({
 
     socketRef.current.emit('sendAnswer', {
       game_id: gameId,
-      question_id: question.question_index,
+      question_index: question.question_index,
       option_index: selectedId,
     });
   };

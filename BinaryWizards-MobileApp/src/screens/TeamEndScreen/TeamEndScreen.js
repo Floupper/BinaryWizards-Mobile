@@ -22,7 +22,9 @@ export default function TeamEndScreen() {
 
   const renderTeam = ({ item, index }) => {
     const [teamName, teamData] = item;
-    const members = teamData.members || [];
+    const members = [...(teamData.members || [])].sort(
+      (a, b) => b.score - a.score
+    );
 
     return (
       <View key={teamName} style={styles.teamContainer}>
@@ -68,7 +70,9 @@ export default function TeamEndScreen() {
           <Text style={styles.title}>Leaderboard:</Text>
           {Object.entries(data).length > 0 ? (
             <FlatList
-              data={Object.entries(data.ranking)}
+              data={Object.entries(data.ranking).sort(
+                (a, b) => b[1].total_score - a[1].total_score
+              )}
               renderItem={renderTeam}
               keyExtractor={(item) => item[0]}
             />
@@ -94,7 +98,9 @@ export default function TeamEndScreen() {
 
 const styles = StyleSheet.create({
   memberName: {
-    fontSize: 14,
+    color: 'gray',
+    fontFamily: 'Mogula',
+    fontSize: 18,
   },
   memberRow: {
     flexDirection: 'row',
@@ -108,12 +114,14 @@ const styles = StyleSheet.create({
     padding: 12,
   },
   teamName: {
-    fontSize: 16,
+    fontFamily: 'Mogula',
+    fontSize: 20,
     fontWeight: 'bold',
     marginBottom: 8,
   },
   title: {
-    fontSize: 20,
+    fontFamily: 'Mogula',
+    fontSize: 30,
     fontWeight: 'bold',
     marginBottom: 12,
   },

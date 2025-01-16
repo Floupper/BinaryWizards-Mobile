@@ -50,7 +50,7 @@ export default function EndScreen({ route }) {
             Score : {correct_answers_nb}/{nb_questions_total}
           </Text>
         </View>
-        <View style={styleContainer.bottomSection}>
+        <View style={endStyle.bottomSection}>
           <PrimaryButton
             isQuestion={false}
             onPress={backToHome}
