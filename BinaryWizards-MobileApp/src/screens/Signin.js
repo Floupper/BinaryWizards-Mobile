@@ -54,7 +54,7 @@ export default function Signin({ route }) {
             <SigninSvg style={signStyles.svgContainer} />
             <View>
               <View style={signStyles.textContainer}>
-                <Text style={signStyles.title}>Welcome to Quiz App</Text>
+                <Text style={signStyles.title}>Welcome to Mogula !</Text>
                 <Text style={signStyles.subtitle}>Please sign in below.</Text>
               </View>
               <View style={signStyles.inputContainer}>

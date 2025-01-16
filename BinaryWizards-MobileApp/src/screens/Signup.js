@@ -109,7 +109,7 @@ export default function Signup() {
             <SigninSvg style={signStyles.svgContainer} />
             <View>
               <View style={signStyles.textContainer}>
-                <Text style={signStyles.title}>Welcome to Quiz App</Text>
+                <Text style={signStyles.title}>Welcome to Mogula !</Text>
                 <Text style={signStyles.subtitle}>Please sign up below.</Text>
               </View>
               <View style={signStyles.inputContainer}>
