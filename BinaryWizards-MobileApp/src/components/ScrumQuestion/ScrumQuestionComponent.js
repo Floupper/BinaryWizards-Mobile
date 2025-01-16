@@ -1,7 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { View, Text, ImageBackground } from 'react-native';
+import { View, Text, ImageBackground, ActivityIndicator } from 'react-native';
 import { styleContainer } from '../../styles/container';
-import PrimaryButton from '../PrimaryButton';
 import { styles } from '../Question/styles';
 import { Asset } from 'expo-asset';
 import PropTypes from 'prop-types';
@@ -9,6 +8,8 @@ import { useNavigation } from '@react-navigation/native';
 import { io } from 'socket.io-client';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { REACT_NATIVE_API_URL, REACT_NATIVE_API_PORT } from '@env';
+import ImageContainer from '../ImageContainer/ImageContainer';
+import SecondaryButton from '../SecondaryButton';
 
 const SERVER_URL = `${REACT_NATIVE_API_URL}:${REACT_NATIVE_API_PORT}`;
 
@@ -17,12 +18,14 @@ ScrumQuestionComponent.propTypes = {
   question: PropTypes.object,
   gameId: PropTypes.string,
   setColorGradient: PropTypes.func,
+  handleNewQuestion: PropTypes.func,
 };
 
 export default function ScrumQuestionComponent({
   question,
   gameId,
   setColorGradient,
+  handleNewQuestion,
 }) {
   const [userAnswerIndex, setUserAnswerIndex] = useState(null);
   const [background, setBackground] = useState('idle');
@@ -98,6 +101,10 @@ export default function ScrumQuestionComponent({
 
       newSocket.on('newQuestion', (data) => {
         handleNewQuestion(data);
+        setSelectedQuestionId(null);
+        setIsAnswered(false);
+        setIsCorrect(false);
+        setShowAnswer(false);
       });
 
       newSocket.on('gameFinished', (data) => {
@@ -131,6 +138,9 @@ export default function ScrumQuestionComponent({
   }, [gameId, navigation]);
 
   const handleQuestionSelect = (selectedId) => {
+    if (isAnswered) {
+      return;
+    }
     setSelectedQuestionId(selectedId);
     setIsAnswered(true);
 
@@ -147,21 +157,62 @@ export default function ScrumQuestionComponent({
     wrong: require('../../../assets/questions/wrong.png'),
   };
 
-  const determineButtonStyle = (index) => {
-    if (showAnswer) {
-      if (index === idCorrectAnswers) {
-        return { backgroundColor: 'green' };
-      }
-
-      if (
-        index === selectedQuestionId &&
-        selectedQuestionId !== idCorrectAnswers
-      ) {
-        return { backgroundColor: 'red' };
-      }
+  const determineButtonTextStyle = ({
+    buttonIndex,
+    userAnswerIndex,
+    correctAnswerIndex,
+  }) => {
+    if (!showAnswer) {
+      return { color: 'black' };
     }
 
-    return { backgroundColor: 'white' };
+    if (correctAnswerIndex === null) {
+      return { color: 'black' };
+    }
+
+    if (buttonIndex === correctAnswerIndex) {
+      return { color: 'green' };
+    }
+
+    if (userAnswerIndex !== null && buttonIndex === userAnswerIndex) {
+      return { color: 'red' };
+    }
+
+    return { color: 'black' };
+  };
+
+  const determineButtonStyle = ({
+    buttonIndex,
+    correctAnswerIndex,
+    userAnswerIndex,
+  }) => {
+    const COLORS = {
+      default: '#e5e7eb',
+      selected: '#e5e7eb',
+      correct: 'green',
+      incorrect: 'red',
+      unanswered: '#e5e7eb',
+    };
+
+    if (!showAnswer) {
+      return buttonIndex === userAnswerIndex
+        ? { borderColor: '#8B2DF1', backgroundColor: COLORS.default }
+        : { borderColor: COLORS.default };
+    }
+
+    if (correctAnswerIndex === null) {
+      return { borderColor: COLORS.default };
+    }
+
+    if (buttonIndex === correctAnswerIndex) {
+      return { borderColor: COLORS.correct };
+    }
+
+    if (userAnswerIndex !== null && buttonIndex === userAnswerIndex) {
+      return { borderColor: COLORS.incorrect };
+    }
+
+    return { borderColor: COLORS.default };
   };
 
   return (
@@ -180,21 +231,42 @@ export default function ScrumQuestionComponent({
           {question.question_text}
         </Text>
         <View>
-          {question.options && Array.isArray(question.options) ? (
-            question.options.map(({ option_content, option_index }) => (
-              <PrimaryButton
-                key={option_index}
-                text={option_content.content}
-                onPress={() => handleQuestionSelect(option_index)}
-                isQuestion={true}
-                style={[
-                  styles.answerButtonBaseStyle,
-                  determineButtonStyle(option_index),
-                ]}
+          {question && Array.isArray(question.options) ? (
+            question.question_type === 'image' ? (
+              <ImageContainer
+                options={question.options}
+                onPress={handleQuestionSelect}
+                determineButtonStyle={determineButtonStyle}
+                userAnswerIndex={selectedQuestionId}
+                correctAnswerIndex={idCorrectAnswers}
               />
-            ))
+            ) : (
+              question.options.map(({ option_content, option_index }) => (
+                <SecondaryButton
+                  key={option_index}
+                  text={option_content}
+                  onPress={() => handleQuestionSelect(option_index)}
+                  style={[
+                    styles.answerButtonBaseStyle,
+                    determineButtonStyle({
+                      buttonIndex: option_index,
+                      userAnswerIndex: selectedQuestionId,
+                      correctAnswerIndex: idCorrectAnswers,
+                    }),
+                  ]}
+                  textStyle={[
+                    styles.answerButtonTextStyle,
+                    determineButtonTextStyle({
+                      buttonIndex: option_index,
+                      userAnswerIndex: selectedQuestionId,
+                      correctAnswerIndex: idCorrectAnswers,
+                    }),
+                  ]}
+                />
+              ))
+            )
           ) : (
-            <Text>No question available</Text>
+            <ActivityIndicator size="large" color="#0000ff" />
           )}
         </View>
       </View>

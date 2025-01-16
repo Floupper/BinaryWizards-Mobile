@@ -64,10 +64,8 @@ const Chrono = forwardRef(({ timeAvailable, onTimerEnd }, ref) => {
   }));
 
   const formatTime = (time) => {
-    const roundedTime = Math.round(time);
-    const minutes = Math.floor(roundedTime / 60);
-    const seconds = roundedTime % 60;
-    return `${minutes < 10 ? '0' : ''}${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+    const seconds = Math.floor(time % 60);
+    return `${seconds.toString()}s`;
   };
 
   const getComputedStyle = () => {
@@ -84,6 +82,7 @@ Chrono.displayName = 'Chrono';
 
 const styles = StyleSheet.create({
   text: {
+    color: '#8B2DF1',
     fontSize: 20,
     fontWeight: 'bold',
   },

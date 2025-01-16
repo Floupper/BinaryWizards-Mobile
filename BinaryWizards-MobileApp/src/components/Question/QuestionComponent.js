@@ -1,13 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, ImageBackground } from 'react-native';
-import { styleContainer } from '../../styles/container';
 import { styleButton } from '../../styles/buttons';
-import PrimaryButton from '../PrimaryButton';
 import { styles } from './styles';
 import { questionContext } from '../../utils/questionContext.enum';
 import { Asset } from 'expo-asset';
 import PropTypes from 'prop-types';
 import ImageContainer from '../ImageContainer/ImageContainer';
+import SecondaryButton from '../SecondaryButton';
+import {
+  determineButtonStyle,
+  determineButtonTextStyle,
+} from '../../utils/questions.utils';
 
 // Props validation
 QuestionComponent.propTypes = {
@@ -35,35 +38,6 @@ export default function QuestionComponent({
     idle: require('../../../assets/questions/idle.png'),
     correct: require('../../../assets/questions/correct.png'),
     wrong: require('../../../assets/questions/wrong.png'),
-  };
-
-  const determineButtonStyle = (buttonIndex) => {
-    const COLORS = {
-      default: 'white',
-      correct: 'green',
-      incorrect: 'red',
-      unanswered: 'white',
-      timeUp: 'orange',
-    };
-
-    if (userAnswerIndex === null || correctAnswerIndex === null) {
-      return { backgroundColor: COLORS.default };
-    }
-
-    if (isTimeUp) {
-      if (buttonIndex === correctAnswerIndex) {
-        return { backgroundColor: COLORS.correct };
-      }
-      return { backgroundColor: COLORS.incorrect };
-    }
-
-    if (buttonIndex === correctAnswerIndex) {
-      return { backgroundColor: COLORS.correct };
-    }
-    if (buttonIndex === userAnswerIndex && buttonIndex !== correctAnswerIndex) {
-      return { backgroundColor: COLORS.incorrect };
-    }
-    return { backgroundColor: COLORS.default };
   };
 
   const updateColors = (context) => {
@@ -137,42 +111,52 @@ export default function QuestionComponent({
           justifyContent: 'space-around',
         }}
       >
-        <Text style={styleContainer.questionTitleContainer}>
+        <Text style={styles.questionTitleContainer}>
           {question.question_text}
         </Text>
         <View>
-          {question.options && Array.isArray(question.options) ? (
-            question.options.some(
-              ({ option_content }) => option_content.type === 'image'
-            ) ? (
-              <ImageContainer
-                options={question.options}
-                onPress={handleSelectedAnswer}
-                determineButtonStyle={determineButtonStyle}
-              />
-            ) : (
-              question.options.map(({ option_content, option_index }) => (
-                <PrimaryButton
-                  key={option_index}
-                  text={option_content.content}
-                  onPress={() => handleSelectedAnswer(option_index)}
-                  isQuestion={true}
-                  style={[
-                    styles.answerButtonBaseStyle,
-                    determineButtonStyle(option_index),
-                  ]}
-                />
-              ))
-            )
+          {question.question_type === 'image' ? (
+            <ImageContainer
+              options={question.options}
+              onPress={handleSelectedAnswer}
+              determineButtonStyle={determineButtonStyle}
+              userAnswerIndex={userAnswerIndex}
+              correctAnswerIndex={correctAnswerIndex}
+            />
           ) : (
-            <Text>No question available</Text>
+            question.options.map(({ option_content, option_index }) => (
+              <SecondaryButton
+                key={option_index}
+                text={option_content}
+                onPress={() => handleSelectedAnswer(option_index)}
+                style={[
+                  styles.answerButtonBaseStyle,
+                  determineButtonStyle({
+                    buttonIndex: option_index,
+                    userAnswerIndex,
+                    correctAnswerIndex,
+                    isTimeUp,
+                  }),
+                ]}
+                textStyle={[
+                  styles.answerButtonTextStyle,
+                  determineButtonTextStyle({
+                    buttonIndex: option_index,
+                    userAnswerIndex,
+                    correctAnswerIndex,
+                    isTimeUp,
+                  }),
+                ]}
+              />
+            ))
           )}
         </View>
-        <PrimaryButton
+        <SecondaryButton
           onPress={handleNextQuestion}
           disabled={userAnswerIndex === null}
           text={'Next question'}
           style={styleButton.button}
+          textStyle={styleButton.textStyle}
         />
       </View>
     </ImageBackground>
