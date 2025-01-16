@@ -83,7 +83,6 @@ export default function ScrumQuestionScreen({ route }) {
   }, [gameId, navigation]);
 
   const handleNewQuestion = (data) => {
-    console.log('New question :', data);
     setQuestion(data);
     setQuestionText(data.question_text);
     setOptions(data.options);
