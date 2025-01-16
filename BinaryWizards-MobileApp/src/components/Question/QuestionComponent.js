@@ -11,6 +11,7 @@ import {
   determineButtonStyle,
   determineButtonTextStyle,
 } from '../../utils/questions.utils';
+import AudioContainer from '../AudioContainer/AudioContainer';
 
 // Props validation
 QuestionComponent.propTypes = {
@@ -114,8 +115,16 @@ export default function QuestionComponent({
         <Text style={styles.questionTitleContainer}>
           {question.question_text}
         </Text>
-        <View>
-          {question.question_type === 'image' ? (
+        <View style={{ flex: 1 }}>
+          {question.question_type === 'audio' ? (
+            <AudioContainer
+              options={question.options}
+              onPress={handleSelectedAnswer}
+              determineButtonStyle={determineButtonStyle}
+              userAnswerIndex={userAnswerIndex}
+              correctAnswerIndex={correctAnswerIndex}
+            />
+          ) : question.question_type === 'image' ? (
             <ImageContainer
               options={question.options}
               onPress={handleSelectedAnswer}
@@ -124,31 +133,33 @@ export default function QuestionComponent({
               correctAnswerIndex={correctAnswerIndex}
             />
           ) : (
-            question.options.map(({ option_content, option_index }) => (
-              <SecondaryButton
-                key={option_index}
-                text={option_content}
-                onPress={() => handleSelectedAnswer(option_index)}
-                style={[
-                  styles.answerButtonBaseStyle,
-                  determineButtonStyle({
-                    buttonIndex: option_index,
-                    userAnswerIndex,
-                    correctAnswerIndex,
-                    isTimeUp,
-                  }),
-                ]}
-                textStyle={[
-                  styles.answerButtonTextStyle,
-                  determineButtonTextStyle({
-                    buttonIndex: option_index,
-                    userAnswerIndex,
-                    correctAnswerIndex,
-                    isTimeUp,
-                  }),
-                ]}
-              />
-            ))
+            <View style={styles.choicesContainer}>
+              {question.options.map(({ option_content, option_index }) => (
+                <SecondaryButton
+                  key={option_index}
+                  text={option_content}
+                  onPress={() => handleSelectedAnswer(option_index)}
+                  style={[
+                    styles.answerButtonBaseStyle,
+                    determineButtonStyle({
+                      buttonIndex: option_index,
+                      userAnswerIndex,
+                      correctAnswerIndex,
+                      isTimeUp,
+                    }),
+                  ]}
+                  textStyle={[
+                    styles.answerButtonTextStyle,
+                    determineButtonTextStyle({
+                      buttonIndex: option_index,
+                      userAnswerIndex,
+                      correctAnswerIndex,
+                      isTimeUp,
+                    }),
+                  ]}
+                />
+              ))}
+            </View>
           )}
         </View>
         <SecondaryButton
