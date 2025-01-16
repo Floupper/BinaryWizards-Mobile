@@ -194,7 +194,6 @@ export default function ScrumQuestionComponent({
       unanswered: '#e5e7eb',
     };
 
-    // Si showAnswer est false, on montre uniquement la sélection de l'utilisateur
     if (!showAnswer) {
       return buttonIndex === userAnswerIndex
         ? { borderColor: '#8B2DF1', backgroundColor: COLORS.default }
@@ -253,7 +252,6 @@ export default function ScrumQuestionComponent({
                       buttonIndex: option_index,
                       userAnswerIndex: selectedQuestionId,
                       correctAnswerIndex: idCorrectAnswers,
-                      // isTimeUp,
                     }),
                   ]}
                   textStyle={[
@@ -262,7 +260,6 @@ export default function ScrumQuestionComponent({
                       buttonIndex: option_index,
                       userAnswerIndex: selectedQuestionId,
                       correctAnswerIndex: idCorrectAnswers,
-                      // isTimeUp,
                     }),
                   ]}
                 />

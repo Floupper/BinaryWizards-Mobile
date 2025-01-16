@@ -27,7 +27,6 @@ export default function ImageContainer({
               buttonIndex: option_index,
               userAnswerIndex,
               correctAnswerIndex,
-              // isTimeUp,
             }),
           ]}
           onPress={() => onPress(option_index)}

@@ -120,7 +120,6 @@ export default function TeamQuestionComponent({
       });
 
       newSocket.on('isCorrectAnswer', (data) => {
-        console.log('Is correct answer:', data);
         setIsCorrect(data);
       });
     };
@@ -129,7 +128,6 @@ export default function TeamQuestionComponent({
 
     return () => {
       if (socketRef) {
-        console.log('Socket disconnected');
         socketRef.current.disconnect();
       }
     };
@@ -168,12 +166,10 @@ export default function TeamQuestionComponent({
     userAnswerIndex,
     correctAnswerIndex,
   }) => {
-    // Si showAnswer est false, tous les textes des boutons restent noirs
     if (!showAnswer) {
       return { color: 'black' };
     }
 
-    // Si correctAnswerIndex est null, on ne peut pas encore afficher le résultat
     if (correctAnswerIndex === null) {
       return { color: 'black' };
     }
