@@ -91,4 +91,4 @@ export const signStyles = StyleSheet.create({
   },
 });
 
-export const signBackgroundColors = ['#E4BB9180', '#8A2BF280', '#2960F080'];
+export const signBackgroundColors = ['#377DC9', '#8A2BF2', '#E7DAB4'];

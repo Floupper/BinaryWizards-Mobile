@@ -68,7 +68,6 @@ export const styleContainer = StyleSheet.create({
     padding: 10,
   },
   mainContainer: {
-    backgroundColor: '#F4F2EE',
     flex: 1,
     height: '100%',
     width: '100%',

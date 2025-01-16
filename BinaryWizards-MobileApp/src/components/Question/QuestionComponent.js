@@ -43,7 +43,7 @@ export default function QuestionComponent({
 
   const updateColors = (context) => {
     const BACKGROUND_COLORS = {
-      idle: ['#FFA033', '#DBC0A2', '#779D25'],
+      idle: ['#E7DAB4', '#8A2BF2', '#377DC9'],
       correct: ['#417336', '#417336', '#417336'],
       wrong: ['#F22828', '#F22828', '#F22828'],
     };

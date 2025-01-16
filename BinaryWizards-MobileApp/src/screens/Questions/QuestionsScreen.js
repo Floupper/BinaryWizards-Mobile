@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 import QuestionComponent from '../../components/Question/QuestionComponent';
-import { Text, View, ActivityIndicator } from 'react-native';
+import { Text, View, ActivityIndicator, ImageBackground } from 'react-native';
 import { fetchQuestion } from '../../services/questionScreenRequests';
 import { useNavigation } from '@react-navigation/native';
 import { questionStyle } from './questionsStyles';
@@ -11,7 +11,7 @@ import userTokenEmitter from '../../utils/eventEmitter';
 import HomeButton from '../../components/HomeButton/HomeButton';
 import { REACT_NATIVE_API_URL, REACT_NATIVE_API_PORT } from '@env';
 import Chrono from '../../components/Chrono/Chrono';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import singlePlayerBackground from '../../../assets/backgrounds/singleplayerBackground.png';
 
 const SERVER_URL = `${REACT_NATIVE_API_URL}:${REACT_NATIVE_API_PORT}`;
 
@@ -21,9 +21,9 @@ export default function QuestionScreen({ route }) {
   const [userToken, setUserToken] = useState(null);
   const [question, setQuestion] = useState('');
   const [colorGradient, setColorGradient] = useState([
-    '#FFA033',
-    '#DBC0A2',
-    '#779D25',
+    '#377DC9',
+    '#8A2BF2',
+    '#E7DAB4',
   ]);
   const [timeAvailable, setTimeAvailable] = useState(-1);
   const [isTimeUp, setIsTimeUp] = useState(false);
@@ -147,65 +147,70 @@ export default function QuestionScreen({ route }) {
   }
 
   return (
-    <View style={questionStyle.mainContainer}>
-      <HomeButton text="Leave game" />
-      <View
-        style={{
-          paddingHorizontal: 20,
-          marginBottom: 20,
-          width: '100%',
-          height: 20,
-        }}
-      >
-        <ProgressBar
-          progress={
-            question.nb_questions_total > 0
-              ? question.question_index / question.nb_questions_total
-              : 0
-          }
-          width={null}
-          height={17}
-          color="#FFA033"
-          unfilledColor="#FFFFFF"
-          borderWidth={0}
-          borderRadius={5}
-        />
-      </View>
-      <View style={questionStyle.infoQuestions}>
-        <Text style={[questionStyle.infoQuestionsText, { flex: 0.33 }]}>
-          {question.question_index}/{question.nb_questions_total}
-        </Text>
-        {timeAvailable !== -1 ? (
-          <Chrono
-            ref={chronoRef}
-            timeAvailable={timeAvailable}
-            sendAnswer={onSelectedAnswer}
-            onTimerEnd={onSelectedAnswer}
-          />
-        ) : null}
-        <Text style={[questionStyle.infoQuestionsText, { flex: 0.33 }]}>
-          Score : {question.correct_answers_nb}
-        </Text>
-      </View>
-
-      <LinearGradient
-        colors={colorGradient}
-        start={{ x: 0, y: 0 }}
-        end={{ x: 0, y: 1 }}
-        style={questionStyle.gradientContainer}
-      >
-        <View style={questionStyle.container}>
-          <QuestionComponent
-            question={question ? question : ''}
-            onSelectedAnswer={onSelectedAnswer}
-            nextQuestion={nextQuestion}
-            setColorGradient={setColorGradient}
-            isTimeUp={isTimeUp}
-            correctAnswerIndex={correctAnswerIndex}
-            userAnswerIndex={userAnswerIndex}
+    <ImageBackground
+      source={singlePlayerBackground}
+      style={{ width: '100%', height: '100%' }}
+    >
+      <View style={questionStyle.mainContainer}>
+        <HomeButton text="Leave game" />
+        <View
+          style={{
+            paddingHorizontal: 20,
+            marginBottom: 20,
+            width: '100%',
+            height: 20,
+          }}
+        >
+          <ProgressBar
+            progress={
+              question.nb_questions_total > 0
+                ? question.question_index / question.nb_questions_total
+                : 0
+            }
+            width={null}
+            height={17}
+            color="#8B2DF1"
+            unfilledColor="#FFFFFF"
+            borderWidth={0}
+            borderRadius={5}
           />
         </View>
-      </LinearGradient>
-    </View>
+        <View style={questionStyle.infoQuestions}>
+          <Text style={[questionStyle.infoQuestionsText, { flex: 0.33 }]}>
+            {question.question_index}/{question.nb_questions_total}
+          </Text>
+          {timeAvailable !== -1 ? (
+            <Chrono
+              ref={chronoRef}
+              timeAvailable={timeAvailable}
+              sendAnswer={onSelectedAnswer}
+              onTimerEnd={onSelectedAnswer}
+            />
+          ) : null}
+          <Text style={[questionStyle.infoQuestionsText, { flex: 0.33 }]}>
+            Score : {question.correct_answers_nb}
+          </Text>
+        </View>
+
+        <LinearGradient
+          colors={colorGradient}
+          start={{ x: 0, y: 0 }}
+          end={{ x: 0, y: 1 }}
+          style={questionStyle.gradientContainer}
+        >
+          <View style={questionStyle.container}>
+            <QuestionComponent
+              question={question ? question : ''}
+              onSelectedAnswer={onSelectedAnswer}
+              nextQuestion={nextQuestion}
+              setColorGradient={setColorGradient}
+              isTimeUp={isTimeUp}
+              correctAnswerIndex={correctAnswerIndex}
+              userAnswerIndex={userAnswerIndex}
+            />
+          </View>
+        </LinearGradient>
+      </View>
+    </ImageBackground>
   );
 }

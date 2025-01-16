@@ -23,7 +23,6 @@ export const styles = StyleSheet.create({
     width: '100%',
   },
   questionContainer: {
-    backgroundColor: '#F4F2EE',
     borderRadius: 25,
     height: '100%',
   },

@@ -25,7 +25,6 @@ export const questionStyle = StyleSheet.create({
   },
   mainContainer: {
     alignItems: 'center',
-    backgroundColor: '#F4F2EE',
     flex: 1,
     height: '100%',
     justifyContent: 'center',
