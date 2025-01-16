@@ -67,7 +67,7 @@ export default function ScrumQuestionScreen({ route }) {
       newSocket.on('answerResult', (data) => {
         setIdCorrectAnswers(data.correct_option_index);
         setIsAnswered(true);
-        setTimeAvailable(null);
+        setTimeAvailable(data.time_remaining / 1000);
       });
 
       newSocket.on('newQuestion', handleNewQuestion);
