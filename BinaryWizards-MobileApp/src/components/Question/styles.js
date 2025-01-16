@@ -15,6 +15,13 @@ export const styles = StyleSheet.create({
     fontFamily: 'Mogula',
     fontSize: 20,
   },
+  choicesContainer: {
+    alignContent: 'center',
+    flex: 1,
+    justifyContent: 'center',
+    padding: 10,
+    width: '100%',
+  },
   questionContainer: {
     borderRadius: 25,
     height: '100%',
