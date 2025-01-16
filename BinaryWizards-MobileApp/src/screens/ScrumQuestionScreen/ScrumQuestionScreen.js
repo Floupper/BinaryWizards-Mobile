@@ -11,6 +11,7 @@ import { REACT_NATIVE_API_URL, REACT_NATIVE_API_PORT } from '@env';
 import { io } from 'socket.io-client';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import scrumBackground from '../../../assets/backgrounds/scrumBackground.png';
+import Chrono from '../../components/Chrono/Chrono';
 
 const SERVER_URL = `${REACT_NATIVE_API_URL}:${REACT_NATIVE_API_PORT}`;
 
@@ -36,6 +37,7 @@ export default function ScrumQuestionScreen({ route }) {
     '#8A2BF2',
     '#E7DAB4',
   ]);
+  const [timeAvailable, setTimeAvailable] = useState(null);
 
   const navigation = useNavigation();
 
@@ -65,6 +67,7 @@ export default function ScrumQuestionScreen({ route }) {
       newSocket.on('answerResult', (data) => {
         setIdCorrectAnswers(data.correct_option_index);
         setIsAnswered(true);
+        setTimeAvailable(null);
       });
 
       newSocket.on('newQuestion', handleNewQuestion);
@@ -80,6 +83,7 @@ export default function ScrumQuestionScreen({ route }) {
   }, [gameId, navigation]);
 
   const handleNewQuestion = (data) => {
+    console.log('New question :', data);
     setQuestion(data);
     setQuestionText(data.question_text);
     setOptions(data.options);
@@ -90,6 +94,12 @@ export default function ScrumQuestionScreen({ route }) {
     setQuizId(data.quiz_id);
     setIsAnswered(false);
     setIdCorrectAnswers(null);
+    setTimeAvailable(data.question_timeout / 1000);
+  };
+
+  const onTimerEnd = () => {
+    setTimeAvailable(null);
+    setIsAnswered(true);
   };
 
   if (!question) {
@@ -132,10 +142,13 @@ export default function ScrumQuestionScreen({ route }) {
 
         <View style={questionStyle.infoQuestions}>
           {userToken ? <GenericClipboard text="id" id={gameId} /> : null}
-          <Text style={questionStyle.infoQuestionsText}>
+          <Text style={[questionStyle.infoQuestionsText, { flex: 0.33 }]}>
             {question.question_index}/{question.nb_questions_total}
           </Text>
-          <Text style={questionStyle.infoQuestionsText}>
+          {timeAvailable ? (
+            <Chrono timeAvailable={timeAvailable} onTimerEnd={onTimerEnd} />
+          ) : null}
+          <Text style={[questionStyle.infoQuestionsText, { flex: 0.33 }]}>
             Score : {question.correct_answers_nb}
           </Text>
         </View>
