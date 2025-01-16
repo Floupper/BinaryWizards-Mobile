@@ -8,6 +8,7 @@ import { createGameId } from '../../services/createGame';
 import { endStyle, endStyleText } from './endStyle';
 import background from '../../../assets/endBackground.png';
 import { getModeFromTimer } from '../../utils/timer';
+import ConfettiCannon from 'react-native-confetti-cannon';
 
 export default function EndScreen({ route }) {
   const { quizId, correct_answers_nb, nb_questions_total, timer } =
@@ -71,6 +72,7 @@ export default function EndScreen({ route }) {
           </PrimaryButton>
         </View>
       </View>
+      <ConfettiCannon count={200} origin={{ x: -10, y: 0 }} />
     </ImageBackground>
   );
 }
