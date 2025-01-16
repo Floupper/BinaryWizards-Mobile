@@ -12,6 +12,7 @@ import {
   determineButtonTextStyle,
 } from '../../utils/questions.utils';
 import AudioContainer from '../AudioContainer/AudioContainer';
+import ConfettiCannon from 'react-native-confetti-cannon';
 
 // Props validation
 QuestionComponent.propTypes = {
@@ -170,6 +171,13 @@ export default function QuestionComponent({
           textStyle={styleButton.textStyle}
         />
       </View>
+      {userAnswerIndex !== null &&
+      correctAnswerIndex !== null &&
+      userAnswerIndex === correctAnswerIndex ? (
+        <ConfettiCannon count={200} origin={{ x: -10, y: 0 }} />
+      ) : (
+        <></>
+      )}
     </ImageBackground>
   );
 }
