@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 import TeamQuestionComponent from '../../components/TeamQuestion/TeamQuestionComponent';
-import { Text, View, ActivityIndicator } from 'react-native';
+import { Text, View, ActivityIndicator, ImageBackground } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import GenericClipboard from '../../components/GenericClipboard';
 import { questionStyle } from '../Questions/questionsStyles';
@@ -11,6 +11,7 @@ import { REACT_NATIVE_API_URL, REACT_NATIVE_API_PORT } from '@env';
 import { io } from 'socket.io-client';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Chrono from '../../components/Chrono/Chrono';
+import teamBackground from '../../../assets/backgrounds/teamBackground.png';
 
 const SERVER_URL = `${REACT_NATIVE_API_URL}:${REACT_NATIVE_API_PORT}`;
 
@@ -33,9 +34,9 @@ export default function TeamQuestionScreen({ route }) {
 
   const [question, setQuestion] = useState({});
   const [colorGradient, setColorGradient] = useState([
-    '#FFA033',
-    '#DBC0A2',
-    '#779D25',
+    '#377DC9',
+    '#8A2BF2',
+    '#E7DAB4',
   ]);
 
   const navigation = useNavigation();
@@ -111,57 +112,62 @@ export default function TeamQuestionScreen({ route }) {
   }
 
   return (
-    <View style={questionStyle.mainContainer}>
-      <HomeButton text="Leave game" />
-      <View
-        style={{
-          paddingHorizontal: 20,
-          marginBottom: 20,
-          width: '100%',
-          height: 20,
-        }}
-      >
-        <ProgressBar
-          progress={
-            question.nb_questions_total > 0
-              ? question.question_index / question.nb_questions_total
-              : 0
-          }
-          width={null}
-          height={17}
-          color="#FFA033"
-          unfilledColor="#FFFFFF"
-          borderWidth={0}
-          borderRadius={5}
-        />
-      </View>
-
-      <View style={questionStyle.infoQuestions}>
-        <Text style={[questionStyle.infoQuestionsText, { flex: 0.33 }]}>
-          {question.question_index}/{question.nb_questions_total}
-        </Text>
-        {timeAvailable ? (
-          <Chrono timeAvailable={timeAvailable} onTimerEnd={onTimerEnd} />
-        ) : null}
-        <Text style={[questionStyle.infoQuestionsText, { flex: 0.33 }]}>
-          Score : {question.correct_answers_nb}
-        </Text>
-      </View>
-
-      <LinearGradient
-        colors={colorGradient}
-        start={{ x: 0, y: 0 }}
-        end={{ x: 0, y: 1 }}
-        style={questionStyle.gradientContainer}
-      >
-        <View style={questionStyle.container}>
-          <TeamQuestionComponent
-            gameId={gameId}
-            question={question}
-            handleNewQuestion={handleNewQuestion}
+    <ImageBackground
+      source={teamBackground}
+      style={{ width: '100%', height: '100%' }}
+    >
+      <View style={questionStyle.mainContainer}>
+        <HomeButton text="Leave game" />
+        <View
+          style={{
+            paddingHorizontal: 20,
+            marginBottom: 20,
+            width: '100%',
+            height: 20,
+          }}
+        >
+          <ProgressBar
+            progress={
+              question.nb_questions_total > 0
+                ? question.question_index / question.nb_questions_total
+                : 0
+            }
+            width={null}
+            height={17}
+            color="#8B2DF1"
+            unfilledColor="#FFFFFF"
+            borderWidth={0}
+            borderRadius={5}
           />
         </View>
-      </LinearGradient>
-    </View>
+
+        <View style={questionStyle.infoQuestions}>
+          <Text style={[questionStyle.infoQuestionsText, { flex: 0.33 }]}>
+            {question.question_index}/{question.nb_questions_total}
+          </Text>
+          {timeAvailable ? (
+            <Chrono timeAvailable={timeAvailable} onTimerEnd={onTimerEnd} />
+          ) : null}
+          <Text style={[questionStyle.infoQuestionsText, { flex: 0.33 }]}>
+            Score : {question.correct_answers_nb}
+          </Text>
+        </View>
+
+        <LinearGradient
+          colors={colorGradient}
+          start={{ x: 0, y: 0 }}
+          end={{ x: 0, y: 1 }}
+          style={questionStyle.gradientContainer}
+        >
+          <View style={questionStyle.container}>
+            <TeamQuestionComponent
+              gameId={gameId}
+              question={question}
+              handleNewQuestion={handleNewQuestion}
+            />
+          </View>
+        </LinearGradient>
+      </View>
+    </ImageBackground>
   );
 }
