@@ -24,7 +24,6 @@ export default function TeamQuestionScreen({ route }) {
   const [questionType, setQuestionType] = useState('');
   const [questionDifficulty, setQuestionDifficulty] = useState('');
   const [questionCategory, setQuestionCategory] = useState('');
-  const [selectedQuestionId, setSelectedQuestionId] = useState(null);
   const [isAnswered, setIsAnswered] = useState(false);
   const [idCorrectAnswers, setIdCorrectAnswers] = useState(null);
   const [timeAvailable, setTimeAvailable] = useState(null);
@@ -32,7 +31,6 @@ export default function TeamQuestionScreen({ route }) {
 
   const socketRef = useRef(null);
 
-  const [userToken, setUserToken] = useState(null);
   const [question, setQuestion] = useState({});
   const [colorGradient, setColorGradient] = useState([
     '#FFA033',

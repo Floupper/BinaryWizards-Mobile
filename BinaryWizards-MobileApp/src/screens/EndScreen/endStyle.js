@@ -44,7 +44,7 @@ export const endStyleText = StyleSheet.create({
   title: {
     color: '#7A00FF',
     fontFamily: 'Mogula',
-    fontSize: 28,
+    fontSize: 34,
     fontWeight: 'bold',
     marginBottom: 10,
     textAlign: 'center',
