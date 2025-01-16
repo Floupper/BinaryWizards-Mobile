@@ -4,6 +4,7 @@ import {
   View,
   ActivityIndicator,
   ImageBackground,
+  ScrollView,
   StyleSheet,
 } from 'react-native';
 import PrimaryButton from '../../components/PrimaryButton';
@@ -35,21 +36,23 @@ export default function ScrumEndScreen() {
   return (
     <ImageBackground source={background} style={endStyle.imageBackground}>
       <View style={endStyle.endInformation}>
-        <View style={styleContainer.middleSection}>
+        <View style={[styleContainer.middleSection, { marginHorizontal: 20 }]}>
           <Text style={endStyleText.emoji}>🎉🎉</Text>
           <Text style={endStyleText.title}>Quiz Completed !</Text>
           <Text style={styles.title}>Leaderboard :</Text>
-          {ranking.length > 0 ? (
-            ranking.map((entry, index) => (
-              <View key={index} style={styles.row}>
-                <Text style={styles.rank}>{index + 1}.</Text>
-                <Text style={styles.username}>{entry.username}</Text>
-                <Text style={styles.score}>{entry.score} points</Text>
-              </View>
-            ))
-          ) : (
-            <Text>No Leaderboard...</Text>
-          )}
+          <ScrollView style={styles.scrollContainer}>
+            {ranking.length > 0 ? (
+              ranking.map((entry, index) => (
+                <View key={index} style={styles.row}>
+                  <Text style={styles.rank}>{index + 1}.</Text>
+                  <Text style={styles.username}>{entry.username}</Text>
+                  <Text style={styles.score}>{entry.score} points</Text>
+                </View>
+              ))
+            ) : (
+              <Text>No Leaderboard...</Text>
+            )}
+          </ScrollView>
         </View>
         <View style={styleContainer.bottomSection}>
           <PrimaryButton
@@ -95,5 +98,9 @@ const styles = StyleSheet.create({
   },
   username: {
     flex: 1,
+  },
+  scrollContainer: {
+    width: 300,
+    maxHeight: 300,
   },
 });
