@@ -16,7 +16,6 @@ export const styles = StyleSheet.create({
     fontSize: 20,
   },
   questionContainer: {
-    backgroundColor: '#F4F2EE',
     borderRadius: 25,
     height: '100%',
   },
