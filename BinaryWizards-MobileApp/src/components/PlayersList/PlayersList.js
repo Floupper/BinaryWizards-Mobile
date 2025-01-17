@@ -24,10 +24,17 @@ export default function PlayersList({ gameId, gameMode }) {
       try {
         const userToken = await AsyncStorage.getItem('userToken');
 
-        if (!userToken) {
+        if (!userToken && gameMode === 'team') {
           // Redirect if no token is found
           navigation.navigate('Signin', {
             redirectTo: 'TeamLobby',
+            params: { gameId },
+          });
+          return;
+        } else if (!userToken && gameMode === 'scrum') {
+          // Redirect if no token is found
+          navigation.navigate('Signin', {
+            redirectTo: 'ScrumLobby',
             params: { gameId },
           });
           return;
