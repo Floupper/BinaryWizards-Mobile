@@ -64,6 +64,7 @@ When the user is not logged in, he can still play quizzes.
 
 When the user is logged in, he can play quizzes, see his unfinished games, search through a list of public quizzes, and play quizzes with friends.
 
+<img src="/readme_assets/readme_userhome.jpg" width="300" height="648">
 <img src="/readme_assets/readme_resumegame.jpg" width="300" height="648">
 
 ### Play quizzes
@@ -90,7 +91,7 @@ When the user is logged in, he can play quizzes with friends. Two modes are avai
 
 <img src="/readme_assets/readme_joingame.jpg" width="300" height="648">
 
-<img src="/readme_assets/readme_endscreen.jpg" width="300" height="648">
+<img src="/readme_assets/readme_endscreenteam.jpg" width="300" height="648">
 
 ## Technologies used
 
