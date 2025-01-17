@@ -8,7 +8,7 @@ export default function ShareModal({ visible, toggleModal, gameId }) {
   const [link, setLink] = useState('');
 
   useEffect(() => {
-    setLink(`${process.env.REACT_NATIVE_URL}/game/join/${gameId}`);
+    setLink(`mogula://--/game/join/${gameId}`);
   }, [gameId]);
 
   return (
