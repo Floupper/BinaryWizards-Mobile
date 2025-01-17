@@ -24,11 +24,13 @@ For the local API, you need to install the [API project](https://git.unistra.fr/
 
 ## Installation
 
+To install the Mobile project, you need to clone the repository.
+
 ```
 git clone git@git.unistra.fr:binarywizards/s5-binarywizards-mobile.git
 ```
 
-Before launching the mobile app, you need to navigate to the project folder.
+Then, navigate to the project folder.
 
 ```
 cd BinaryWizards-MobileApp
