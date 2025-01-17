@@ -14,7 +14,8 @@
       "backgroundColor": "#ffffff"
     },
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.mathieuackermann.BinaryWizardsMobileApp"
     },
     "android": {
       "adaptiveIcon": {
@@ -23,24 +24,23 @@
       },
       "package": "com.mathieuackermann.BinaryWizardsMobileApp"
     },
-    "package": "com.mathieuackermann.BinaryWizardsMobileApp",
     "plugins": [
       [
         "expo-font",
         {
-          "fonts": ["path/to/file.ttf"]
+          "fonts": ["./assets/fonts/mogula.otf"]
         }
       ],
       "expo-asset"
-    ]
-  },
-  "web": {
-    "favicon": "./assets/favicon.png"
-  },
-  "extra": {
-    "eas": {
-      "projectId": "15079b65-0202-4000-bc2b-61833fb4f2f8"
-    }
-  },
-  "owner": "mathieuackermann"
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "15079b65-0202-4000-bc2b-61833fb4f2f8"
+      }
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    },
+    "owner": "mathieuackermann"
+  }
 }
