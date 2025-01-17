@@ -3,6 +3,10 @@
     "preview": {
       "android": {
         "buildType": "apk"
+      },
+      "env": {
+        "REACT_NATIVE_API_URL": "https://klebert-host.com",
+        "REACT_NATIVE_API_PORT": "33038"
       }
     },
     "production": {
