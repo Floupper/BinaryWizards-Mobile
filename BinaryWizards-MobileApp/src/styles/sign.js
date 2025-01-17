@@ -1,34 +1,34 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet } from 'react-native';
 
 export const signStyles = StyleSheet.create({
   // Shared container styles
   container: {
+    alignItems: 'center',
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    width: "100%",
+    justifyContent: 'center',
+    width: '100%',
   },
   inputsContainer: {
-    backgroundColor: "white",
+    backgroundColor: 'white',
+    borderColor: 'lightgray',
     borderRadius: 10,
-    borderColor: "lightgray",
     borderWidth: 1,
     margin: 20,
     padding: 20,
-    width: "90%",
+    width: '90%',
   },
 
   // Input styles
   input: {
-    backgroundColor: "white",
+    backgroundColor: 'white',
+    borderColor: 'lightgray',
     borderRadius: 10,
-    borderColor: "lightgray",
     borderWidth: 1,
-    padding: 10,
     marginBottom: 10,
+    padding: 10,
   },
   inputLabel: {
-    fontWeight: "600",
+    fontWeight: '600',
     marginBottom: 5,
   },
   inputContainer: {
@@ -37,57 +37,58 @@ export const signStyles = StyleSheet.create({
 
   // Buttons
   buttonPrimary: {
-    backgroundColor: "black",
-    color: "white",
+    backgroundColor: 'black',
     borderRadius: 10,
-    width: "100%",
+    color: 'white',
     marginTop: 20,
     padding: 10,
+    width: '100%',
   },
 
   // Lines and navigation links
   line: {
-    borderBottomColor: "black",
+    borderBottomColor: 'black',
     borderBottomWidth: 1,
-    width: "60%",
+    width: '60%',
   },
   navigateLink: {
-    color: "#0033FF",
-    fontWeight: "600",
-    textDecorationLine: "underline",
+    color: '#0033FF',
+    fontWeight: '600',
+    textDecorationLine: 'underline',
   },
 
   // Text styles
   title: {
-    fontSize: 20,
-    fontWeight: "bold",
+    fontFamily: 'Mogula',
+    fontSize: 26,
+    fontWeight: 'bold',
   },
   subtitle: {
-    color: "gray",
-    fontWeight: "600",
+    color: 'gray',
+    fontWeight: '600',
     marginBottom: 15,
   },
 
   // Layout styles
   svgContainer: {
-    width: "20%",
-    height: "20%",
+    height: '20%',
+    width: '20%',
   },
   textContainer: {
-    textAlign: "left",
+    textAlign: 'left',
   },
   outerContainer: {
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
-    width: "40%",
+    alignItems: 'center',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    width: '40%',
   },
   leaveScreenContainer: {
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
+    alignItems: 'center',
+    flexDirection: 'row',
+    justifyContent: 'center',
     marginTop: 10,
   },
 });
 
-export const signBackgroundColors = ["#E4BB9180", "#8A2BF280", "#2960F080"];
+export const signBackgroundColors = ['#377DC9', '#8A2BF2', '#E7DAB4'];

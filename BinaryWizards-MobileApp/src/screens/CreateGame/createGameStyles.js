@@ -12,22 +12,21 @@ export const styles = StyleSheet.create({
   button: {
     marginTop: 20,
   },
+  checkboxContainer: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: '50%',
+  },
   container: {
     flex: 1,
   },
-  form: {
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
+  form: {},
   formContainer: {
     alignItems: 'center',
-    height: '100%',
     justifyContent: 'space-between',
-    width: '100%',
   },
   header: {
     alignItems: 'center',
-    flex: 0.33,
     justifyContent: 'center',
   },
   homeButton: {
@@ -80,9 +79,16 @@ export const styles = StyleSheet.create({
   svgBackground: {
     position: 'absolute',
   },
+  timerModeCheckbox: {
+    alignItems: 'center',
+    border: '1px solid red',
+    flexDirection: 'row',
+  },
   title: {
     color: 'white',
-    fontSize: 32,
-    fontWeight: 'bold',
+    fontFamily: 'Mogula',
+    fontSize: 40,
+    marginBottom: 5,
+    paddingHorizontal: 10,
   },
 });

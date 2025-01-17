@@ -1,41 +1,37 @@
 import { StyleSheet } from 'react-native';
 
 export const styleText = StyleSheet.create({
-  gameIdText: {
-    fontSize: 18,
-    textAlign: 'center',
-    color: 'gray',
-    marginRight: 10,
-    fontWeight: 'bold',
-  },
-  title: {
-    fontSize: 32,
-    fontWeight: 'bold',
-    textAlign: 'center',
-    marginBottom: 40,
-  },
-  wrongChoiceText: {
-    color: '#b00015',
+  choice: {
+    color: 'black',
     textAlign: 'center',
   },
   correctChoiceText: {
     color: '#299900',
     textAlign: 'center',
   },
-  choice: {
+  gameIdText: {
+    color: 'gray',
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginRight: 10,
+    textAlign: 'center',
+  },
+  gameListItemText: {
     color: 'black',
+    margin: 10,
     textAlign: 'center',
   },
   secondary: {
     color: '#3552b0',
   },
-  topBarText: {
-    color: 'white',
+  title: {
+    fontSize: 32,
     fontWeight: 'bold',
-  },
-  gameListItemText: {
-    color: 'black',
+    marginBottom: 40,
     textAlign: 'center',
-    margin: 10,
+  },
+  wrongChoiceText: {
+    color: '#b00015',
+    textAlign: 'center',
   },
 });

@@ -68,17 +68,17 @@ export const styleContainer = StyleSheet.create({
     padding: 10,
   },
   mainContainer: {
-    backgroundColor: '#F4F2EE',
     flex: 1,
+    height: '100%',
+    width: '100%',
   },
   middleSection: {
     alignItems: 'center',
-    flex: 1,
     justifyContent: 'center',
   },
   questionTitleContainer: {
+    fontFamily: 'Mogula',
     fontSize: 20,
-    fontWeight: 'bold',
     margin: 20,
     textAlign: 'center',
   },

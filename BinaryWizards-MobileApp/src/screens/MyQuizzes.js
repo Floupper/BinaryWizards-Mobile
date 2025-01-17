@@ -4,7 +4,7 @@ import { useFocusEffect } from '@react-navigation/native';
 import React, { useState, useCallback } from 'react';
 import { styleContainer } from '../styles/container';
 import { getQuizzes } from '../services/userRequests';
-import QuizListItem from '../components/QuizListItem';
+import QuizListItem from '../components/QuizListItem/QuizListItem';
 import { styleText } from '../styles/text';
 import Toast from 'react-native-toast-message';
 import { _retrieveUserToken, logout } from '../utils/asyncStorage';

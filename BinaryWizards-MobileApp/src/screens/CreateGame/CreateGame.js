@@ -1,23 +1,27 @@
 import React, { useEffect, useState, useCallback } from 'react';
-import { View, Text, TextInput, Dimensions } from 'react-native';
+import {
+  View,
+  Text,
+  TextInput,
+  ActivityIndicator,
+  ImageBackground,
+} from 'react-native';
 import Toast from 'react-native-toast-message';
 import { SelectList } from 'react-native-dropdown-select-list';
-import { BlurView } from 'expo-blur';
-import { LinearGradient } from 'expo-linear-gradient';
 import { useNavigation, useFocusEffect } from '@react-navigation/native';
+import PrimaryButton from '../../components/PrimaryButton';
+import { styles } from './createGameStyles';
+import { styleButton } from '../../styles/buttons';
+import BouncyCheckbox from 'react-native-bouncy-checkbox';
+import background from '../../../assets/backgrounds/mainBackground.png';
 
 import {
   fetchAndCreateQuiz,
   fetchCategories,
   fetchDifficulties,
 } from '../../services/createGame';
-import PrimaryButton from '../../components/PrimaryButton';
-import { styles } from './createGameStyles';
-import { styleButton } from '../../styles/buttons';
-
-import Circles from '../../../assets/circles.svg';
-import Iphone from '../../../assets/iphone.svg';
-import HomeButton from '../../components/HomeButton';
+import TimerModal from '../../components/TimerModal/TimerModal';
+import HomeButton from '../../components/HomeButton/HomeButton';
 
 export default function CreateGame() {
   const [categories, setCategories] = useState([]);
@@ -25,34 +29,86 @@ export default function CreateGame() {
   const [nbQuestions, setNbQuestions] = useState('10');
   const [difficulty, setDifficulty] = useState('');
   const [difficulties, setDifficulties] = useState([]);
-  const [windowWidth, setWindowWidth] = useState(
-    Dimensions.get('window').width
-  );
-  const [windowHeight, setWindowHeight] = useState(
-    Dimensions.get('window').height
-  );
+  const [isLoading, setIsLoading] = useState(false);
+  const [isLoadingCategories, setIsLoadingCategories] = useState(true);
+  const [isLoadingDifficulties, setIsLoadingDifficulties] = useState(true);
+
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [isTimeMode, setIsTimeMode] = useState(false);
+  const [timeModeDifficulty, setTimeModeDifficulty] = useState('none');
+
   const navigation = useNavigation();
 
-  const updateDimensions = () => {
-    const { width, height } = Dimensions.get('window');
-    setWindowWidth(width);
-    setWindowHeight(height);
+  const handleTimerChoice = ({ timer }) => {
+    if (timer !== null) {
+      setTimeModeDifficulty(timer);
+      setIsTimeMode(true);
+    } else {
+      setIsTimeMode(false);
+      setTimeModeDifficulty(null);
+    }
+    setIsModalVisible(false);
+  };
+
+  const openModal = (checked) => {
+    if (checked) {
+      setIsModalVisible(true);
+    } else {
+      setIsTimeMode(false);
+      setTimeModeDifficulty(null);
+    }
+  };
+
+  const handleModalClose = () => {
+    setIsTimeMode(false);
+    setIsModalVisible(false);
   };
 
   useEffect(() => {
-    updateDimensions();
-    const subscription = Dimensions.addEventListener(
-      'change',
-      updateDimensions
-    );
-    return () => subscription?.remove();
-  }, []);
+    const loadCategories = async () => {
+      setIsLoadingCategories(true);
+      try {
+        const fetchedCategories = await fetchCategories();
+        setCategories(
+          Array.isArray(fetchedCategories) ? fetchedCategories : []
+        );
+      } catch (error) {
+        console.error('Error fetching categories:', error);
+        Toast.show({
+          type: 'error',
+          text1: 'Error fetching categories',
+          text2: 'Please try again later',
+          position: 'bottom',
+        });
+        setCategories([]);
+      } finally {
+        setIsLoadingCategories(false);
+      }
+    };
 
-  useEffect(() => {
-    (async () => {
-      setCategories(await fetchCategories());
-      setDifficulties(await fetchDifficulties());
-    })();
+    const loadDifficulties = async () => {
+      setIsLoadingDifficulties(true);
+      try {
+        const fetchedDifficulties = await fetchDifficulties();
+        setDifficulties(
+          Array.isArray(fetchedDifficulties) ? fetchedDifficulties : []
+        );
+      } catch (error) {
+        console.error('Error fetching difficulties:', error);
+        Toast.show({
+          type: 'error',
+          text1: 'Error fetching difficulties',
+          text2: 'Please try again later',
+          position: 'bottom',
+        });
+        setDifficulties([]);
+      } finally {
+        setIsLoadingDifficulties(false);
+      }
+    };
+
+    loadCategories();
+    loadDifficulties();
   }, []);
 
   useFocusEffect(
@@ -74,85 +130,121 @@ export default function CreateGame() {
         text2: 'Please enter a number between 1 and 50',
         position: 'bottom',
       });
-      setNbQuestions('');
+      setNbQuestions(''); // Reset field if value is not valid
+    }
+  };
+
+  const handleStartPress = async () => {
+    setIsLoading(true);
+    try {
+      await fetchAndCreateQuiz(
+        selectedCategory,
+        nbQuestions,
+        difficulty,
+        timeModeDifficulty,
+        navigation
+      );
+    } catch (error) {
+      console.error('Error starting the quiz:', error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
   return (
-    <View style={styles.container}>
-      <LinearGradient
-        colors={['#F1F1F1', '#C9D6FF']}
-        style={{ width: windowWidth, height: windowHeight }}
-      />
-      <Circles
-        style={[
-          styles.svgBackground,
-          { width: windowWidth, height: windowHeight },
-        ]}
-      />
-      <BlurView
-        intensity={5}
-        style={[
-          styles.blurContainer,
-          { width: windowWidth, height: windowHeight },
-        ]}
-      >
-        <View style={styles.mainContent}>
-          <Iphone
-            style={[
-              styles.backgroundImage,
-              { width: windowWidth, height: windowHeight },
-            ]}
+    <ImageBackground
+      source={background}
+      style={{ width: '100%', height: '100%' }}
+    >
+      <HomeButton text="Home" />
+      <View style={{ flex: 1 }}>
+        <View
+          style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
+        >
+          <Header />
+          <Form
+            categories={categories}
+            nbQuestions={nbQuestions}
+            handleNbQuestionsChange={handleNbQuestionsChange}
+            difficulties={difficulties}
+            setSelectedCategory={setSelectedCategory}
+            setDifficulty={setDifficulty}
           />
-          <BlurView intensity={20} style={styles.formContainer}>
-            <View style={styles.homeButton}>
-              <HomeButton text={'Back'} />
-            </View>
-            <Header />
-            <Form
-              categories={categories}
-              nbQuestions={nbQuestions}
-              handleNbQuestionsChange={handleNbQuestionsChange}
-              difficulties={difficulties}
-              setSelectedCategory={setSelectedCategory}
-              setDifficulty={setDifficulty}
+          <View style={styles.checkboxContainer}>
+            <BouncyCheckbox
+              isChecked={isTimeMode}
+              size={35}
+              iconImageStyle={{ width: 25, height: 25 }}
+              fillColor="#ebebeb"
+              unFillColor="white"
+              onPress={(checked) => {
+                openModal(!checked);
+              }}
+              useBuiltInState={false}
+              checkIconImageSource={require('../../../assets/hourglass.png')}
+              text={isTimeMode ? 'Disable time mode' : 'Enable time mode'}
+              textStyle={{
+                textDecorationLine: 'none',
+              }}
             />
-            <View style={styles.header}>
-              <PrimaryButton
-                text="Play"
-                onPress={() =>
-                  fetchAndCreateQuiz(
-                    selectedCategory,
-                    nbQuestions,
-                    difficulty,
-                    navigation
-                  )
-                }
-                disabled={
-                  !nbQuestions ||
+            <View>
+              {isTimeMode ? (
+                <View
+                  style={{
+                    color: 'white',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    flexDirection: 'row',
+                  }}
+                >
+                  <Text style={{ color: 'white' }}>
+                    Time mode difficulty :{' '}
+                  </Text>
+                  <Text style={{ color: 'white', fontWeight: 'bold' }}>
+                    {timeModeDifficulty}
+                  </Text>
+                </View>
+              ) : (
+                <Text></Text>
+              )}
+            </View>
+          </View>
+          <View style={styles.header}>
+            <PrimaryButton
+              text={isLoading ? '' : 'Play'}
+              onPress={handleStartPress}
+              disabled={
+                !nbQuestions ||
+                isNaN(parseInt(nbQuestions, 10)) ||
+                difficulty === '' ||
+                selectedCategory === ''
+              }
+              style={[
+                styleButton.button,
+                (!nbQuestions ||
                   isNaN(parseInt(nbQuestions, 10)) ||
                   difficulty === '' ||
-                  selectedCategory === ''
-                }
-                style={[
-                  styleButton.button,
-                  (!nbQuestions ||
-                    isNaN(parseInt(nbQuestions, 10)) ||
-                    difficulty === '' ||
-                    selectedCategory === '') && { backgroundColor: 'gray' },
-                ]}
-              />
-            </View>
-          </BlurView>
+                  selectedCategory === '') && { backgroundColor: 'gray' },
+              ]}
+            >
+              {isLoading && <ActivityIndicator color="#fff" />}
+            </PrimaryButton>
+          </View>
         </View>
-      </BlurView>
-    </View>
+        <TimerModal
+          visible={isModalVisible}
+          handleTimerChoice={handleTimerChoice}
+          onClose={handleModalClose}
+          isCreateGame={true}
+        />
+      </View>
+    </ImageBackground>
   );
 }
 
 const Header = () => (
   <View style={styles.header}>
-    <Text style={styles.title}>Create Quiz</Text>
+    <Text style={styles.title}>Quick Quiz</Text>
   </View>
 );
 
@@ -179,7 +271,7 @@ const Form = ({
       }
     />
     <InputField
-      label="Number of Questions"
+      label="Number of questions"
       component={
         <TextInput
           style={styles.input}

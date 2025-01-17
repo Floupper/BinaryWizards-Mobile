@@ -1,113 +1,158 @@
-import React, { useEffect, useState } from 'react';
-import QuestionComponent from '../../components/QuestionComponent';
-import { Text, View } from 'react-native';
-import PrimaryButton from '../../components/PrimaryButton';
-import {
-  fetchQuestion,
-  sendAnswer,
-} from '../../services/questionScreenRequests';
+import React, { useEffect, useState, useRef } from 'react';
+import QuestionComponent from '../../components/Question/QuestionComponent';
+import { Text, View, ActivityIndicator, ImageBackground } from 'react-native';
+import { fetchQuestion } from '../../services/questionScreenRequests';
 import { useNavigation } from '@react-navigation/native';
-import { styleContainer } from '../../styles/container';
-import { styleButton } from '../../styles/buttons';
-import GenericClipboard from '../../components/GenericClipboard';
 import { questionStyle } from './questionsStyles';
 import { LinearGradient } from 'expo-linear-gradient';
+import { sendAnswer } from '../../services/questionScreenRequests';
 import ProgressBar from 'react-native-progress/Bar';
 import userTokenEmitter from '../../utils/eventEmitter';
-import HomeButton from '../../components/HomeButton';
+import HomeButton from '../../components/HomeButton/HomeButton';
+import { REACT_NATIVE_API_URL, REACT_NATIVE_API_PORT } from '@env';
+import Chrono from '../../components/Chrono/Chrono';
+import singlePlayerBackground from '../../../assets/backgrounds/singleplayerBackground.png';
+
+const SERVER_URL = `${REACT_NATIVE_API_URL}:${REACT_NATIVE_API_PORT}`;
 
 export default function QuestionScreen({ route }) {
   const [gameId, setGameId] = useState(route.params.gameId);
   const [quizId, setQuizId] = useState(route.params.quizId);
   const [userToken, setUserToken] = useState(null);
   const [question, setQuestion] = useState('');
-  const [questionAnswer, setQuestionAnswer] = useState(null);
   const [colorGradient, setColorGradient] = useState([
-    '#FFA033',
-    '#DBC0A2',
-    '#779D25',
+    '#377DC9',
+    '#8A2BF2',
+    '#E7DAB4',
   ]);
+  const [timeAvailable, setTimeAvailable] = useState(-1);
+  const [isTimeUp, setIsTimeUp] = useState(false);
+  const [correctAnswerIndex, setCorrectAnswerIndex] = useState(null);
+  const [userAnswerIndex, setUserAnswerIndex] = useState(null);
 
   const navigation = useNavigation();
-
-  const nextQuestion = () => {
-    setQuestionAnswer(null);
-    fetchAndSetQuestion();
-  };
-
-  const fetchAndSetQuestion = async () => {
-    const currentGameId = route.params.gameId;
-    const question_result = await fetchQuestion({ gameId: currentGameId });
-    if (question_result.game_finished) {
-      navigation.navigate('End', {
-        quizId: quizId,
-        gameId: currentGameId,
-        correct_answers_nb: question_result.correct_answers_nb,
-        nb_questions_total: question_result.nb_questions_total,
-      });
-      return;
-    }
-    setQuizId(question_result.quiz_id);
-    setQuestion(question_result);
-    setColorGradient(['#FFA033', '#DBC0A2', '#779D25']);
-  };
+  const chronoRef = useRef();
+  const questionIndexRef = useRef(null);
 
   useEffect(() => {
     setGameId(route.params.gameId);
     fetchAndSetQuestion();
   }, [route.params.gameId]);
 
-  useEffect(() => {
-    const listener = (newToken) => {
-      //Disconnect the user if the token is invalid
-      if (newToken === null) {
-        navigation.navigate('Home');
+  const nextQuestion = () => {
+    setIsTimeUp(false);
+    setUserAnswerIndex(null);
+    setCorrectAnswerIndex(null);
+    fetchAndSetQuestion();
+  };
+
+  const fetchAndSetQuestion = async () => {
+    if (chronoRef.current) {
+      chronoRef.current.stopTimer();
+    }
+
+    const question_result = await fetchQuestion({
+      gameId: route.params.gameId,
+    });
+    questionIndexRef.current = question_result.question_index;
+
+    if (question_result.game_finished) {
+      endGame(question_result);
+      return;
+    }
+
+    setQuizId(question_result.quiz_id);
+    setQuestion(question_result);
+
+    // Reset the timer
+    if (question_result.time_available != null) {
+      setTimeAvailable(question_result.time_available);
+      if (question_result.time_available <= 1) {
+        setIsTimeUp(true);
+        onSelectedAnswer(-1);
+        return;
       }
-      console.log('newToken:', newToken);
-      setUserToken(newToken);
-    };
-
-    userTokenEmitter.on('userToken', listener);
-
-    return () => {
-      userTokenEmitter.off('userToken', listener);
-    };
-  }, []);
-
-  const onSelectedAnswer = async (index) => {
-    try {
-      const result = await sendAnswer({
-        gameId: gameId,
-        question_index: question.question_index,
-        option_index: index,
-      });
-
-      if (result) {
-        if (result.resynchronize) {
-          setQuestion(result.data);
-          setQuestionAnswer(null);
-        } else {
-          result.user_answer_index = index;
-          setQuestionAnswer(result);
-
-          if (result.is_correct) {
-            setColorGradient(['#417336', '#417336', '#417336']);
-          } else {
-            setColorGradient(['#F22828', '#F22828', '#F22828']);
-          }
-        }
+      if (chronoRef.current) {
+        chronoRef.current.resetTimer(question_result.time_available);
+        chronoRef.current.startTimer();
       }
-    } catch (error) {
-      console.error('Error:', error);
     }
   };
 
-  return (
-    <View style={styleContainer.mainContainer}>
-      <View>
-        <HomeButton text={'Back'} />
+  const onSelectedAnswer = async (selectedAnswerIndex) => {
+    if (userAnswerIndex !== null) {
+      return null;
+    }
+
+    // Capture the current question index to debug potential outdated values
+    const currentQuestionIndex = questionIndexRef.current;
+
+    setUserAnswerIndex(selectedAnswerIndex);
+
+    if (chronoRef.current) {
+      console.log('Stopping timer...');
+      chronoRef.current.stopTimer();
+    }
+
+    try {
+      const result = await sendAnswer({
+        gameId: gameId,
+        question_index: currentQuestionIndex,
+        option_index: selectedAnswerIndex,
+      });
+
+      setCorrectAnswerIndex(result.correct_option_index);
+
+      if (selectedAnswerIndex === -1) {
+        setIsTimeUp(true);
+        return;
+      }
+
+      if (!result) {
+        return;
+      }
+
+      if (result.resynchronize) {
+        if (result.data.game_finished) {
+          endGame(result.data);
+          return;
+        }
+        setQuestion(result.data);
+        return 'idle';
+      }
+
+      setIsTimeUp(false);
+    } catch (error) {
+      console.error('Error while sending answer:', error);
+    }
+  };
+
+  const endGame = (question_result) => {
+    navigation.navigate('End', {
+      quizId: quizId,
+      gameId: gameId,
+      correct_answers_nb: question_result.correct_answers_nb,
+      nb_questions_total: question_result.nb_questions_total,
+      timer: question.time_limit,
+    });
+    setTimeAvailable(-1);
+  };
+
+  if (!question) {
+    return (
+      <View style={[questionStyle.mainContainer, { justifyContent: 'center' }]}>
+        <ActivityIndicator size="large" color="#FFA033" />
       </View>
+    );
+  }
+
+  return (
+    <ImageBackground
+      source={singlePlayerBackground}
+      style={{ width: '100%', height: '100%' }}
+    >
       <View style={questionStyle.mainContainer}>
+        <HomeButton text="Leave game" />
         <View
           style={{
             paddingHorizontal: 20,
@@ -124,19 +169,25 @@ export default function QuestionScreen({ route }) {
             }
             width={null}
             height={17}
-            color="#FFA033"
+            color="#8B2DF1"
             unfilledColor="#FFFFFF"
             borderWidth={0}
             borderRadius={5}
           />
         </View>
-
         <View style={questionStyle.infoQuestions}>
-          {userToken ? <GenericClipboard text="id" id={gameId} /> : null}
-          <Text style={questionStyle.infoQuestionsText}>
+          <Text style={[questionStyle.infoQuestionsText, { flex: 0.33 }]}>
             {question.question_index}/{question.nb_questions_total}
           </Text>
-          <Text style={questionStyle.infoQuestionsText}>
+          {timeAvailable !== -1 ? (
+            <Chrono
+              ref={chronoRef}
+              timeAvailable={timeAvailable}
+              sendAnswer={onSelectedAnswer}
+              onTimerEnd={onSelectedAnswer}
+            />
+          ) : null}
+          <Text style={[questionStyle.infoQuestionsText, { flex: 0.33 }]}>
             Score : {question.correct_answers_nb}
           </Text>
         </View>
@@ -147,29 +198,19 @@ export default function QuestionScreen({ route }) {
           end={{ x: 0, y: 1 }}
           style={questionStyle.gradientContainer}
         >
-          <View style={questionStyle.questionContainer}>
-            <View
-              style={{
-                flex: 1,
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}
-            >
-              <QuestionComponent
-                question={question ? question : ''}
-                selectedAnswer={onSelectedAnswer}
-                correctAnswer={questionAnswer}
-              />
-              <PrimaryButton
-                onPress={nextQuestion}
-                disabled={questionAnswer === null}
-                text={'Next question'}
-                style={[styleButton.button, { marginBottom: 20 }]}
-              />
-            </View>
+          <View style={questionStyle.container}>
+            <QuestionComponent
+              question={question ? question : ''}
+              onSelectedAnswer={onSelectedAnswer}
+              nextQuestion={nextQuestion}
+              setColorGradient={setColorGradient}
+              isTimeUp={isTimeUp}
+              correctAnswerIndex={correctAnswerIndex}
+              userAnswerIndex={userAnswerIndex}
+            />
           </View>
         </LinearGradient>
       </View>
-    </View>
+    </ImageBackground>
   );
 }

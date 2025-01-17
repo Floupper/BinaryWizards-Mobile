@@ -1,38 +1,33 @@
 import { StyleSheet } from 'react-native';
 
 export const questionStyle = StyleSheet.create({
-  mainContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F4F2EE',
-    height: '100%',
-    padding: 10,
-  },
+  container: { borderRadius: 25, height: '100%', overflow: 'hidden' },
   gradientContainer: {
-    width: '100%',
+    borderRadius: 30,
     height: '85%',
     padding: 10,
-    borderRadius: 30,
+    width: '100%',
   },
   infoQuestions: {
+    alignItems: 'center',
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'center',
-    width: '100%',
     paddingHorizontal: 30,
     paddingVertical: 10,
+    width: '100%',
   },
   infoQuestionsText: {
+    color: '#716E6E',
     fontSize: 18,
     fontWeight: 'bold',
     textAlign: 'center',
-    color: '#716E6E',
   },
-  questionContainer: {
+  mainContainer: {
+    alignItems: 'center',
+    flex: 1,
     height: '100%',
-    backgroundColor: '#F4F2EE',
-    borderRadius: 25,
+    justifyContent: 'center',
+    padding: 10,
   },
 });
