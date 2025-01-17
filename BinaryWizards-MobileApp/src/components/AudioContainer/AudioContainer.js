@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import { Audio } from 'expo-av';
 import { styles } from './style';
 
-// Validation des props
 AudioContainer.propTypes = {
   options: PropTypes.array.isRequired,
   onPress: PropTypes.func.isRequired,
