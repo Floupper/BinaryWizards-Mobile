@@ -67,12 +67,6 @@ When the user is logged in, he can play quizzes, see his unfinished games, searc
 <img src="/readme_assets/readme_userhome.jpg" width="300" height="648">
 <img src="/readme_assets/readme_resumegame.jpg" width="300" height="648">
 
-### Play quizzes
-
-The user can play quizzes, whether he is logged in or not.
-
-<img src="/readme_assets/readme_quickquiz.jpg" width="300" height="648">
-
 ### Unfinished games
 
 When the user is logged in, he can see his unfinished games.
