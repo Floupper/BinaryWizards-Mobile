@@ -12,27 +12,20 @@ It allows users to play quizzes and test their knowledge on various topics, whet
 - User can log in
 - When the user is logged in, he can:
   - Play quizzes
-  - See his unfinished games
+  - See and resume his unfinished games
   - Search through a list of public quizzes, created by other users
   - Play quizzes with friends (scrum and team mode)
 
 ## Prerequisites
 
-Before you can run the Mobile project, which is the mobile quiz application, you need to ensure you have an API.
+Before you can run the Mobile project, you need to ensure you have the project API running locally.
 
-You can either work locally with the API and the mobile app, or use a remote API.  
-In this case, you have two options:
-
-- Local API
-- Remote API
-
-For the local API, you need to install the [API project](https://git.unistra.fr/binarywizards/s5-binarywizards-serveur/-/blob/dev/README.md?ref_type=heads).  
-For the remote API, no installation is required, you just need to know the IP address or URL of your API.
+For the local API, you need to install the [API project](https://git.unistra.fr/binarywizards/s5-binarywizards-serveur/-/blob/dev/README.md?ref_type=heads).
 
 ## Installation
 
 ```
-git clone <project_remote_URL>
+git clone git@git.unistra.fr:binarywizards/s5-binarywizards-mobile.git
 ```
 
 Before launching the mobile app, you need to navigate to the project folder.
@@ -44,8 +37,8 @@ cd BinaryWizards-MobileApp
 Then, you need to create a _.env_ file containing the following information:
 
 ```
-REACT_NATIVE_API_URL=<url_or_IP_address_of_your_API>
-REACT_NATIVE_API_PORT=<port_of_your_API>
+REACT_NATIVE_API_URL=<local_IPV4_address_of_your_computer>
+REACT_NATIVE_API_PORT=33012
 ```
 
 Once the _.env_ file is created and filled out, you can install the dependencies and launch the application with the following commands:
@@ -61,39 +54,41 @@ npx expo start
 
 When the user is not logged in, he can still play quizzes.
 
-![](/readme_assets/readme_anonymous.jpg "Anonymous home screen")
-![](/readme_assets/readme_quickquiz.jpg "Quick quiz screen")
+<img src="/readme_assets/readme_anonymous.jpg" width="300" height="648">
+
+<img src="/readme_assets/readme_quickquiz.jpg" width="300" height="648">
 
 ### User account
 
 When the user is logged in, he can play quizzes, see his unfinished games, search through a list of public quizzes, and play quizzes with friends.
 
-![](/readme_assets/readme_signin.jpg "Login screen")
+<img src="/readme_assets/readme_resumegame.jpg" width="300" height="648">
 
 ### Play quizzes
 
 The user can play quizzes, whether he is logged in or not.
 
-![](/readme_assets/readme_quickquiz.jpg "Quick quiz screen")
+<img src="/readme_assets/readme_quickquiz.jpg" width="300" height="648">
 
 ### Unfinished games
 
 When the user is logged in, he can see his unfinished games.
 
-![](/readme_assets/readme_resumegame.jpg "Resume game screen")
+<img src="/readme_assets/readme_resumegame.jpg" width="300" height="648">
 
 ### Search public quizzes
 
 When the user is logged in, he can search through a list of public quizzes, created by other users.
 
-![](/readme_assets/readme_searchquiz.jpg "Search quiz screen")
+<img src="/readme_assets/readme_searchquiz.jpg" width="300" height="648">
 
 ### Play with friends
 
 When the user is logged in, he can play quizzes with friends. Two modes are available: scrum and team mode.
 
-![](/readme_assets/readme_joingame.jpg "Join game screen")
-![](/readme_assets/readme_endscreenteam.jpg "Join game screen")
+<img src="/readme_assets/readme_joingame.jpg" width="300" height="648">
+
+<img src="/readme_assets/readme_endscreen.jpg" width="300" height="648">
 
 ## Technologies used
 
